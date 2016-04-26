@@ -1,6 +1,6 @@
 Attribute VB_Name = "VersionModule"
 ' FORREST SOFTWARE
-' Copyright (c) 2015 Mateusz Forrest Milewski
+' Copyright (c) 2016 Mateusz Forrest Milewski
 '
 ' Permission is hereby granted, free of charge,
 ' to any person obtaining a copy of this software and associated documentation files (the "Software"),
@@ -52,4 +52,9 @@ Attribute VB_Name = "VersionModule"
 ' G_del_conf_sh_nm = "DELIVERY CONFIRMATION"
 ' G_one_pager_sh_nm = "ONE PAGER"
 ' G_xq_sh_nm = "XQ HANDLER"
+
+
+'v 0.02
+' dodanie enumow przede wszystkim
+' formatowanie warunkowe w arkuszu main
 
