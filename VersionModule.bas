@@ -58,3 +58,10 @@ Attribute VB_Name = "VersionModule"
 ' dodanie enumow przede wszystkim
 ' formatowanie warunkowe w arkuszu main
 
+' v 0.03
+' pierwszy fomularz glowny formmain
+
+' v 0.04
+' drugi formularz
+' plus rozbudowanie eventow pod akcje zmiany danych miedzy arkuszami a formularzami
+
