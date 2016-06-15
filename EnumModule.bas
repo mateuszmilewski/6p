@@ -27,6 +27,15 @@ End Enum
 
 Public Enum E_MAIN_ORDER
     e_main_status = 5
+    e_main_last_update_on_order_release_status
+    e_main_last_update_on_recent_build_plan_changes
+    e_main_last_update_on_chart_contracted_pnoc
+    e_main_last_update_on_osea
+    e_main_last_update_on_totals
+    e_main_last_update_on_xq
+    e_main_last_update_on_del_conf
+    e_main_last_update_on_open_issues
+    e_main_last_update_on_resp
 End Enum
 
 

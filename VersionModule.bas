@@ -58,3 +58,33 @@ Attribute VB_Name = "VersionModule"
 ' dodanie enumow przede wszystkim
 ' formatowanie warunkowe w arkuszu main
 
+' v 0.03
+' pierwszy fomularz glowny formmain
+
+' v 0.04
+' drugi formularz
+' plus rozbudowanie eventow pod akcje zmiany danych miedzy arkuszami a formularzami
+
+' v 0.05
+' powrot po dlugim czasie
+' proba zrozumienia co aktualnie posiadam na wersji 0.04...
+' mala poprawka nazewnicz na subie w klasie six  p checker -> sprawdz czy aktywny to ten arkusz
+' najsmieszniejsze jest to ze to powinno raczej sie nazywac to thisworkbook == activeworkbook
+'
+' dodatkowy formularz new edit project w arkuszu main jednak formularz reaguje za kazdy razem gdy mamy arkusz gdzie
+' ejst dopasowanie pierwszych 4 kolumn - wygodna sprawa
+
+' wciaz mam watpliwosci co do funkcjonalnosci show vbmodeless
+' bardzo ograniczam tym uzytkownikow i leniwcy nie beda chcieli zaakceptowac tego pomyslu
+
+' dodane pola w formularzu dla 1p - order release status
+
+' prace na dzien 15 czerwca zakonczyly sie w formularzu FormOrderReleaseStatus
+' na miejscu dodawania nowej linii danych - narazie prosty split i zaufanie google ze
+' array zawsze zaczyna sie od indeksu zero zatem tamtejsza petla jest od zera do trzy
+
+' doktryna jaka podjalem podczas pracy na tym makrze to przede wszystkim enkapsulacja nawet jesli logika bedzie spojna
+' nie bede tworzyl zadnych pomostow
+' prosta izolacja ze zlamaniem zasady DRY i pewnie odrobine KISS.
+
+
