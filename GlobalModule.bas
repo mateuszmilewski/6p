@@ -28,6 +28,12 @@ Global Const G_resp_sh_nm = "RESP"
 Global Const G_open_issues_sh_nm = "OPEN ISSUES"
 Global Const G_config_sh_nm = "config"
 Global Const G_totals_sh_nm = "TOTALS"
-Global Const G_del_conf_sh_nm = "DELIVERY CONFIRMATION"
+Global Const G_del_conf_sh_nm = "DELIVERY CONFIRMATION STATUS"
 Global Const G_one_pager_sh_nm = "ONE PAGER"
 Global Const G_xq_sh_nm = "XQ HANDLER"
+
+
+
+' text na guziki
+Global Const G_BTN_TEXT_ADD = "Dodaj"
+Global Const G_BTN_TEXT_EDIT = "Edytuj"
