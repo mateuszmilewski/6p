@@ -17,6 +17,11 @@ Attribute VB_Name = "EnumModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
+' glowne ENUMy pracujace w tym projekcie
+' ciekawostka jest wspolny enum dla pierwszych 4 wystapien
+' jest to traktowane jako link *wykorzystujemy obiekt T_Link
+
 Public Enum E_LINK_ORDER
     e_link_project = 1
     e_link_plt = 2

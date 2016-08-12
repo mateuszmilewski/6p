@@ -20,6 +20,9 @@ Attribute VB_Name = "VersionModule"
 '
 '
 ' OPIS WERSJI SEKCJA
+' P.S. zapis ten byl bardzo optymistyczny i zakladal, ze wszystkim sie zajme od razu bez przerwy
+' jednak smutna rzeczywistosci szybko zweryfikowala, ze bedzie spory hold na pracy na tym makrze...
+' --------
 ' no to zaczynamy z nowym projektem, ktory ma miec pierwsza stablina wersje gotowa na czwartek (jest poniedzialek)
 ' bedzie to jedno z wazniejszych wyzwan jakie sobie postawie w dotychczasowej pracy na makrach.
 ' Bedzie to rozszerzenie makra Quarter -> 6p.
@@ -87,4 +90,29 @@ Attribute VB_Name = "VersionModule"
 ' nie bede tworzyl zadnych pomostow
 ' prosta izolacja ze zlamaniem zasady DRY i pewnie odrobine KISS.
 
+' Set o = New OrderReleaseStatusHandler
+' to jeszcze nic nie daje przed uruchomieniem formularza dla order release
+' wciaz nie ma zadnej logiki dzieki ktorej mozna by cokolwiek
+' ruszyc co prawda w sam form mozna wpisac dane by potem one wpadly odpowiednio
+' w arkusz order release jednak nie ma tam nawet zadnej konkretnej walidacji ani rowniez brak logiki
+' aby poszedl feedback do arkusza main (zmiana rozowego koloru w kolumnie F, ktora ma zwierac date ostatniego update'u)
 
+' podoba mi sie ze zielen i rozowy dzialaja na calej skali arkusza
+' i rozroznia nie tylko podstawowe zalozenia ale tez jest tabularaza
+' gdy nie ma danych w ogole - zatem upate z rozowego na potencjalnie zielony
+' ma sie znajdowac w implementacji klasy OrderReleaseStatusHandler
+
+' v 0.06
+' 1. dodanie dwoch guzikow do ribbonu
+' 2. kontynuacja implementacji:
+'   a. order release status class dokonczenie implementacji dla suba wklejacego potwierdzenia do arkusza main, ze zmiany nastapily
+'   b. dodanie helperow w formualrzach dzieki czemu unikamy recznego wpisywania fieldow
+'
+' pojawil sie problem ze spacja...
+' otoz comboboxy wyboru linkow ma po przecinkach spacje... niech juz to tak zostanie
+' ale powoduje ze wszelkie porownania wymagaja odpowiedniej ilosci trimow co jest nieco nuzace
+' a przy okazji musze zweryfikowac jednorazowo caly kod
+'
+' ale tak poza tym to jestem bardzo zadowolony z tej wersji jesli chodzi o arkusz / tabele ORDER RELEASE STATUS
+' wszystko dziala tak jak nalezy - kolorki dzialaja na arkusszu glownym pelna reakcja fomrularza dla tego guzika jest dobra baza
+' aby teraz wszystko zmalpowac na reszte

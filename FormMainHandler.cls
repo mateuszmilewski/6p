@@ -7,7 +7,14 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+' SPRAWDACZ!
+' ================================
+' ================================
 Private sprawdzacz As SixPChecker
+' ================================
+' ================================
+
 Private links As Dictionary
 Private link As T_Link
 Private tmp_link As T_Link
@@ -27,7 +34,7 @@ Private paleta As PaletaTheDailyCommute
 
 Private delegacja_pod_nowy_projekt As NewProjectHandler
 
-Public Sub init()
+Public Sub init(Optional link_str As String)
     ' sekcja configuracyjna i inicjacyjna dla FormMain
     
     
@@ -42,7 +49,13 @@ Public Sub init()
             
             
             Dim l As T_Link
-            Set l = wypelnij_combo_box_na_podstawie_selekcji_i_slownika()
+            
+            ' to jest bardzo ciekawa konstrukcja ktora pracuje na swoim
+            ' ale jednoczesnie zwraca aktualna wartosc na combobox po wypelnieniu
+            ' wczesniej oczywiscie ta wartosc wyjsciowa combobox
+            ' jest definiowana na podstawie aktywnej
+            ' komorki :)
+            Set l = wypelnij_combo_box_na_podstawie_selekcji_i_slownika(link_str)
             
             ' wartosc w combo box okreslone
             ' czas na texty w guzikach
@@ -64,167 +77,60 @@ Private Sub adjust_na_guzikach(ByRef l As T_Link)
         
         ' order release status
         Set sh = ThisWorkbook.Sheets(SIXP.G_order_release_status_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_order_release_status, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_order_release_status, sh, main_sh, l, paleta
         
         ' recent bp ch
         Set sh = ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_recent_build_plan_changes, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_recent_build_plan_changes, sh, main_sh, l, paleta
         
         ' chart cont pnoc
         Set sh = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_chart_contracted_pnoc, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_chart_contracted_pnoc, sh, main_sh, l, paleta
         
         ' sea
         Set sh = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_osea, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_osea, sh, main_sh, l, paleta
         
         ' totals
         Set sh = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_totals, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_totals, sh, main_sh, l, paleta
         
         ' xq
         Set sh = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_xq, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_xq, sh, main_sh, l, paleta
         
         ' del conf
         Set sh = ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_del_conf, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_del_conf, sh, main_sh, l, paleta
         
         ' open issues
         Set sh = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_open_issues, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_open_issues, sh, main_sh, l, paleta
         
         ' resp
         Set sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_resp, sh, main_sh, l
+        adjustuj_guzik SIXP.e_main_last_update_on_resp, sh, main_sh, l, paleta
     End With
     
 End Sub
 
-Public Sub adjustuj_guzik(e_main As E_MAIN_ORDER, ish As Worksheet, imainsh As Worksheet, il As T_Link)
-    
-    
-    Dim range_from_main As Range, range_from_ish As Range
-    
-    ' porownanie posrednie
-    Set range_from_main = il.znajdz_siebie_w_arkuszu(imainsh)
-    Set range_from_ish = il.znajdz_siebie_w_arkuszu(ish)
-    
-    ' jesli te dwie zmienne nie sa puste to znaczy ze mamy takie dane spasowane i chcemy je edytowac
-    If Not range_from_main Is Nothing Then
-        If Not range_from_ish Is Nothing Then
-            
-            If e_main = e_main_last_update_on_order_release_status Then
-            
-                With FormMain.BtnOrderReleaseStatus
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_recent_build_plan_changes Then
-                
-                With FormMain.BtnRecentBuildPlanChanges
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_chart_contracted_pnoc Then
-                
-                With FormMain.BtnContractedPNOC
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_osea Then
-                
-                With FormMain.BtnOseaScope
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_totals Then
-                
-                With FormMain.BtnTotals
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_xq Then
-                
-                With FormMain.BtnXq
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_del_conf Then
-                
-                With FormMain.BtnDelConf
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_open_issues Then
-                
-                With FormMain.BtnOpenIssues
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            ElseIf e_main = e_main_last_update_on_resp Then
-                
-                With FormMain.BtnResp
-                    .Caption = SIXP.G_BTN_TEXT_EDIT
-                    .BackColor = paleta.dark_grey
-                    .ForeColor = paleta.orange
-                End With
-            End If
-        Else
-            ' sekcja, gdzie cos znalezlismy w main jednak nie ma tego w arkuszu przeszukiwanym
-            ' to znaczy tyle ze trzeba dodac nowe
-            
-            If e_main = e_main_last_update_on_order_release_status Then
-                FormMain.BtnOrderReleaseStatus.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnOrderReleaseStatus.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_recent_build_plan_changes Then
-                FormMain.BtnRecentBuildPlanChanges.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnRecentBuildPlanChanges.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_chart_contracted_pnoc Then
-                FormMain.BtnContractedPNOC.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnContractedPNOC.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_osea Then
-                FormMain.BtnOseaScope.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnOseaScope.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_totals Then
-                FormMain.BtnTotals.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnTotals.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_xq Then
-                FormMain.BtnXq.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnXq.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_del_conf Then
-                FormMain.BtnDelConf.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnDelConf.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_open_issues Then
-                FormMain.BtnOpenIssues.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnOpenIssues.BackColor = paleta.yellow
-            ElseIf e_main = e_main_last_update_on_resp Then
-                FormMain.BtnResp.Caption = SIXP.G_BTN_TEXT_ADD
-                FormMain.BtnResp.BackColor = paleta.yellow
-            End If
-        End If
-    End If
-    
-    
-    
-    
-End Sub
 
-Private Function wypelnij_combo_box_na_podstawie_selekcji_i_slownika() As T_Link
+
+Private Function wypelnij_combo_box_na_podstawie_selekcji_i_slownika(Optional link_str As String) As T_Link
     
     FormMain.ComboBoxProject.Clear
     
     dodaj_najpierw_zrodla
     
-    Set link = sprobuj_dodac_wartosci_z_aktywnej_komorki()
+    If link_str = "" Then
+    
+        Set link = sprobuj_dodac_wartosci_z_aktywnej_komorki()
+    Else
+        args = Split(link_str, ",")
+        Set link = New T_Link
+        link.zrob_mnie_z_argsow Trim(args(0)), Trim(args(1)), Trim(args(2)), Trim(args(3))
+        wypisz_wartosc_combo_box_z_linku link
+    End If
     
     Set wypelnij_combo_box_na_podstawie_selekcji_i_slownika = link
     
@@ -253,9 +159,9 @@ Private Function sprobuj_dodac_wartosci_z_aktywnej_komorki() As T_Link
         
             Set link = New T_Link
             With link
-                .project = CStr(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_project))
-                .plt = CStr(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_plt))
-                .faza = CStr(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_faza))
+                .project = Trim(CStr(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_project)))
+                .plt = Trim(CStr(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_plt)))
+                .faza = Trim(CStr(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_faza)))
                 On Error Resume Next
                 .cw = CLng(ActiveCell.Parent.Cells(ActiveCell.Row, SIXP.e_link_cw))
             End With
@@ -303,6 +209,10 @@ Private Sub Class_Initialize()
     Set link = Nothing
     Set linker_obj = New Linker
     
+    
+    
+    ' to jest bardzo prosty konstruktor przypisujacy tylko i wylacznie odpowiednia palete barw do zmiennych co by bylo w uzycia przez cale
+    ' zycie obiektu w ktorym wlasnie sie znajdujemy
     Set paleta = New PaletaTheDailyCommute
 
 End Sub
@@ -326,9 +236,9 @@ Private Sub wypelnij_links()
             ' sa dane to lecimy z dodawaniem do slownika
             ' -------------------------------------------
             Set link = New T_Link
-            link.project = r.Parent.Cells(r.Row, SIXP.e_link_project)
-            link.plt = r.Parent.Cells(r.Row, SIXP.e_link_plt)
-            link.faza = r.Parent.Cells(r.Row, SIXP.e_link_faza)
+            link.project = Trim(r.Parent.Cells(r.Row, SIXP.e_link_project))
+            link.plt = Trim(r.Parent.Cells(r.Row, SIXP.e_link_plt))
+            link.faza = Trim(r.Parent.Cells(r.Row, SIXP.e_link_faza))
             On Error Resume Next
             link.cw = CLng(r.Parent.Cells(r.Row, SIXP.e_link_cw))
             
@@ -347,6 +257,11 @@ End Sub
 
 
 Public Sub new_project()
+
+
+    ' ten sub zajmuje sie wlasciwie tylko sprawdzeniem
+    ' czy dany arkusz w jakim sie znajdujemy (i z ktorego bedziemy chcieli sciagnac dane to te faktyczne)
+    ' wszystko miesci sie w konstruktorze zatem konstrukcja jest skrajnie mala
     Dim n As NewProjectHandler
     Set n = New NewProjectHandler
     Set n = Nothing
