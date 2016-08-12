@@ -21,28 +21,35 @@ Private Sub Class_Initialize()
         Else
             If ac <> "" Then
             Else
+            
+                ' to rozwiazanie jest smieszne, ale w sumie niech bedzie
+                ' jesli nie znalazl w aktywnym arkuszu zadnych info
+                ' to wtedy pobiera labelki i to one wklejaja sie do fieldow
                 Set ac = ac.End(xlUp)
             End If
         End If
         
         With NewProj
         
-            .TextBoxProj = ac.Parent.Cells(ac.Row, SIXP.e_link_project)
-            .TextBoxFaza = ac.Parent.Cells(ac.Row, SIXP.e_link_faza)
-            .TextBoxCW = ac.Parent.Cells(ac.Row, SIXP.e_link_cw)
-            .TextBoxPlt = ac.Parent.Cells(ac.Row, SIXP.e_link_plt)
+            .TextBoxProj = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_project))
+            .TextBoxFaza = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_faza))
+            .TextBoxCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
+            .TextBoxPlt = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_plt))
             
             
-            prepare_status_combobox
+            prepare_comboboxes_and_dt_picker
+            
+            
             
             .Show ' vbModeless
         End With
     Else
+        MsgBox "Aktywny arkussz nie jest dozwolony - przejdz do arkusza zawierajacego dane raportu."
         Set ac = Nothing
     End If
 End Sub
 
-Private Sub prepare_status_combobox()
+Private Sub prepare_comboboxes_and_dt_picker()
     
     With NewProj
         .ComboBoxStatus.Clear
@@ -56,6 +63,33 @@ Private Sub prepare_status_combobox()
                     CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
             End If
         Next x
+        
+        
+        .ComboBoxFAZA.Clear
+        
+        Dim r As Range
+        Set r = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("C2")
+        Do
+            ' ----------------------------------
+            .ComboBoxFAZA.AddItem CStr(r)
+            ' ----------------------------------
+            Set r = r.Offset(1, 0)
+        Loop Until r = ""
+        
+        .ComboBoxPLT.Clear
+        Set r = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("D2")
+        Do
+            ' ----------------------------------
+            .ComboBoxPLT.AddItem CStr(r)
+            ' ----------------------------------
+            Set r = r.Offset(1, 0)
+        Loop Until r = ""
+        
+        
+        ' no i ostatni date picker nie musi miec wypelnienia damy tylko today date
+        .DTPicker1 = Date
+        
+        
     End With
 End Sub
 

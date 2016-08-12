@@ -11,7 +11,7 @@ Public Sub sprawdz_main_sh_na_kolumnach_updateow_kolejnych_arkuszy_zrodlowych()
     
     Do
         Set l = New T_Link
-        l.zrob_mnie_z_arkusza r
+        l.zrob_mnie_z_range r
         ' teraz metody w l - znajdz moje najpozniejsze i najwczesniejsze wystapienia w arkuszu
         Set r = r.Offset(1, 0)
     Loop Until Trim(r) = ""
