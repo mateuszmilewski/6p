@@ -124,3 +124,14 @@ Attribute VB_Name = "VersionModule"
 
 ' v 0.08
 ' handlery gotowe pod P5
+
+
+
+' v 0.09
+' 1. handlery gotowe pod P6 XQ bez testow
+' 2. dodany modul i klasa czyszczenia itemow
+' 3. pierwsze drafty i rusztowanie pod zaciaganie danych z aktywnych wizardow
+' 4. db click na numerycznych polach formularzy
+' 5. czyszczenia formularza glownego
+' 6. rozwiniecie del confu
+'

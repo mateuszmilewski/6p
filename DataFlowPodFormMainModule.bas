@@ -85,3 +85,27 @@ Public Sub zrob_total(edit_czy_add As String, txt_from_combo_box As String)
         .Show
     End With
 End Sub
+
+Public Sub zrob_xq(edit_czy_add As String, txt_from_combo_box As String)
+    
+    Dim xq As XQ6PHandler
+    Set xq = New XQ6PHandler
+    
+    With SIXP.FormX6P
+        xq.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormX6P
+        .Show
+    End With
+    
+
+End Sub
+
+Public Sub zrob_del_conf(edit_czy_add As String, txt_from_combo_box As String)
+
+    Dim dc As DelConfStatus7XHandler
+    Set dc = New DelConfStatus7XHandler
+    
+    With SIXP.FormDelConfStatus
+        dc.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormDelConfStatus
+        .Show
+    End With
+End Sub

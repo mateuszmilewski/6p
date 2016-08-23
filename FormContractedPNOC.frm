@@ -179,6 +179,16 @@ Private Sub ActionableFMALess_Click()
     End If
 End Sub
 
+Private Sub ActionableFMALess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxActionableFMA) Then
+        If CLng(Me.TextBoxActionableFMA) > 9 Then
+            tmp = CLng(Me.TextBoxActionableFMA)
+            tmp = tmp - 10
+            Me.TextBoxActionableFMA = CStr(tmp)
+        End If
+    End If
+End Sub
+
 Private Sub ActionableFMAMore_Click()
     If IsNumeric(Me.TextBoxActionableFMA) Then
         tmp = CLng(Me.TextBoxActionableFMA)
@@ -187,12 +197,31 @@ Private Sub ActionableFMAMore_Click()
     End If
 End Sub
 
+Private Sub ActionableFMAMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxActionableFMA) Then
+        tmp = CLng(Me.TextBoxActionableFMA)
+        tmp = tmp + 10
+        Me.TextBoxActionableFMA = CStr(tmp)
+    End If
+End Sub
 
 Private Sub ContLess_Click()
     If IsNumeric(Me.TextBoxContracted) Then
         If CLng(Me.TextBoxContracted) > 0 Then
             tmp = CLng(Me.TextBoxContracted)
             tmp = tmp - 1
+            Me.TextBoxContracted = CStr(tmp)
+        End If
+    End If
+End Sub
+
+
+
+Private Sub ContLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxContracted) Then
+        If CLng(Me.TextBoxContracted) > 9 Then
+            tmp = CLng(Me.TextBoxContracted)
+            tmp = tmp - 10
             Me.TextBoxContracted = CStr(tmp)
         End If
     End If
@@ -207,11 +236,29 @@ Private Sub ContMore_Click()
     End If
 End Sub
 
+Private Sub ContMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxContracted) Then
+        tmp = CLng(Me.TextBoxContracted)
+        tmp = tmp + 10
+        Me.TextBoxContracted = CStr(tmp)
+    End If
+End Sub
+
 Private Sub OpenBPLess_Click()
     If IsNumeric(Me.TextBoxOpenBP) Then
         If CLng(Me.TextBoxOpenBP) > 0 Then
             tmp = CLng(Me.TextBoxOpenBP)
             tmp = tmp - 1
+            Me.TextBoxOpenBP = CStr(tmp)
+        End If
+    End If
+End Sub
+
+Private Sub OpenBPLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxOpenBP) Then
+        If CLng(Me.TextBoxOpenBP) > 9 Then
+            tmp = CLng(Me.TextBoxOpenBP)
+            tmp = tmp - 10
             Me.TextBoxOpenBP = CStr(tmp)
         End If
     End If
@@ -225,11 +272,29 @@ Private Sub OpenBPMore_Click()
     End If
 End Sub
 
+Private Sub OpenBPMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxOpenBP) Then
+        tmp = CLng(Me.TextBoxOpenBP)
+        tmp = tmp + 10
+        Me.TextBoxOpenBP = CStr(tmp)
+    End If
+End Sub
+
 Private Sub PnocLess_Click()
     If IsNumeric(Me.TextBoxPNOC) Then
         If CLng(Me.TextBoxPNOC) > 0 Then
             tmp = CLng(Me.TextBoxPNOC)
             tmp = tmp - 1
+            Me.TextBoxPNOC = CStr(tmp)
+        End If
+    End If
+End Sub
+
+Private Sub PnocLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxPNOC) Then
+        If CLng(Me.TextBoxPNOC) > 9 Then
+            tmp = CLng(Me.TextBoxPNOC)
+            tmp = tmp - 10
             Me.TextBoxPNOC = CStr(tmp)
         End If
     End If
@@ -245,3 +310,10 @@ Private Sub PnocMore_Click()
 End Sub
 ' ------------------------------------------------------------------------------------------------------------------
 ' ------------------------------------------------------------------------------------------------------------------
+Private Sub PnocMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxPNOC) Then
+        tmp = CLng(Me.TextBoxPNOC)
+        tmp = tmp + 10
+        Me.TextBoxPNOC = CStr(tmp)
+    End If
+End Sub

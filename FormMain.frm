@@ -41,6 +41,11 @@ Private Sub BtnTotals_Click()
     SIXP.zrob_total CStr(Me.BtnTotals.Caption), CStr(Me.ComboBoxProject.Value)
 End Sub
 
+Private Sub BtnXq_Click()
+    Hide
+    SIXP.zrob_xq CStr(Me.BtnXq.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
+
 Private Sub ComboBoxProject_Change()
 
 
