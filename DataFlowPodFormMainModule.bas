@@ -32,9 +32,7 @@ Public Sub zrob_order_release_status(edit_czy_add As String, txt_from_combo_box 
     
     
     With FormOrderReleaseStatus
-
         o.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), FormOrderReleaseStatus
-        
         .Show
     End With
     
@@ -44,4 +42,46 @@ End Sub
 
 Public Sub zrob_recent_build_plan_changes(edit_czy_add As String, txt_from_combo_box As String)
 
+    Dim rc As RecentBuildPlanChangesHandler
+    Set rc = New RecentBuildPlanChangesHandler
+    
+    With SIXP.FormRecentBuildPlanChanges
+        rc.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormRecentBuildPlanChanges
+        .Show
+    End With
+End Sub
+
+Public Sub zrob_contracted_pnoc(edit_czy_add As String, txt_from_combo_box As String)
+
+    Dim cp As ContractedPNOCHandler
+    Set cp = New ContractedPNOCHandler
+    
+    With SIXP.FormContractedPNOC
+        cp.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormContractedPNOC
+        .Show
+    End With
+    
+End Sub
+
+Public Sub zrob_osea_scope(edit_czy_add As String, txt_from_combo_box As String)
+
+    Dim osea As OseaScopeHandler
+    Set osea = New OseaScopeHandler
+    
+    With SIXP.FormOseaScope
+        osea.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormOseaScope
+        .Show
+    End With
+End Sub
+
+
+Public Sub zrob_total(edit_czy_add As String, txt_from_combo_box As String)
+
+    Dim tot As Total5PHandler
+    Set tot = New Total5PHandler
+    
+    With SIXP.FormTotals5p
+        tot.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormTotals5p
+        .Show
+    End With
 End Sub

@@ -13,18 +13,33 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub BtnContractedPNOC_Click()
+    Hide
+    zrob_contracted_pnoc CStr(Me.BtnContractedPNOC.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
+
 Private Sub BtnOrderReleaseStatus_Click()
     Hide
     zrob_order_release_status CStr(Me.BtnOrderReleaseStatus.Caption), CStr(Me.ComboBoxProject.Value)
 End Sub
 
+Private Sub BtnOseaScope_Click()
+    Hide
+    zrob_osea_scope CStr(Me.BtnOseaScope.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
+
 Private Sub BtnRecentBuildPlanChanges_Click()
     Hide
-    zrob_recent_build_plan_changes CStr(Me.BtnRecentBuildPlanChanges), CStr(Me.ComboBoxProject.Value)
+    zrob_recent_build_plan_changes CStr(Me.BtnRecentBuildPlanChanges.Caption), CStr(Me.ComboBoxProject.Value)
 End Sub
 
 
 
+
+Private Sub BtnTotals_Click()
+    Hide
+    SIXP.zrob_total CStr(Me.BtnTotals.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
 
 Private Sub ComboBoxProject_Change()
 

@@ -32,7 +32,7 @@ Private Sub BtnEdit_Click()
             r.Value = Me.TextBoxProj
             r.Offset(0, 1).Value = Me.TextBoxPlt
             r.Offset(0, 2).Value = Me.TextBoxFaza
-            r.Offset(0, 3).Value = Me.TextBoxCW
+            r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
             r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
         End If
     Else
@@ -53,7 +53,7 @@ Private Sub BtnSubmit_Click()
     r.Value = Me.TextBoxProj
     r.Offset(0, 1).Value = Me.TextBoxPlt
     r.Offset(0, 2).Value = Me.TextBoxFaza
-    r.Offset(0, 3).Value = Me.TextBoxCW
+    r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
     r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
 End Sub
 
