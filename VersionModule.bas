@@ -116,3 +116,11 @@ Attribute VB_Name = "VersionModule"
 ' ale tak poza tym to jestem bardzo zadowolony z tej wersji jesli chodzi o arkusz / tabele ORDER RELEASE STATUS
 ' wszystko dziala tak jak nalezy - kolorki dzialaja na arkusszu glownym pelna reakcja fomrularza dla tego guzika jest dobra baza
 ' aby teraz wszystko zmalpowac na reszte
+
+
+' v 0.07
+' wersja bedzie duzo kodu, ktory wlasciwie bedzie kopia kodu
+
+
+' v 0.08
+' handlery gotowe pod P5
