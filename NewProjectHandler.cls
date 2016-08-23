@@ -88,6 +88,7 @@ Private Sub prepare_comboboxes_and_dt_picker()
         
         ' no i ostatni date picker nie musi miec wypelnienia damy tylko today date
         .DTPicker1 = Date
+        .TextBoxCW = SIXP.GlobalFooModule.parse_from_date_to_yyyycw(Date)
         
         
     End With

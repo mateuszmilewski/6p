@@ -196,6 +196,16 @@ Private Sub NoOfVehLess_Click()
     End If
 End Sub
 
+Private Sub NoOfVehLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxNoOfVeh) Then
+        If CLng(Me.TextBoxNoOfVeh) > 9 Then
+            tmp = CLng(Me.TextBoxNoOfVeh)
+            tmp = tmp - 10
+            Me.TextBoxNoOfVeh = CStr(tmp)
+        End If
+    End If
+End Sub
+
 Private Sub NoOfVehMore_Click()
     If IsNumeric(Me.TextBoxNoOfVeh) Then
         tmp = CLng(Me.TextBoxNoOfVeh)
@@ -204,6 +214,14 @@ Private Sub NoOfVehMore_Click()
     End If
 End Sub
 
+
+Private Sub NoOfVehMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxNoOfVeh) Then
+        tmp = CLng(Me.TextBoxNoOfVeh)
+        tmp = tmp + 10
+        Me.TextBoxNoOfVeh = CStr(tmp)
+    End If
+End Sub
 
 Private Sub WeeksDelayLess_Click()
      If IsNumeric(Me.TextBoxWeeksDelay) Then

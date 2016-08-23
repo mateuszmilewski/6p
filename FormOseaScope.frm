@@ -142,7 +142,7 @@ Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_confirmed) = CStr(Me.TextBoxConfirmed)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_for_mrd) = CStr(Me.TextBoxForMRD)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_on_stock) = CStr(Me.TextBoxOnStock)
-    r.Parent.Cells(r.Row, SIXP.e_osea_order_open) = CStr(Me.TextBoxOPEN)
+    r.Parent.Cells(r.Row, SIXP.e_osea_order_open) = CStr(Me.TextBoxOpen)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_ordered) = CStr(Me.TextBoxOrdered)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_total) = CStr(Me.TextBoxTotal)
 End Sub
@@ -257,21 +257,21 @@ Private Sub OnStockMore_Click()
 End Sub
 
 Private Sub OpenLess_Click()
-    If IsNumeric(Me.TextBoxOPEN) Then
-        If CLng(Me.TextBoxOPEN) > 0 Then
+    If IsNumeric(Me.TextBoxOpen) Then
+        If CLng(Me.TextBoxOpen) > 0 Then
             
-            tmp = CLng(Me.TextBoxOPEN)
+            tmp = CLng(Me.TextBoxOpen)
             tmp = tmp - 1
-            Me.TextBoxOPEN = CStr(tmp)
+            Me.TextBoxOpen = CStr(tmp)
         End If
     End If
 End Sub
 
 Private Sub OpenMore_Click()
-    If IsNumeric(Me.TextBoxOPEN) Then
-        tmp = CLng(Me.TextBoxOPEN)
+    If IsNumeric(Me.TextBoxOpen) Then
+        tmp = CLng(Me.TextBoxOpen)
         tmp = tmp + 1
-        Me.TextBoxOPEN = CStr(tmp)
+        Me.TextBoxOpen = CStr(tmp)
     End If
 End Sub
 
