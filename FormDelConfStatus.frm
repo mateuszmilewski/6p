@@ -137,7 +137,7 @@ Private Sub inner_calc()
                 CStr(Trim(r) & ", " & Trim(r.Offset(0, 1)) & ", " & Trim(r.Offset(0, 2)) & ", " & Trim(r.Offset(0, 3))) Then
             
                     give_data_to_ranges r
-                    change_col_J_in_MAIN_worksheet r
+                    change_col_L_in_MAIN_worksheet r
                     Exit Do
             End If
             Set r = r.Offset(1, 0)

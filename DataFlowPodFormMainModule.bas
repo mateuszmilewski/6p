@@ -109,3 +109,26 @@ Public Sub zrob_del_conf(edit_czy_add As String, txt_from_combo_box As String)
         .Show
     End With
 End Sub
+
+Public Sub zrob_open_issues(edit_czy_add As String, txt_from_combo_box As String)
+
+    Dim zoi As OpenIssues8XHandler
+    Set zoi = New OpenIssues8XHandler
+    
+    With SIXP.FormOpenIssues
+        zoi.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormOpenIssues
+        .Show
+    End With
+End Sub
+
+Public Sub zrob_resp(edit_czy_add As String, txt_from_combo_box As String)
+
+    Dim resp As Resp9XHandler
+    Set resp = New Resp9XHandler
+    
+    With SIXP.FormResp
+        resp.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormResp
+        .Show
+    End With
+
+End Sub
