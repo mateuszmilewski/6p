@@ -134,4 +134,5 @@ Attribute VB_Name = "VersionModule"
 ' 4. db click na numerycznych polach formularzy
 ' 5. czyszczenia formularza glownego
 ' 6. rozwiniecie del confu
-'
+' 7. podpiecie nareszcie wszystkich guzikow dla projektu
+' 8. double click dla przechodzenia miedzy arkuszami

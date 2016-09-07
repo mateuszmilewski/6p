@@ -18,6 +18,16 @@ Private Sub BtnContractedPNOC_Click()
     zrob_contracted_pnoc CStr(Me.BtnContractedPNOC.Caption), CStr(Me.ComboBoxProject.Value)
 End Sub
 
+Private Sub BtnDelConf_Click()
+    Hide
+    SIXP.DataFlowPodFormMainModule.zrob_del_conf CStr(Me.BtnDelConf.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
+
+Private Sub BtnOpenIssues_Click()
+    Hide
+    SIXP.DataFlowPodFormMainModule.zrob_open_issues CStr(Me.BtnOpenIssues.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
+
 Private Sub BtnOrderReleaseStatus_Click()
     Hide
     zrob_order_release_status CStr(Me.BtnOrderReleaseStatus.Caption), CStr(Me.ComboBoxProject.Value)
@@ -35,6 +45,11 @@ End Sub
 
 
 
+
+Private Sub BtnResp_Click()
+    Hide
+    SIXP.zrob_resp CStr(Me.BtnResp.Caption), CStr(Me.ComboBoxProject.Value)
+End Sub
 
 Private Sub BtnTotals_Click()
     Hide

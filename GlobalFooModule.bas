@@ -29,3 +29,23 @@ Public Function from_yyyy_cw_to_monday_from_this_week(yyyycw As String) As Date
     
     from_yyyy_cw_to_monday_from_this_week = d
 End Function
+
+Public Sub global_goto_main_sheet_with_selection_on_data(r As Range)
+
+    If r.Column <= 4 Then
+        ' niezaleznie od arkusza zawsze pierwsze 4 kolumny to link
+        
+        Dim tl As T_Link
+        Set tl = New T_Link
+        
+        tl.zrob_mnie_z_range r.Parent.Cells(r.Row, 1)
+        
+        If Not tl.znajdz_siebie_w_arkuszu(ThisWorkbook.Sheets(SIXP.G_main_sh_nm)) Is Nothing Then
+            ThisWorkbook.Sheets(SIXP.G_main_sh_nm).Activate
+            tl.znajdz_siebie_w_arkuszu(ActiveSheet).Select
+        Else
+            MsgBox "rekord nie istnieje!"
+            
+        End If
+    End If
+End Sub

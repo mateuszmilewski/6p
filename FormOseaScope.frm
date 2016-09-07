@@ -17,6 +17,8 @@ Attribute VB_Exposed = False
 
 
 
+
+
 Private Sub BtnGoBack_Click()
     Hide
     run_FormMain Me.LabelTitle
@@ -198,6 +200,28 @@ Private Sub AfterMRDMore_Click()
     End If
 End Sub
 
+
+Private Sub AfterMRDLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+
+    If IsNumeric(Me.TextBoxAfterMRD) Then
+        If CLng(Me.TextBoxAfterMRD) > 9 Then
+            
+            tmp = CLng(Me.TextBoxAfterMRD)
+            tmp = tmp - 10
+            Me.TextBoxAfterMRD = CStr(tmp)
+        End If
+    End If
+End Sub
+
+Private Sub AfterMRDMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxAfterMRD) Then
+        tmp = CLng(Me.TextBoxAfterMRD)
+        tmp = tmp + 10
+        Me.TextBoxAfterMRD = CStr(tmp)
+    End If
+End Sub
+
+
 Private Sub ConfirmedLess_Click()
     If IsNumeric(Me.TextBoxConfirmed) Then
         If CLng(Me.TextBoxConfirmed) > 0 Then
@@ -209,6 +233,8 @@ Private Sub ConfirmedLess_Click()
     End If
 End Sub
 
+
+
 Private Sub ConfirmedMore_Click()
     If IsNumeric(Me.TextBoxConfirmed) Then
         tmp = CLng(Me.TextBoxConfirmed)
@@ -216,6 +242,7 @@ Private Sub ConfirmedMore_Click()
         Me.TextBoxConfirmed = CStr(tmp)
     End If
 End Sub
+
 
 Private Sub ForMRDLess_Click()
     If IsNumeric(Me.TextBoxForMRD) Then
@@ -256,6 +283,8 @@ Private Sub OnStockMore_Click()
     End If
 End Sub
 
+
+
 Private Sub OpenLess_Click()
     If IsNumeric(Me.TextBoxOpen) Then
         If CLng(Me.TextBoxOpen) > 0 Then
@@ -286,10 +315,29 @@ Private Sub OrderedLess_Click()
     End If
 End Sub
 
+Private Sub OrderedLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxOrdered) Then
+        If CLng(Me.TextBoxOrdered) > 9 Then
+            
+            tmp = CLng(Me.TextBoxOrdered)
+            tmp = tmp - 10
+            Me.TextBoxOrdered = CStr(tmp)
+        End If
+    End If
+End Sub
+
 Private Sub OrderedMore_Click()
     If IsNumeric(Me.TextBoxOrdered) Then
         tmp = CLng(Me.TextBoxOrdered)
         tmp = tmp + 1
+        Me.TextBoxOrdered = CStr(tmp)
+    End If
+End Sub
+
+Private Sub OrderedMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxOrdered) Then
+        tmp = CLng(Me.TextBoxOrdered)
+        tmp = tmp + 10
         Me.TextBoxOrdered = CStr(tmp)
     End If
 End Sub
@@ -305,6 +353,17 @@ Private Sub TotLess_Click()
     End If
 End Sub
 
+Private Sub TotLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxTotal) Then
+        If CLng(Me.TextBoxTotal) > 9 Then
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 10
+            Me.TextBoxTotal = CStr(tmp)
+        End If
+    End If
+End Sub
+
 Private Sub TotMore_Click()
     If IsNumeric(Me.TextBoxTotal) Then
         tmp = CLng(Me.TextBoxTotal)
@@ -314,3 +373,10 @@ Private Sub TotMore_Click()
 End Sub
 
 
+Private Sub TotMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If IsNumeric(Me.TextBoxTotal) Then
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 10
+        Me.TextBoxTotal = CStr(tmp)
+    End If
+End Sub
