@@ -136,3 +136,10 @@ Attribute VB_Name = "VersionModule"
 ' 6. rozwiniecie del confu
 ' 7. podpiecie nareszcie wszystkich guzikow dla projektu
 ' 8. double click dla przechodzenia miedzy arkuszami
+
+
+' v 0.10
+'
+' pierwsze proby z synchronizacja z wizardami
+' move pomiedzy arkuszami za pomoca podwojnego klikniecia
+' kopiowanie danych pomiedzy rekordami

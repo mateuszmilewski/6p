@@ -33,6 +33,7 @@ Private Sub Class_Initialize()
         
             .TextBoxProj = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_project))
             .TextBoxFaza = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_faza))
+            .TextBoxSelectedCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
             .TextBoxCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
             .TextBoxPlt = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_plt))
             
