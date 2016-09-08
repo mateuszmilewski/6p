@@ -166,7 +166,7 @@ Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_ho) = CStr(Me.TextBoxHO)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_na) = CStr(Me.TextBoxNA)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_on_stock) = CStr(Me.TextBoxOnStock)
-    r.Parent.Cells(r.Row, SIXP.e_del_conf_open) = CStr(Me.TextBoxOpen)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_open) = CStr(Me.TextBoxOPEN)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_pot_itdc) = CStr(Me.TextBoxPotITDC)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_undef) = CStr(Me.TextBoxUNDEF)
 End Sub
@@ -446,20 +446,20 @@ Private Sub OnStockMore_Click()
 End Sub
 
 Private Sub OpenLess_Click()
-    If IsNumeric(Me.TextBoxOpen) Then
-        If CLng(Me.TextBoxOpen) > 0 Then
-            tmp = CLng(Me.TextBoxOpen)
+    If IsNumeric(Me.TextBoxOPEN) Then
+        If CLng(Me.TextBoxOPEN) > 0 Then
+            tmp = CLng(Me.TextBoxOPEN)
             tmp = tmp - 1
-            Me.TextBoxOpen = CStr(tmp)
+            Me.TextBoxOPEN = CStr(tmp)
         End If
     End If
 End Sub
 
 Private Sub OpenMore_Click()
-    If IsNumeric(Me.TextBoxOpen) Then
-        tmp = CLng(Me.TextBoxOpen)
+    If IsNumeric(Me.TextBoxOPEN) Then
+        tmp = CLng(Me.TextBoxOPEN)
         tmp = tmp + 1
-        Me.TextBoxOpen = CStr(tmp)
+        Me.TextBoxOPEN = CStr(tmp)
     End If
 End Sub
 

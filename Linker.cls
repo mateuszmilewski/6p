@@ -12,6 +12,11 @@ Public Function return_full_concated_r_string(link As T_Link) As String
     return_concated_r_string = CStr(link.project) & CStr(link.plt) & CStr(link.faza) & CStr(link.cw)
 End Function
 
+Public Function return_full_concated_r_string_comma_seperated(link As T_Link) As String
+    
+    return_concated_r_string = CStr(link.project) & ", " & CStr(link.plt) & ", " & CStr(link.faza) & ", " & CStr(link.cw)
+End Function
+
 Public Function return_full_concated_r_string_without_cw(link As T_Link) As String
     
     return_full_concated_r_string_without_cw = CStr(link.project) & CStr(link.plt) & CStr(link.faza)

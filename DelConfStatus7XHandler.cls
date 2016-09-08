@@ -75,7 +75,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxHO = "0"
             .TextBoxNA = "0"
             .TextBoxOnStock = "0"
-            .TextBoxOpen = "0"
+            .TextBoxOPEN = "0"
             .TextBoxPotITDC = "0"
             .TextBoxUNDEF = "0"
             
@@ -115,7 +115,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         .TextBoxHO = CStr(r.Offset(0, SIXP.e_del_conf_ho - 1))
                         .TextBoxNA = CStr(r.Offset(0, SIXP.e_del_conf_na - 1))
                         .TextBoxOnStock = CStr(r.Offset(0, SIXP.e_del_conf_on_stock - 1))
-                        .TextBoxOpen = CStr(r.Offset(0, SIXP.e_del_conf_open - 1))
+                        .TextBoxOPEN = CStr(r.Offset(0, SIXP.e_del_conf_open - 1))
                         .TextBoxPotITDC = CStr(r.Offset(0, SIXP.e_del_conf_pot_itdc - 1))
                         .TextBoxUNDEF = CStr(r.Offset(0, SIXP.e_del_conf_undef - 1))
                         

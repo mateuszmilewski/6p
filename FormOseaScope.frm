@@ -144,7 +144,7 @@ Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_confirmed) = CStr(Me.TextBoxConfirmed)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_for_mrd) = CStr(Me.TextBoxForMRD)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_on_stock) = CStr(Me.TextBoxOnStock)
-    r.Parent.Cells(r.Row, SIXP.e_osea_order_open) = CStr(Me.TextBoxOpen)
+    r.Parent.Cells(r.Row, SIXP.e_osea_order_open) = CStr(Me.TextBoxOPEN)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_ordered) = CStr(Me.TextBoxOrdered)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_total) = CStr(Me.TextBoxTotal)
 End Sub
@@ -186,6 +186,10 @@ Private Sub AfterMRDLess_Click()
             tmp = CLng(Me.TextBoxAfterMRD)
             tmp = tmp - 1
             Me.TextBoxAfterMRD = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 
@@ -197,6 +201,10 @@ Private Sub AfterMRDMore_Click()
         tmp = CLng(Me.TextBoxAfterMRD)
         tmp = tmp + 1
         Me.TextBoxAfterMRD = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -209,6 +217,10 @@ Private Sub AfterMRDLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             tmp = CLng(Me.TextBoxAfterMRD)
             tmp = tmp - 10
             Me.TextBoxAfterMRD = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 10
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -218,6 +230,10 @@ Private Sub AfterMRDMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = CLng(Me.TextBoxAfterMRD)
         tmp = tmp + 10
         Me.TextBoxAfterMRD = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 10
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -229,6 +245,10 @@ Private Sub ConfirmedLess_Click()
             tmp = CLng(Me.TextBoxConfirmed)
             tmp = tmp - 1
             Me.TextBoxConfirmed = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -240,6 +260,10 @@ Private Sub ConfirmedMore_Click()
         tmp = CLng(Me.TextBoxConfirmed)
         tmp = tmp + 1
         Me.TextBoxConfirmed = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -251,6 +275,10 @@ Private Sub ForMRDLess_Click()
             tmp = CLng(Me.TextBoxForMRD)
             tmp = tmp - 1
             Me.TextBoxForMRD = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -260,6 +288,10 @@ Private Sub ForMRDMore_Click()
         tmp = CLng(Me.TextBoxForMRD)
         tmp = tmp + 1
         Me.TextBoxForMRD = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -271,6 +303,10 @@ Private Sub OnStockLess_Click()
             tmp = CLng(Me.TextBoxOnStock)
             tmp = tmp - 1
             Me.TextBoxOnStock = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -280,27 +316,39 @@ Private Sub OnStockMore_Click()
         tmp = CLng(Me.TextBoxOnStock)
         tmp = tmp + 1
         Me.TextBoxOnStock = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
 
 
 Private Sub OpenLess_Click()
-    If IsNumeric(Me.TextBoxOpen) Then
-        If CLng(Me.TextBoxOpen) > 0 Then
+    If IsNumeric(Me.TextBoxOPEN) Then
+        If CLng(Me.TextBoxOPEN) > 0 Then
             
-            tmp = CLng(Me.TextBoxOpen)
+            tmp = CLng(Me.TextBoxOPEN)
             tmp = tmp - 1
-            Me.TextBoxOpen = CStr(tmp)
+            Me.TextBoxOPEN = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
 
 Private Sub OpenMore_Click()
-    If IsNumeric(Me.TextBoxOpen) Then
-        tmp = CLng(Me.TextBoxOpen)
+    If IsNumeric(Me.TextBoxOPEN) Then
+        tmp = CLng(Me.TextBoxOPEN)
         tmp = tmp + 1
-        Me.TextBoxOpen = CStr(tmp)
+        Me.TextBoxOPEN = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -311,6 +359,10 @@ Private Sub OrderedLess_Click()
             tmp = CLng(Me.TextBoxOrdered)
             tmp = tmp - 1
             Me.TextBoxOrdered = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -322,6 +374,10 @@ Private Sub OrderedLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             tmp = CLng(Me.TextBoxOrdered)
             tmp = tmp - 10
             Me.TextBoxOrdered = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 10
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -331,6 +387,10 @@ Private Sub OrderedMore_Click()
         tmp = CLng(Me.TextBoxOrdered)
         tmp = tmp + 1
         Me.TextBoxOrdered = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -339,6 +399,10 @@ Private Sub OrderedMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = CLng(Me.TextBoxOrdered)
         tmp = tmp + 10
         Me.TextBoxOrdered = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 10
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 

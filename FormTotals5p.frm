@@ -178,6 +178,10 @@ Private Sub ArrivedLess_Click()
             tmp = CLng(Me.TextBoxArrived)
             tmp = tmp - 1
             Me.TextBoxArrived = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -187,6 +191,10 @@ Private Sub ArrivedMore_Click()
         tmp = CLng(Me.TextBoxArrived)
         tmp = tmp + 1
         Me.TextBoxArrived = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -196,6 +204,10 @@ Private Sub FMAEURLEss_Click()
             tmp = CLng(Me.TextBoxFMAEUR)
             tmp = tmp - 1
             Me.TextBoxFMAEUR = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -205,6 +217,10 @@ Private Sub FMAEURMore_Click()
         tmp = CLng(Me.TextBoxFMAEUR)
         tmp = tmp + 1
         Me.TextBoxFMAEUR = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -214,6 +230,10 @@ Private Sub FmaOseaLess_Click()
             tmp = CLng(Me.TextBoxFmaOsea)
             tmp = tmp - 1
             Me.TextBoxFmaOsea = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -223,6 +243,10 @@ Private Sub FmaOseaMore_Click()
         tmp = CLng(Me.TextBoxFmaOsea)
         tmp = tmp + 1
         Me.TextBoxFmaOsea = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -232,6 +256,10 @@ Private Sub InTransitLess_Click()
             tmp = CLng(Me.TextBoxInTransit)
             tmp = tmp - 1
             Me.TextBoxInTransit = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -241,6 +269,10 @@ Private Sub InTransitMore_Click()
         tmp = CLng(Me.TextBoxInTransit)
         tmp = tmp + 1
         Me.TextBoxInTransit = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -250,6 +282,10 @@ Private Sub ITDCLess_Click()
             tmp = CLng(Me.TextBoxITDC)
             tmp = tmp - 1
             Me.TextBoxITDC = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -259,6 +295,10 @@ Private Sub ITDCMore_Click()
         tmp = CLng(Me.TextBoxITDC)
         tmp = tmp + 1
         Me.TextBoxITDC = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -268,6 +308,10 @@ Private Sub NALess_Click()
             tmp = CLng(Me.TextBoxNA)
             tmp = tmp - 1
             Me.TextBoxNA = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -277,6 +321,10 @@ Private Sub NAMore_Click()
         tmp = CLng(Me.TextBoxNA)
         tmp = tmp + 1
         Me.TextBoxNA = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -286,6 +334,10 @@ Private Sub NoPPAPLess_Click()
             tmp = CLng(Me.TextBoxNoPPAP)
             tmp = tmp - 1
             Me.TextBoxNoPPAP = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -295,6 +347,10 @@ Private Sub NoPPAPMore_Click()
         tmp = CLng(Me.TextBoxNoPPAP)
         tmp = tmp + 1
         Me.TextBoxNoPPAP = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -304,6 +360,10 @@ Private Sub OrderedLess_Click()
             tmp = CLng(Me.TextBoxOrdered)
             tmp = tmp - 1
             Me.TextBoxOrdered = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -313,6 +373,10 @@ Private Sub OrderedMore_Click()
         tmp = CLng(Me.TextBoxOrdered)
         tmp = tmp + 1
         Me.TextBoxOrdered = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -322,6 +386,10 @@ Private Sub PnocLess_Click()
             tmp = CLng(Me.TextBoxPNOC)
             tmp = tmp - 1
             Me.TextBoxPNOC = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -331,6 +399,10 @@ Private Sub PnocMore_Click()
         tmp = CLng(Me.TextBoxPNOC)
         tmp = tmp + 1
         Me.TextBoxPNOC = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
@@ -340,6 +412,10 @@ Private Sub PPAPLess_Click()
             tmp = CLng(Me.TextBoxPPAP)
             tmp = tmp - 1
             Me.TextBoxPPAP = CStr(tmp)
+            
+            tmp = CLng(Me.TextBoxTotal)
+            tmp = tmp - 1
+            Me.TextBoxTotal = CStr(tmp)
         End If
     End If
 End Sub
@@ -349,6 +425,10 @@ Private Sub PPAPMore_Click()
         tmp = CLng(Me.TextBoxPPAP)
         tmp = tmp + 1
         Me.TextBoxPPAP = CStr(tmp)
+        
+        tmp = CLng(Me.TextBoxTotal)
+        tmp = tmp + 1
+        Me.TextBoxTotal = CStr(tmp)
     End If
 End Sub
 
