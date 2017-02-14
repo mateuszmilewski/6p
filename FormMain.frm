@@ -53,7 +53,9 @@ End Sub
 
 Private Sub BtnTotals_Click()
     Hide
+    Application.EnableEvents = False
     SIXP.zrob_total CStr(Me.BtnTotals.Caption), CStr(Me.ComboBoxProject.Value)
+    Application.EnableEvents = True
 End Sub
 
 Private Sub BtnXq_Click()
@@ -76,7 +78,7 @@ Private Sub ComboBoxProject_Change()
         Dim paleta As PaletaTheDailyCommute
         Set paleta = New PaletaTheDailyCommute
         
-        
+        Dim arr As Variant
         arr = Split(Me.ComboBoxProject.Value, ",")
         Set l = New T_Link
         l.zrob_mnie_z_argsow Trim(arr(0)), Trim(arr(1)), Trim(arr(2)), Trim(arr(3))

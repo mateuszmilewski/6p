@@ -81,8 +81,10 @@ Public Sub zrob_total(edit_czy_add As String, txt_from_combo_box As String)
     Set tot = New Total5PHandler
     
     With SIXP.FormTotals5p
+        'Application.EnableEvents = False
         tot.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormTotals5p
         .Show
+        'Application.EnableEvents = True
     End With
 End Sub
 

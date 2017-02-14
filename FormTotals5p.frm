@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormTotals5p 
    Caption         =   "TOTALS 5P"
-   ClientHeight    =   7830
+   ClientHeight    =   8835
    ClientLeft      =   45
    ClientTop       =   375
-   ClientWidth     =   4650
+   ClientWidth     =   5190
    OleObjectBlob   =   "FormTotals5p.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,7 +13,23 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+' FORREST SOFTWARE
+' Copyright (c) 2017 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 Private Sub BtnGoBack_Click()
@@ -26,10 +42,10 @@ Private Sub BtnSubmit_Click()
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    Hide
+    'Hide
     inner_calc
     
-    run_FormMain Me.LabelTitle
+    ' run_FormMain Me.LabelTitle
 End Sub
 
 Private Sub change_col_J_in_MAIN_worksheet(ByRef r As Range)
@@ -72,17 +88,6 @@ End Sub
 Private Sub inner_calc()
 
 
-    'Public Enum E_ORDER_RELEASE_STATUS
-    '    e_order_release_mrd = 5
-    '    e_order_release_build
-    '    e_order_release_bom_freeze
-    '    e_order_release_no_of_veh
-    '    e_order_release_orders_due
-    '    e_order_release_released
-    '    e_order_release_weeks_delay
-    'End Enum
-
-
     Dim r As Range
     
     If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
@@ -94,10 +99,11 @@ Private Sub inner_calc()
             Set r = r.Offset(1, 0)
         Loop Until Trim(r) = ""
         
+        Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For x = 0 To 3
-            r.Offset(0, x) = arr(x)
-        Next x
+        For X = 0 To 3
+            r.Offset(0, X) = Trim(arr(X))
+        Next X
         
         
         give_data_to_ranges r
@@ -140,6 +146,7 @@ Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_5p_fma_eur) = CStr(Me.TextBoxFMAEUR)
     r.Parent.Cells(r.Row, SIXP.e_5p_fma_osea) = CStr(Me.TextBoxFmaOsea)
     r.Parent.Cells(r.Row, SIXP.e_5p_in_transit) = CStr(Me.TextBoxInTransit)
+    r.Parent.Cells(r.Row, SIXP.e_5p_future) = CStr(Me.TextBoxFuture)
     r.Parent.Cells(r.Row, SIXP.e_5p_itdc) = CStr(Me.TextBoxITDC)
     r.Parent.Cells(r.Row, SIXP.e_5p_na) = CStr(Me.TextBoxNA)
     r.Parent.Cells(r.Row, SIXP.e_5p_no_ppap_status) = CStr(Me.TextBoxNoPPAP)
@@ -179,9 +186,10 @@ Private Sub ArrivedLess_Click()
             tmp = tmp - 1
             Me.TextBoxArrived = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -192,10 +200,15 @@ Private Sub ArrivedMore_Click()
         tmp = tmp + 1
         Me.TextBoxArrived = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
+End Sub
+
+Private Sub BtnZeruj_Click()
+    wyzeruj_all
 End Sub
 
 Private Sub FMAEURLEss_Click()
@@ -205,9 +218,10 @@ Private Sub FMAEURLEss_Click()
             tmp = tmp - 1
             Me.TextBoxFMAEUR = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -218,9 +232,10 @@ Private Sub FMAEURMore_Click()
         tmp = tmp + 1
         Me.TextBoxFMAEUR = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -231,9 +246,10 @@ Private Sub FmaOseaLess_Click()
             tmp = tmp - 1
             Me.TextBoxFmaOsea = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -244,9 +260,38 @@ Private Sub FmaOseaMore_Click()
         tmp = tmp + 1
         Me.TextBoxFmaOsea = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
+    End If
+End Sub
+
+Private Sub FutureLess_Click()
+    If IsNumeric(Me.TextBoxFuture) Then
+        If CLng(Me.TextBoxFuture) > 0 Then
+            tmp = CLng(Me.TextBoxFuture)
+            tmp = tmp - 1
+            Me.TextBoxFuture = CStr(tmp)
+            
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
+        End If
+    End If
+End Sub
+
+Private Sub FutureMore_Click()
+    If IsNumeric(Me.TextBoxFuture) Then
+        tmp = CLng(Me.TextBoxFuture)
         tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        Me.TextBoxFuture = CStr(tmp)
+        
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -257,9 +302,10 @@ Private Sub InTransitLess_Click()
             tmp = tmp - 1
             Me.TextBoxInTransit = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -270,9 +316,10 @@ Private Sub InTransitMore_Click()
         tmp = tmp + 1
         Me.TextBoxInTransit = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -283,9 +330,10 @@ Private Sub ITDCLess_Click()
             tmp = tmp - 1
             Me.TextBoxITDC = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -296,10 +344,40 @@ Private Sub ITDCMore_Click()
         tmp = tmp + 1
         Me.TextBoxITDC = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
+End Sub
+
+
+
+Private Sub Label16_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    Me.TextBoxH1.Value = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1")
+    
+    ' jeszcze szybkie sprawdzenie sum:
+    ' --------------------------------------------------------------------
+    
+    If IsNumeric(Me.TextBoxH1) And IsNumeric(Me.TextBoxTotal) Then
+    
+        If CLng(Me.TextBoxH1.Value) = CLng(Me.TextBoxTotal.Value) Then
+            Me.TextBoxH1.BackColor = RGB(255, 255, 255)
+        Else
+        
+            If CLng(Me.TextBoxH1.Value) < CLng(Me.TextBoxTotal.Value) Then
+                Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+            ElseIf CLng(Me.TextBoxH1.Value) > CLng(Me.TextBoxTotal.Value) Then
+                Me.TextBoxH1.BackColor = RGB(255, 255, 0)
+            Else
+                Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+            End If
+        End If
+    Else
+        Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+    End If
+    
+    ' --------------------------------------------------------------------
 End Sub
 
 Private Sub NALess_Click()
@@ -309,9 +387,10 @@ Private Sub NALess_Click()
             tmp = tmp - 1
             Me.TextBoxNA = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -322,9 +401,10 @@ Private Sub NAMore_Click()
         tmp = tmp + 1
         Me.TextBoxNA = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -335,9 +415,10 @@ Private Sub NoPPAPLess_Click()
             tmp = tmp - 1
             Me.TextBoxNoPPAP = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -348,9 +429,10 @@ Private Sub NoPPAPMore_Click()
         tmp = tmp + 1
         Me.TextBoxNoPPAP = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -361,9 +443,10 @@ Private Sub OrderedLess_Click()
             tmp = tmp - 1
             Me.TextBoxOrdered = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -374,9 +457,10 @@ Private Sub OrderedMore_Click()
         tmp = tmp + 1
         Me.TextBoxOrdered = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -387,9 +471,10 @@ Private Sub PnocLess_Click()
             tmp = tmp - 1
             Me.TextBoxPNOC = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -400,9 +485,10 @@ Private Sub PnocMore_Click()
         tmp = tmp + 1
         Me.TextBoxPNOC = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
@@ -413,9 +499,10 @@ Private Sub PPAPLess_Click()
             tmp = tmp - 1
             Me.TextBoxPPAP = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
+            to_je_synchro
         End If
     End If
 End Sub
@@ -426,26 +513,417 @@ Private Sub PPAPMore_Click()
         tmp = tmp + 1
         Me.TextBoxPPAP = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
+        to_je_synchro
     End If
 End Sub
 
-Private Sub TotalLess_Click()
-    If IsNumeric(Me.TextBoxTotal) Then
-        If CLng(Me.TextBoxTotal) > 0 Then
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+'Private Sub TotalLess_Click()
+'    If IsNumeric(Me.TextBoxTotal) Then
+'        If CLng(Me.TextBoxTotal) > 0 Then
+'            tmp = CLng(Me.TextBoxTotal)
+'            tmp = tmp - 1
+'            Me.TextBoxTotal = CStr(tmp)
+'        End If
+'    End If
+'End Sub
+'
+'Private Sub TotalMore_Click()
+'    If IsNumeric(Me.TextBoxTotal) Then
+'        tmp = CLng(Me.TextBoxTotal)
+'        tmp = tmp + 1
+'        Me.TextBoxTotal = CStr(tmp)
+'    End If
+'End Sub
+
+Private Sub wyzeruj_all()
+    
+    Dim c As Control
+    Dim tb As Control
+    
+    For Each c In Me.Controls
+        If TypeName(c) = "TextBox" Then
+            Set tb = c
+            tb.Value = 0
+        End If
+    Next c
+End Sub
+
+
+Private Sub to_je_synchro()
+    
+    Dim c As Control
+    Dim tb As Control
+    
+    For Each c In Me.Controls
+        If TypeName(c) = "TextBox" Then
+            Set tb = c
+            
+            If tb.Enabled = True Then
+                If tb.Value = "" Then
+                    
+                    tb.Value = 0
+                End If
+            End If
+        End If
+    Next c
+    
+    Me.TextBoxTotal = 0
+    
+    Dim suma As Long
+    suma = 0
+    
+    pref = "TextBox"
+    
+    For Each c In Me.Controls
+        If TypeName(c) = CStr(pref) Then
+            Set tb = c
+            
+            If tb.Enabled = True Then
+            
+                If tb.Name = pref & "NA" Or _
+                    tb.Name = pref & "ITDC" Or _
+                    tb.Name = pref & "PNOC" Or _
+                    tb.Name = pref & "FMAEUR" Or _
+                    tb.Name = pref & "FmaOsea" Then
+                
+                'If tb.Name = pref & "NA" Or _
+                '    tb.Name = pref & "FMAEUR" Or _
+                '    tb.Name = pref & "FmaOsea" Then
+                    
+                        
+                        suma = suma + CLng(tb.Value)
+                End If
+            End If
+        End If
+    Next c
+    
+    Me.TextBoxTotal = suma
+    
+    If Me.TextBoxTotal > 0 Then
+    ' dodatkowo pokoloruj gdy wartosci sa podejrzanie wyzsze niz total
+    ' --------------------------------------------------------------------
+    
+    ' to jest podjerzanie za duzo
+    If CLng(Me.TextBoxPPAP.Value) + CLng(Me.TextBoxNoPPAP.Value) > CLng(Me.TextBoxTotal) Then
+        
+        Me.TextBoxPPAP.BackColor = RGB(255, 0, 0)
+        Me.TextBoxNoPPAP.BackColor = RGB(255, 0, 0)
+    Else
+    
+        If CLng(Me.TextBoxPPAP.Value) + CLng(Me.TextBoxNoPPAP.Value) < CLng(Me.TextBoxTotal) Then
+        
+            Me.TextBoxPPAP.BackColor = RGB(255, 255, 0)
+            Me.TextBoxNoPPAP.BackColor = RGB(255, 255, 0)
+        Else
+            Me.TextBoxPPAP.BackColor = RGB(255, 255, 255)
+            Me.TextBoxNoPPAP.BackColor = RGB(255, 255, 255)
         End If
     End If
+    
+    
+    ' tranzyty
+    ' --------------------------------------------------------------------
+    suma_tranzytow = CLng(Me.TextBoxArrived.Value) + CLng(Me.TextBoxInTransit.Value) + CLng(Me.TextBoxFuture.Value)
+    If CLng(suma_tranzytow) > CLng(Me.TextBoxTotal) Then
+    
+        Me.TextBoxArrived.BackColor = RGB(255, 0, 0)
+        Me.TextBoxInTransit.BackColor = RGB(255, 0, 0)
+        Me.TextBoxFuture.BackColor = RGB(255, 0, 0)
+    Else
+    
+        If CLng(suma_tranzytow) < CLng(Me.TextBoxTotal) Then
+            Me.TextBoxArrived.BackColor = RGB(255, 255, 0)
+            Me.TextBoxInTransit.BackColor = RGB(255, 255, 0)
+            Me.TextBoxFuture.BackColor = RGB(255, 255, 0)
+        Else
+            Me.TextBoxArrived.BackColor = RGB(255, 255, 255)
+            Me.TextBoxInTransit.BackColor = RGB(255, 255, 255)
+            Me.TextBoxFuture.BackColor = RGB(255, 255, 255)
+        End If
+    End If
+    
+    
+    ' ordered
+    ' --------------------------------------------------------------------
+    If CLng(Me.TextBoxOrdered.Value) > CLng(Me.TextBoxTotal) Then
+        Me.TextBoxOrdered.BackColor = RGB(255, 0, 0)
+    Else
+        Me.TextBoxOrdered.BackColor = RGB(255, 255, 255)
+    End If
+    ' --------------------------------------------------------------------
+    
+    
+    
+    ' jeszcze szybkie sprawdzenie sum:
+    ' --------------------------------------------------------------------
+    
+    If IsNumeric(Me.TextBoxH1) And IsNumeric(Me.TextBoxTotal) Then
+    
+        If CLng(Me.TextBoxH1.Value) = CLng(Me.TextBoxTotal.Value) Then
+            Me.TextBoxH1.BackColor = RGB(255, 255, 255)
+        Else
+            If CLng(Me.TextBoxH1.Value) < CLng(Me.TextBoxTotal.Value) Then
+                Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+            ElseIf CLng(Me.TextBoxH1.Value) > CLng(Me.TextBoxTotal.Value) Then
+                Me.TextBoxH1.BackColor = RGB(255, 255, 0)
+            Else
+                Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+            End If
+        End If
+    Else
+        Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+    End If
+    
+    ' --------------------------------------------------------------------
+    End If
+    
 End Sub
 
-Private Sub TotalMore_Click()
-    If IsNumeric(Me.TextBoxTotal) Then
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+
+Private Sub TextBoxArrived_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxFMAEUR_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxFmaOsea_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxFuture_Change()
+    to_je_synchro
+End Sub
+
+
+
+
+Private Sub TextBoxInTransit_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxITDC_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxNA_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxNoPPAP_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxOrdered_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxPNOC_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxPPAP_Change()
+    to_je_synchro
+End Sub
+
+Private Sub TextBoxTotal_Change()
+    ' to_je_synchro
+End Sub
+
+Private Sub TryWizardBtn_Click()
+    ' sub odpowiadajacy za sciaganie danych z wizard buff worksheet
+    
+    
+    ' MsgBox "not implemented yet!"
+    
+    Dim buff As Worksheet
+    Set buff = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
+    
+    '3: MRD
+    '4: BUILD START
+    '5: BUILD END
+    '6: BOM
+    '7: PPAP GATE
+    
+    total_num = 0
+    If IsNumeric(buff.Cells(3, 1)) Then
+        total_num = CLng(buff.Cells(3, 1))
     End If
+    
+    With buff
+        
+        
+        ' porcja zwiazana z totalami eur i osea
+        ' ---------------------------------------------------------------
+        osea_v = 0
+        eur_v = 0
+        
+        If IsNumeric(.Cells(32, 1)) Then osea_v = .Cells(32, 1)
+        If IsNumeric(.Cells(32, 2)) Then eur_v = .Cells(32, 2)
+        ' ---------------------------------------------------------------
+        
+        
+        ' porcja total z perspektywy transportow
+        ' ---------------------------------------------------------------
+        arrived = 0
+        in_t = 0
+        future = 0
+        
+        If IsNumeric(.Cells(37, 1)) Then arrived = .Cells(37, 1)
+        If IsNumeric(.Cells(37, 2)) Then in_t = .Cells(37, 2)
+        If IsNumeric(.Cells(37, 3)) Then future = .Cells(37, 3)
+        ' ---------------------------------------------------------------
+        
+        ' porcja PNOC
+        ' nieco bardziej zlozona bo trzeba jeszcze znalezc slowo
+        ' klucz w wierszy drugim, liczba w wierszu 3
+        ' ---------------------------------------------------------------
+        pnoc_v = 0
+        pnoc_v = ktora_kolumna_to__foo(.Cells(2, 1), "PNOC")
+        ' ---------------------------------------------------------------
+        
+        
+        ' ---------------------------------------------------------------
+        itdc_v = 0
+        itdc_v = ktora_kolumna_to__foo(.Cells(2, 1), "ITDC")
+        ' ---------------------------------------------------------------
+        
+        ' ---------------------------------------------------------------
+        mpc_v = 0
+        mpc_v = ktora_kolumna_to__foo(.Cells(2, 1), "MPC")
+        ' ---------------------------------------------------------------
+        
+        ' ---------------------------------------------------------------
+        ordered_v = 0
+        ordered_v = ktora_kolumna_to__foo(.Cells(41, 1), "OK")
+        ' ---------------------------------------------------------------
+        
+        
+        ' PPAP
+        ' na ppap skladaja sie ok i nok i koncepcja obliczeniowa jest nieco bardziej skomplikowana
+        ' bedzie trzeba sie posilkowac lista w rejestrze, ktore stringi sa ok, a ktore sa nok
+        ' ---------------------------------------------------------------
+        
+        ppap_ok = 0
+        ppap_nok = 0
+        
+        ppap_ok = get_ppaps_foo(.Cells(6, 1), E_PPAP_OK)
+        ppap_nok = get_ppaps_foo(.Cells(6, 1), E_PPAP_NOK)
+        
+        ' ---------------------------------------------------------------
+    End With
+    
+    
+    ' teraz wyliczymy NA na podstawie roznicy totala z juz zaciagnietych danych
+    na_v = 0
+    '!
+    
+    na_v = CLng(total_num - pnoc_v - itdc_v - osea_v - eur_v)
+    
+    If CLng(na_v) < 0 Then
+        na_v = 0
+    End If
+    
+    
+    Me.TextBoxArrived = arrived
+    Me.TextBoxFMAEUR = eur_v
+    Me.TextBoxFmaOsea = osea_v
+    Me.TextBoxFuture = future
+    Me.TextBoxInTransit = in_t
+    Me.TextBoxITDC = itdc_v
+    Me.TextBoxNA = na_v
+    Me.TextBoxNoPPAP = ppap_nok
+    Me.TextBoxOrdered = ordered_v
+    Me.TextBoxPNOC = pnoc_v
+    Me.TextBoxPPAP = ppap_ok
+    Me.TextBoxTotal = total_num
+    
+    Me.TextBoxH1 = buff.Range("H1")
+    
+    ' jeszcze szybkie sprawdzenie sum:
+    ' --------------------------------------------------------------------
+    
+    If IsNumeric(Me.TextBoxH1) And IsNumeric(Me.TextBoxTotal) Then
+    
+        If CLng(Me.TextBoxH1.Value) = CLng(Me.TextBoxTotal.Value) Then
+            Me.TextBoxH1.BackColor = RGB(255, 255, 255)
+        Else
+            Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+        End If
+    Else
+        Me.TextBoxH1.BackColor = RGB(255, 0, 0)
+    End If
+    
+    ' --------------------------------------------------------------------
+    
+End Sub
+
+Private Function get_ppaps_foo(r As Range, e As E_PPAP) As Long
+    get_ppaps_foo = 0
+    
+    
+    ' 2 petle
+    ' jedna po wiz buff
+    ' druga po register list
+    
+    ' range wizz buff
+    Dim rwb As Range
+    ' range register
+    Dim rr As Range, tmp_r As Range
+    
+    Set rwb = r
+    
+    Set rr = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("J2")
+    Set rr = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range(rr, rr.End(xlDown))
+    
+    Do
+        For Each tmp_r In rr
+            If Trim(tmp_r) = Trim(rwb) Then
+                If CLng(tmp_r.Offset(0, 1)) = CLng(e) Then
+                    
+                    ' ----------------------------------------------------------------
+                    ' ----------------------------------------------------------------
+                    ''
+                    '
+                    get_ppaps_foo = get_ppaps_foo + CLng(rwb.Offset(1, 0))
+                    '
+                    ''
+                    ' ----------------------------------------------------------------
+                    ' ----------------------------------------------------------------
+                End If
+            End If
+        Next tmp_r
+        Set rwb = rwb.Offset(0, 1)
+    Loop Until Trim(rwb) = ""
+    
+End Function
+
+Private Function ktora_kolumna_to__foo(r As Range, txt As String) As Long
+    
+    ktora_kolumna_to__foo = 0
+    
+    Do
+        If Trim(r) = CStr(txt) Then
+            ktora_kolumna_to__foo = CLng(r.Offset(1, 0))
+            Exit Function
+        End If
+        
+        Set r = r.Offset(0, 1)
+    Loop Until Trim(r) = ""
+End Function
+
+Private Sub UserForm_Activate()
+    to_je_synchro
+End Sub
+
+Private Sub UserForm_Click()
+    to_je_synchro
+End Sub
+
+Private Sub UserForm_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    to_je_synchro
 End Sub

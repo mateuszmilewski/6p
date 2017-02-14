@@ -7,6 +7,24 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ' klasa ta ma sie zajmowac kontrola danych miedzy order releasami a main ogolnie
 ' dobrze by bylo potrfila wpisywac ladnie aktualny ycw dla update'u arkusza
 ' order release, dzieki czemu bedziemy mogli miec porownanie z aktualnym cw w arkuszu main
@@ -65,6 +83,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxFMAEUR = "0"
             .TextBoxFmaOsea = "0"
             .TextBoxInTransit = "0"
+            .TextBoxFuture = "0"
             .TextBoxITDC = "0"
             .TextBoxNA = "0"
             .TextBoxNoPPAP = "0"
@@ -93,19 +112,20 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         
                         ' pola liczbowe
                         ' ---------------------------------------------------------
-
+                        Application.EnableEvents = False
                         .TextBoxArrived = CStr(r.Offset(0, SIXP.e_5p_arrived - 1))
                         .TextBoxFMAEUR = CStr(r.Offset(0, SIXP.e_5p_fma_eur - 1))
                         .TextBoxFmaOsea = CStr(r.Offset(0, SIXP.e_5p_fma_osea - 1))
                         .TextBoxInTransit = CStr(r.Offset(0, SIXP.e_5p_in_transit - 1))
+                        .TextBoxFuture = CStr(r.Offset(0, SIXP.e_5p_future - 1))
                         .TextBoxITDC = CStr(r.Offset(0, SIXP.e_5p_itdc - 1))
-                        .TextBoxInTransit = CStr(r.Offset(0, SIXP.e_5p_na - 1))
+                        .TextBoxNA = CStr(r.Offset(0, SIXP.e_5p_na - 1))
                         .TextBoxNoPPAP = CStr(r.Offset(0, SIXP.e_5p_no_ppap_status - 1))
                         .TextBoxOrdered = CStr(r.Offset(0, SIXP.e_5p_ordered - 1))
                         .TextBoxPNOC = CStr(r.Offset(0, SIXP.e_5p_pnoc - 1))
                         .TextBoxPPAP = CStr(r.Offset(0, SIXP.e_5p_ppap_status - 1))
                         .TextBoxTotal = CStr(r.Offset(0, SIXP.e_5p_total - 1))
-                        
+                        Application.EnableEvents = True
                         ' ---------------------------------------------------------
                     
                 

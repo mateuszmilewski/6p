@@ -143,3 +143,230 @@ Attribute VB_Name = "VersionModule"
 ' pierwsze proby z synchronizacja z wizardami
 ' move pomiedzy arkuszami za pomoca podwojnego klikniecia
 ' kopiowanie danych pomiedzy rekordami
+
+
+' v 0.11
+'
+' glownie zabawa z one pagerem zatem kodu niewiele
+
+' v 0.12
+'
+' przesuniecie buttona clear item na prawo na koniec
+' co by ktos przez przypadek nie nacisl
+' dopisanie reszty warunkow na pozostale 6p plus resp plus open issues plus xq
+' (w sumie juz nawet by trzeba liczyc 9 elementow!)
+' dodanie arkuszy 3kolory oraz wizard_buff ktory w sumie jest kopia dzialania 6time
+
+' v 0.13
+'
+' dodana lista country codes
+' i przy okazji zostala juz ladnie wykorzytana
+' w buff wizarda dodana zostala linijka rozdzielajaca country code osea
+
+' v 0.14
+' pierwsze testy logiki wkladania danych
+' synchro danych z wizarda do odpwiednich pol 6p
+'
+' powrot do dobrego zapytania o to czy jestem pewien tego,
+' ze chce zaciagnac dane z otwartego wizarda
+
+' teraz kwestia przesypania danych z buffora wizarda bezposrednio na nowe pola kazdego arkusza
+
+
+' v 0.15
+' w tej wersji jeszcze to pozostanie jednak nalezy przemyslec rozdzielenie nazwy projektu od MY
+' nie wiem dlaczego, ale na poczatku wydawalo mi sie to rozsadne
+' jednak im glebiej wchodze w proces, tym trudniej jest ogarnac co jest co
+' FMA bardzo czesto samo sobie strzela w kolano jesli chodzi o zarzadzanie danych
+'
+'
+' kolejny topic do mozliwosc konfiguracji czy chcemy generowac raporty fma review za pomoca power pointa
+' czy za pomoca kolejnych nowych plikow excelowych
+' czy w ogole dac mozliwosc koordynatorom, aby sami sobie decydowali co gdzie chca zobaczyc
+'
+' na poczatek mysle ze fajnie by bylo miec oba, ale z drugiej strony moje lenistwo
+' dazy do tego, aby dac jedno rozwiazanie kwestii
+'
+'w tej wersji juz pomalu klasa one pager handler jest uzupelniana 1p wlasciwie juz zaczyna dzialac jak nalezy
+
+' zatrzylem sie na implementacji eventow podczas klikania
+' na formularza wejsciowym dla one pagera musze dokonczyc eventy change'u
+' na kolejnym listboxach forma pod wybieranie danych pod one pager
+' to jest ostatni SUB: ListBoxPlants_Change
+
+
+' v 0.16
+' wersja porzadkowa
+' nieco sie zmienila implmentacja jesli chodzi o form one pagera
+' wyrzucilem cala logike 0.14 - byla przekombinowana
+
+
+'
+'
+'
+' v 0.17 kopia na dzien 2016-11-08
+'-----------------------------------------------------------
+' 0.16 wlasciwie ma gotowa logike wybierania danych pod one pager
+' nie jest to moze najpiekniejsze rozwiazanie, ale caly dzien stracilem zeby jako tako sie to wszystko kleilo
+' mozna filtrowac pojedynczo...
+'
+' krok kolejny to at last powrot do uzupelniania danych na one pagerze
+
+' zmiana w pobieraniu danych z order release status
+' jest tylko jeden rekord per faza
+'-----------------------------------------------------------
+
+'
+'
+' v 0.18 2016-12-13
+'-----------------------------------------------------------
+' dodatkowe implemntacje importu z wizarda dla kazdego formularza osobno
+' duzo kodu ale za to spoko funkcjonalnosci
+'-----------------------------------------------------------
+
+
+' v 0.19 2016-12-19
+'-----------------------------------------------------------
+' baza pod zmiany na koniec stycznia 2017
+' config na arkuszach configowych - dodana lista resp - reczna modyfikacja ktore FMA ma byc brane pod uwage.
+
+
+' v 0.20 2016-12-22
+'-----------------------------------------------------------
+' kolejny milestone
+' wczesniej juz powstal form resp adjuster
+' jednak dopiero teraz dopisana jest jego logika
+' fix na podwojnych petlach sprawdzajcych czy w wizard buff powstalo cos nowego
+' wczesniej cos nie tak bylo z logika i zle przerzucalo dane
+' dodatkowy test na h1 g1 - poniewaz juz jako tako nie ma miejsca w arkuszu wizard buff
+' zatem wcisnalem na sama gore wartosc podliczajaca ile danych faktycznie nalezy do scopu
+' jeszcze mysle jak to zastosowac do kolejnych czesci makra...
+'
+'
+' co prawda z perspektywy layoutut pola g1 h1 nieco odstaja jesli chodzi o klarownosc, ze wydaje sie ze wszystko jest w jednym miesjcu
+' ale koniec koncow nareszcie totol resp bedzie zawsze w jednym miejscu niezaleznie od ilosci danych per wizard
+'
+' form form resp adjuster bedzie sie pojawiac przy kazdej okazji proby importu danych z wizarda
+' dla upewnienia sie czy scope ktory aktualnie zawarty jest w nim odpowiada naszym potrzebom (narazie nie wiem jak to prosciej zrobic)
+' wiec bedzie to nieco toporne
+'
+'
+
+'0.20 2017-01-17
+'-----------------------------------------------------------
+' dodanie wielu nowych elementow dla klasy one pager handler (ktory juz przekroczyl 1k linii kodu)
+' pokyte 90 % zapotrzebowania na body subow zostaly pojedyncze procedury do napisania
+
+
+' v 0.21 2017-01-19
+'-----------------------------------------------------------
+' podstawa pod kolejne rozwiniecia klasy one pager handler
+' dorzucenie pozostalych implementacji dla prototypow funkcji i subow
+'
+' podczas testow okazalao sie ze wszystkie wykresy kolejnych wygenerowanych raportow
+' odnosi sie do tego samego zrodla znajdujacego sie w raporcie macierzystym - jest to dosyc powazny
+' problem poniewaz okazuje sie ze dla chronologicnzych raportow zawsze sie pokaza ostatnie dane
+'
+' gorzej bedzie jeszcze, jesli raporty beda sie generowaly kolejno dla roznych projektow
+' okaze sie, ze seria wygenerowanych kolejnych arkuszu maja jedne wspolne wykresy ostatniego wyngenerowanego raportu
+' (ostatnio projektu na liscie)
+
+
+' v 0.22 2017-01-20
+'-----------------------------------------------------------
+' wersja 0.22 ma sprostac rozdzieleniu logiki pobierania zrodla dla wykresow
+'
+
+' v 0.23 2017-01-23
+'-----------------------------------------------------------
+' kopia z 0.22 z polowicznym rozwiazaniem problemu na starcie tej implementacji
+' z eksperymentow manulanych wynika ze nie trzeba wiele zmieniac w source (jedynie podmienic nazwe zrodlowego arkusza)
+' reszta tak jakby sama potrafila sie dopasowac (zatem licze na autonomie dzialania excela w tym przypadku)
+' wersja ta zweryfikuje poprawnosc tej tezy (podstawowe testy przeszly pomyslnie, zatem narazie tak ta implementacje zrobie)
+' wystarczy zmienic sam source - reszta sama powinna sie dopasowac
+
+' v 0.24 2017-01-23
+'-----------------------------------------------------------
+' wersja do testu z jednym z koordynatorow
+
+' v 0.25 2017-01-23
+'-----------------------------------------------------------
+' nieco lepiej rozbudowana logika resp form
+' dodany guzik przerzuceania FMA resp
+
+' v 0.26 2017-01-24
+'-----------------------------------------------------------
+' po pierwszych testach razem z coordami
+' wstepne sprawdzenie uruchomienia dzialania
+' od wersji 0.25 braki w zaciaganiu danych z wizard buffa
+' pojedyncze bledy implementacji
+
+' import w buffa wizardowego (totals) in progress
+'-----------------------------------------------------------
+
+' v 0.27 2017-01-26
+'-----------------------------------------------------------
+' dalsza podroz po swicie buffu wizardowego (kontynuacja totalsow)
+' del conf nawet juz koloruje na czerwono jak przekrocze podejrzanie totalsy
+' w sumie mozna by tak samo zrobic totale same w sobie pociagnac info z buffa z komorki h1
+' sprawdzic czy total nie jest za duzy
+'
+' z szybkich fixow tylko napokne ze zrobilem male fo pa jesli chodzi o zmiany w formularzu wymoglem dodatkowe uruchomienie suba
+' jesli total sie zmieni z czego sub wymuszal znow zmianie na totalu, czyli troche sie zapetlilem i slusznie wyrzucilo mi blad
+' out of stack - musze byc nieco bardziej uwazny
+'
+'
+' jako tako import from buffer jest prawie caly gotowy
+' potrzebne sa teraz testy kordynatorow by zobaczyc czego jeszcze nie dopiescilem jesli chodzi o logike dzialania calego 6P
+
+
+' v 0.28 dev 2017-01-27
+'-----------------------------------------------------------
+' jako pierwsza wersja w pierwszej kolejnosci idzie do testu do mnie
+' jesli wszystko bedzie ok dam koordynatorom, co by mogli sie oswoic
+' zrobimy szkolenie mysle pod koniec stycznia 2017 i zobaczymy jakie pytanie padna i jak samo narzedzie bedzie reagowac
+'
+' tez wciaz pozostaje otwarta kwestia open issues jak rowniez raportu trojkolorowego
+'
+' del conf import from buffer - before and after sth wrong and everything goes into open - dodana logika
+
+' kolejny error - nie dziala guzik edycji w przypadku del confa
+
+' v 0.29 2017-02-02
+'-----------------------------------------------------------
+'
+' wersja kosmetyczna dopasowana pod testy kordynatorow na poczatku lutego 2017
+
+' v 0.30 2017-02-02
+'-----------------------------------------------------------
+'
+' wersja kosmetyczna dopasowana pod testy kordynatorow na poczatku lutego 2017
+
+' v 0.31 2017-02-10
+'-----------------------------------------------------------
+'
+' zmiany "usuwaniu wszystkiego"
+
+
+' v 0.32 2017-02-13
+'-----------------------------------------------------------
+'
+' wersja korekt od Marcina By
+'1 w Project (kolumna A) powinno oprócz nazwy zaciagac z Wizarda czy BIW czy GA
+'2. czy # of Veh. , Orders due i Released mozemy dodac do kolejnej wersji Wizarda? zaciagaloby to do 6P. Do ustalenia z wszystkimi coord.
+'3. Resp Adjuster- zwiekszyc czcionke
+'4. FormContractedPNOC- zaciagac dane z Wizarda - Contracted-FMA/XXX vs PNOC
+'5. Totals 5P
+ '- Ordered -powinna byc suma FMA, najlepiej pobierac dane z Wizarda z wpisana data przy resp FMA
+ '- liczba ITDC nie pobiera sie z Wizarda
+'6 '. FormDelConfStatus- status OPEN nie zlicza sie automatycznie
+'7' '. NIE DA SIE PRZEJSC DO WIZARDA PRZY OTWARTYM FOMRULARZU FILL DETAILS i Project Manag.
+'8'. jak liczy sie status arrived, in transit i future?
+
+
+' mass import for open issues still open for development
+
+' v 0.33 2017-02-14
+'-----------------------------------------------------------
+' juz w wersji 0.32 rozpoczalem implementacje dla zaciagania danych na podstawie requestow marcina b
+' plus anny k - dodalem narazie prosta logike w formularzu contracted pnoc zaciagania po respie
