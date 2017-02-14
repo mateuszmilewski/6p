@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormContractedPNOC 
    Caption         =   "FormContractedPNOC"
-   ClientHeight    =   3900
+   ClientHeight    =   4800
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4710
@@ -13,11 +13,99 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Private Sub BtnGoBack_Click()
     Hide
     run_FormMain Me.LabelTitle
+End Sub
+
+Private Sub BtnImport_Click()
+    
+    
+    ' importujemy dane z resp z buffa
+    '-----------------------------------
+    Dim buff As Worksheet
+    Set buff = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
+    
+    
+    ' rngv - range values, range labels
+    Dim rngv As Range, rngl As Range, h1_total
+    Set rngv = buff.Cells(3, 1)
+    Set rngl = buff.Cells(2, 1)
+    Set h1_total = buff.Range("H1")
+    
+    
+    With buff
+    
+        ' 2: TOTAL FMA*
+        ' 3. values
+        Me.TextBoxPNOC.Value = CStr(SIXP.GetDataFromWizardBufferModule.get_all_values("PNOC", rngl))
+        Me.TextBox1.Value = CStr(h1_total.Value)
+        ' Me.TextBoxContracted = CStr(CLng(buff.Range("H1"))) '  - CLng(Me.TextBoxPNOC))
+        ' Me.TextBoxForALTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_ALT_MRD))
+    End With
+    
+    
+    '-----------------------------------
+    jaka_kolwiek_zmiana_nastapila
+End Sub
+
+
+
+
+Private Sub jaka_kolwiek_zmiana_nastapila()
+
+
+    With Me
+    
+        If Trim(.TextBoxActionableFMA.Value) = "" Then
+            .TextBoxActionableFMA.Value = "0"
+        End If
+        
+        
+        If Trim(.TextBoxContracted.Value) = "" Then
+            .TextBoxContracted.Value = "0"
+        End If
+        
+        If Trim(.TextBoxOpenBP.Value) = "" Then
+            .TextBoxOpenBP.Value = "0"
+        End If
+        
+        If Trim(.TextBoxPNOC.Value) = "" Then
+            .TextBoxPNOC.Value = "0"
+        End If
+    
+    
+        If IsNumeric(.TextBox1.Value) Then
+            suma = CLng(.TextBoxActionableFMA) + CLng(.TextBoxContracted) + CLng(.TextBoxOpenBP) + CLng(.TextBoxPNOC)
+            
+            
+            If CLng(suma) < CLng(.TextBox1.Value) Then
+                .TextBox1.BackColor = RGB(255, 255, 0)
+            ElseIf CLng(suma) = CLng(.TextBox1.Value) Then
+                .TextBox1.BackColor = RGB(0, 255, 0)
+            Else
+                .TextBox1.BackColor = RGB(255, 0, 0)
+            End If
+        End If
+    End With
 End Sub
 
 Private Sub BtnSubmit_Click()
@@ -25,10 +113,10 @@ Private Sub BtnSubmit_Click()
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    Hide
+    'Hide
     inner_calc
     
-    run_FormMain Me.LabelTitle
+    ' run_FormMain Me.LabelTitle
 End Sub
 
 Private Sub change_col_H_in_MAIN_worksheet(ByRef r As Range)
@@ -93,10 +181,11 @@ Private Sub inner_calc()
             Set r = r.Offset(1, 0)
         Loop Until Trim(r) = ""
         
+        Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For x = 0 To 3
-            r.Offset(0, x) = arr(x)
-        Next x
+        For X = 0 To 3
+            r.Offset(0, X) = Trim(arr(X))
+        Next X
         
         
         give_data_to_ranges r
@@ -177,6 +266,8 @@ Private Sub ActionableFMALess_Click()
             Me.TextBoxActionableFMA = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub ActionableFMALess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -187,6 +278,8 @@ Private Sub ActionableFMALess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             Me.TextBoxActionableFMA = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub ActionableFMAMore_Click()
@@ -195,6 +288,8 @@ Private Sub ActionableFMAMore_Click()
         tmp = tmp + 1
         Me.TextBoxActionableFMA = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub ActionableFMAMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -203,6 +298,8 @@ Private Sub ActionableFMAMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxActionableFMA = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub ContLess_Click()
@@ -213,6 +310,8 @@ Private Sub ContLess_Click()
             Me.TextBoxContracted = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 
@@ -225,6 +324,8 @@ Private Sub ContLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             Me.TextBoxContracted = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub ContMore_Click()
@@ -234,6 +335,8 @@ Private Sub ContMore_Click()
         tmp = tmp + 1
         Me.TextBoxContracted = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub ContMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -242,6 +345,8 @@ Private Sub ContMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxContracted = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub OpenBPLess_Click()
@@ -252,6 +357,8 @@ Private Sub OpenBPLess_Click()
             Me.TextBoxOpenBP = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub OpenBPLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -262,6 +369,8 @@ Private Sub OpenBPLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             Me.TextBoxOpenBP = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub OpenBPMore_Click()
@@ -270,6 +379,8 @@ Private Sub OpenBPMore_Click()
         tmp = tmp + 1
         Me.TextBoxOpenBP = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub OpenBPMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -278,6 +389,8 @@ Private Sub OpenBPMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxOpenBP = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub PnocLess_Click()
@@ -288,6 +401,8 @@ Private Sub PnocLess_Click()
             Me.TextBoxPNOC = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub PnocLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -298,6 +413,8 @@ Private Sub PnocLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             Me.TextBoxPNOC = CStr(tmp)
         End If
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 
 Private Sub PnocMore_Click()
@@ -306,7 +423,7 @@ Private Sub PnocMore_Click()
         tmp = tmp + 1
         Me.TextBoxPNOC = CStr(tmp)
     End If
-
+    jaka_kolwiek_zmiana_nastapila
 End Sub
 ' ------------------------------------------------------------------------------------------------------------------
 ' ------------------------------------------------------------------------------------------------------------------
@@ -316,4 +433,26 @@ Private Sub PnocMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxPNOC = CStr(tmp)
     End If
+    
+    jaka_kolwiek_zmiana_nastapila
+End Sub
+
+Private Sub TextBox1_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    jaka_kolwiek_zmiana_nastapila
+End Sub
+
+Private Sub TextBoxActionableFMA_Change()
+    jaka_kolwiek_zmiana_nastapila
+End Sub
+
+Private Sub TextBoxContracted_Change()
+    jaka_kolwiek_zmiana_nastapila
+End Sub
+
+Private Sub TextBoxOpenBP_Change()
+    jaka_kolwiek_zmiana_nastapila
+End Sub
+
+Private Sub TextBoxPNOC_Change()
+    jaka_kolwiek_zmiana_nastapila
 End Sub

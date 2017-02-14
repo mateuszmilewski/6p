@@ -7,6 +7,24 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ' klasa ta ma sie zajmowac kontrola danych miedzy order releasami a main ogolnie
 ' dobrze by bylo potrfila wpisywac ladnie aktualny ycw dla update'u arkusza
 ' order release, dzieki czemu bedziemy mogli miec porownanie z aktualnym cw w arkuszu main
@@ -68,7 +86,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxConfirmed = "0"
             .TextBoxForMRD = "0"
             .TextBoxOnStock = "0"
-            .TextBoxOPEN = "0"
+            .TextBoxOpen = "0"
             .TextBoxOrdered = "0"
             .TextBoxTotal = "0"
             
@@ -96,18 +114,29 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         '.TextBoxNoOfVeh = "0"
                         '.TextBoxWeeksDelay = "0"
                         ' EDIT
-                        .TextBoxAfterMRD = CStr(r.Offset(0, SIXP.e_osea_order_after_mrd - 1))
-                        .TextBoxConfirmed = CStr(r.Offset(0, SIXP.e_osea_order_confirmed - 1))
-                        .TextBoxForMRD = CStr(r.Offset(0, SIXP.e_osea_order_for_mrd - 1))
-                        .TextBoxOnStock = CStr(r.Offset(0, SIXP.e_osea_order_on_stock - 1))
-                        .TextBoxOPEN = CStr(r.Offset(0, SIXP.e_osea_order_open - 1))
-                        .TextBoxOrdered = CStr(r.Offset(0, SIXP.e_osea_order_ordered - 1))
-                        .TextBoxTotal = CStr(r.Offset(0, SIXP.e_osea_order_total - 1))
+                        .TextBoxAfterMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_after_mrd - 1)))
+                        .TextBoxConfirmed = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_confirmed - 1)))
+                        .TextBoxForMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_for_mrd - 1)))
+                        .TextBoxOnStock = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_on_stock - 1)))
+                        .TextBoxOpen = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_open - 1)))
+                        .TextBoxOrdered = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_ordered - 1)))
                         
+                        .TextBoxTotal = "0"
+                        
+                        On Error Resume Next
+                        .TextBoxTotal = CStr(Int(.TextBoxAfterMRD) + Int(.TextBoxConfirmed) + _
+                            Int(.TextBoxForMRD) + Int(.TextBoxOnStock) + Int(.TextBoxOpen) + _
+                            Int(.TextBoxOrdered))
+
                         ' ---------------------------------------------------------
                     
-                
-                
+
                         Exit Do
                 End If
                 Set r = r.Offset(1, 0)

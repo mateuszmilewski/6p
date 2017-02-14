@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewProj 
    Caption         =   "Projekt"
-   ClientHeight    =   8505
+   ClientHeight    =   8040
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   6345
@@ -13,6 +13,24 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 Private Sub BtnClear_Click()
 
     Me.TextBoxCW = ""
@@ -127,10 +145,15 @@ Private Sub BtnImport_Click()
     ' wczesniej ten msgbox mial byc jako tako masowy
     ' jednak z perspektywy designu calej apki nie moge tak zrobic
     ' zatem zatem: tutaj tylko dodaje dane do tego formularza
-    'ans = MsgBox("Czy chcesz zaciagnac jednorazowo informacje z pliku Wizard?", vbOKCancel, "Wizard Synchro")
+    ans = MsgBox("Czy chcesz zaciagnac jednorazowo informacje z otwartego pliku Wizard?", vbOKCancel, "Wizard Synchro")
     
-    'If ans = vbOK Then
+    If ans = vbOK Then
         Hide
+        
+        
+        ' usuniecie danych z wizard buff
+        ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("a1:zz1000").Clear
+        
         FormCatchWizard.ListBox1.Clear
         
         For Each w In Workbooks
@@ -138,11 +161,44 @@ Private Sub BtnImport_Click()
                 .AddItem w.Name
             End With
         Next w
-        
+        FormCatchWizard.czy_start_pochodzi_z_open_issues = False
+        FormCatchWizard.BtnImportOpenIssues.Enabled = False
+        FormCatchWizard.BtnJustImport.Enabled = True
+        FormCatchWizard.BtnSubmit.Enabled = True
         FormCatchWizard.Show
-    'End If
+    Else
+        MsgBox "logika zatrzymana"
+    End If
     
     ' ---------------------------------------------------------
+End Sub
+
+Private Sub BtnImportWizBuff_Click()
+        
+    Dim wh As WizardHandler
+    Set wh = New WizardHandler
+
+        
+    With Me
+        .TextBoxCW = wh.get_cw()
+        .TextBoxFaza = wh.get_faza_from_buffer()
+        .TextBoxPlt = wh.get_plt_from_buffer()
+        .TextBoxProj = wh.get_proj_from_buffer() & " " & wh.get_biw_ga_from_buffer & " " & " MY: " & wh.get_my_from_buffer()
+        .ComboBoxStatus = SIXP.GlobalCrossTriangleCircleModule.putCross
+        
+        
+        
+        ' zmiana od wersji 0.26
+        ' 2017-01-24
+        ' -----------------------------------------------
+        '
+        ' odblokowuje opcje zaciagania z buffa ale musi jeszcze user dokliknac
+        .CheckBoxWizardContent.Enabled = True
+        .CheckBoxWizardContent.Value = False
+        
+    End With
+        
+    Set wh = Nothing
 End Sub
 
 Private Sub BtnSubmit_Click()
@@ -162,6 +218,14 @@ Private Sub BtnSubmit_Click()
     r.Offset(0, 2).Value = Me.TextBoxFaza
     r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
     r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
+    
+    If Me.CheckBoxWizardContent.Value Then
+    
+        ' zbieramy dodatkowo info z buffa
+        ' ---------------------------------------------------------------------------
+        MsgBox "not implemented yet!"
+        ' ---------------------------------------------------------------------------
+    End If
 End Sub
 
 
@@ -190,25 +254,9 @@ Private Function validate_and_then_go_to_first_empty_cell(ByRef m As Worksheet) 
                             End
                         End If
                     Else
-                        ans = MsgBox("Projekt z nowym CW, czy chcesz go podmienic!", vbYesNo)
-                        
-                        If ans = vbYes Then
-                        
-                            Set validate_and_then_go_to_first_empty_cell = r
-                            Exit Function
-                        
-                        ElseIf ans = vbNo Then
-                            
-                            ans = MsgBox("Czy chcesz zatem dodac ten sam projekt na dole z nowa data?", vbYesNo)
-                            
-                            If ans = vbYes Then
-                                Set r = r.End(xlDown).End(xlDown).End(xlUp).Offset(1, 0)
-                                Exit Do
-                            Else
-                                MsgBox "Logika konczy dzialanie bez wykonanej akcji na danych"
-                                End
-                            End If
-                        End If
+                        MsgBox "Jest juz taki projekt - dane z nowym CW dodane na dnie tabeli."
+                        Set r = r.End(xlDown).End(xlDown).End(xlUp).Offset(1, 0)
+                        Exit Do
                     End If
                 End If
             End If
@@ -343,9 +391,9 @@ Private Sub work_on_(str_sh_nm As String, old_tl As T_Link, new_tl As T_Link, m 
         
         ' e_link_cw == 4 zatem pasuje z racji offsetowania!
         ' -----------------------------------------------------
-        For x = SIXP.e_link_cw To ostatnia_kolumna_arkusza - 1
-            new_r.Offset(0, x) = old_r.Offset(0, x)
-        Next x
+        For X = SIXP.e_link_cw To ostatnia_kolumna_arkusza - 1
+            new_r.Offset(0, X) = old_r.Offset(0, X)
+        Next X
         ' -----------------------------------------------------
     
         ' =====================================================================

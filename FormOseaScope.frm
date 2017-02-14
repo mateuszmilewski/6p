@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormOseaScope 
    Caption         =   "Osea Scope"
-   ClientHeight    =   5490
+   ClientHeight    =   5925
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4725
@@ -24,15 +24,19 @@ Private Sub BtnGoBack_Click()
     run_FormMain Me.LabelTitle
 End Sub
 
+Private Sub BtnImport_Click()
+    MsgBox "not implemented yet!"
+End Sub
+
 Private Sub BtnSubmit_Click()
 
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    Hide
+    ' Hide
     inner_calc
     
-    run_FormMain Me.LabelTitle
+    'run_FormMain Me.LabelTitle
 End Sub
 
 Private Sub change_col_I_in_MAIN_worksheet(ByRef r As Range)
@@ -97,12 +101,13 @@ Private Sub inner_calc()
             Set r = r.Offset(1, 0)
         Loop Until Trim(r) = ""
         
+        Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For x = 0 To 3
-            r.Offset(0, x) = arr(x)
-        Next x
+        For X = 0 To 3
+            r.Offset(0, X) = Trim(arr(X))
+        Next X
         
-        
+        recalc_total_textbox
         give_data_to_ranges r
         change_col_I_in_MAIN_worksheet r
         
@@ -144,9 +149,30 @@ Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_confirmed) = CStr(Me.TextBoxConfirmed)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_for_mrd) = CStr(Me.TextBoxForMRD)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_on_stock) = CStr(Me.TextBoxOnStock)
-    r.Parent.Cells(r.Row, SIXP.e_osea_order_open) = CStr(Me.TextBoxOPEN)
+    r.Parent.Cells(r.Row, SIXP.e_osea_order_open) = CStr(Me.TextBoxOpen)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_ordered) = CStr(Me.TextBoxOrdered)
     r.Parent.Cells(r.Row, SIXP.e_osea_order_total) = CStr(Me.TextBoxTotal)
+End Sub
+
+Private Sub recalc_total_textbox()
+
+    Dim tmp_str_value As String
+    Dim v As Long
+    
+    v = 0
+    v = v + _
+        CLng(SIXP.GlobalFooModule.global_cpz(CStr(Me.TextBoxAfterMRD))) + _
+        CLng(SIXP.GlobalFooModule.global_cpz(CStr(Me.TextBoxConfirmed))) + _
+        CLng(SIXP.GlobalFooModule.global_cpz(CStr(Me.TextBoxForMRD))) + _
+        CLng(SIXP.GlobalFooModule.global_cpz(CStr(Me.TextBoxOnStock))) + _
+        CLng(SIXP.GlobalFooModule.global_cpz(CStr(Me.TextBoxOpen))) + _
+        CLng(SIXP.GlobalFooModule.global_cpz(CStr(Me.TextBoxOrdered)))
+        
+        
+    temp_str_textbox = CStr(v)
+    
+    Me.TextBoxTotal = _
+        CStr(temp_str_textbox)
 End Sub
 
 
@@ -187,12 +213,12 @@ Private Sub AfterMRDLess_Click()
             tmp = tmp - 1
             Me.TextBoxAfterMRD = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
-
+    recalc_total_textbox
 End Sub
 
 Private Sub AfterMRDMore_Click()
@@ -202,10 +228,11 @@ Private Sub AfterMRDMore_Click()
         tmp = tmp + 1
         Me.TextBoxAfterMRD = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 
@@ -218,11 +245,12 @@ Private Sub AfterMRDLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             tmp = tmp - 10
             Me.TextBoxAfterMRD = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 10
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 10
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub AfterMRDMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -231,10 +259,11 @@ Private Sub AfterMRDMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxAfterMRD = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 10
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 10
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 
@@ -246,11 +275,12 @@ Private Sub ConfirmedLess_Click()
             tmp = tmp - 1
             Me.TextBoxConfirmed = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 
@@ -261,10 +291,11 @@ Private Sub ConfirmedMore_Click()
         tmp = tmp + 1
         Me.TextBoxConfirmed = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 
@@ -276,11 +307,12 @@ Private Sub ForMRDLess_Click()
             tmp = tmp - 1
             Me.TextBoxForMRD = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub ForMRDMore_Click()
@@ -289,10 +321,11 @@ Private Sub ForMRDMore_Click()
         tmp = tmp + 1
         Me.TextBoxForMRD = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 
@@ -304,11 +337,12 @@ Private Sub OnStockLess_Click()
             tmp = tmp - 1
             Me.TextBoxOnStock = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub OnStockMore_Click()
@@ -317,39 +351,42 @@ Private Sub OnStockMore_Click()
         tmp = tmp + 1
         Me.TextBoxOnStock = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 
 
 Private Sub OpenLess_Click()
-    If IsNumeric(Me.TextBoxOPEN) Then
-        If CLng(Me.TextBoxOPEN) > 0 Then
+    If IsNumeric(Me.TextBoxOpen) Then
+        If CLng(Me.TextBoxOpen) > 0 Then
             
-            tmp = CLng(Me.TextBoxOPEN)
+            tmp = CLng(Me.TextBoxOpen)
             tmp = tmp - 1
-            Me.TextBoxOPEN = CStr(tmp)
+            Me.TextBoxOpen = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub OpenMore_Click()
-    If IsNumeric(Me.TextBoxOPEN) Then
-        tmp = CLng(Me.TextBoxOPEN)
+    If IsNumeric(Me.TextBoxOpen) Then
+        tmp = CLng(Me.TextBoxOpen)
         tmp = tmp + 1
-        Me.TextBoxOPEN = CStr(tmp)
+        Me.TextBoxOpen = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub OrderedLess_Click()
@@ -360,11 +397,12 @@ Private Sub OrderedLess_Click()
             tmp = tmp - 1
             Me.TextBoxOrdered = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 1
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 1
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub OrderedLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -375,11 +413,12 @@ Private Sub OrderedLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             tmp = tmp - 10
             Me.TextBoxOrdered = CStr(tmp)
             
-            tmp = CLng(Me.TextBoxTotal)
-            tmp = tmp - 10
-            Me.TextBoxTotal = CStr(tmp)
+            'tmp = CLng(Me.TextBoxTotal)
+            'tmp = tmp - 10
+            'Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub OrderedMore_Click()
@@ -388,10 +427,11 @@ Private Sub OrderedMore_Click()
         tmp = tmp + 1
         Me.TextBoxOrdered = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 1
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 1
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub OrderedMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -400,10 +440,39 @@ Private Sub OrderedMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxOrdered = CStr(tmp)
         
-        tmp = CLng(Me.TextBoxTotal)
-        tmp = tmp + 10
-        Me.TextBoxTotal = CStr(tmp)
+        'tmp = CLng(Me.TextBoxTotal)
+        'tmp = tmp + 10
+        'Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxAfterMRD_Change()
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxConfirmed_Change()
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxForMRD_Change()
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxOnStock_Change()
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxOPEN_Change()
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxOrdered_Change()
+    recalc_total_textbox
+End Sub
+
+Private Sub TextBoxTotal_Change()
+    recalc_total_textbox
 End Sub
 
 Private Sub TotLess_Click()
@@ -415,6 +484,7 @@ Private Sub TotLess_Click()
             Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub TotLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -426,6 +496,7 @@ Private Sub TotLess_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
             Me.TextBoxTotal = CStr(tmp)
         End If
     End If
+    recalc_total_textbox
 End Sub
 
 Private Sub TotMore_Click()
@@ -434,6 +505,7 @@ Private Sub TotMore_Click()
         tmp = tmp + 1
         Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
 End Sub
 
 
@@ -443,4 +515,23 @@ Private Sub TotMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         tmp = tmp + 10
         Me.TextBoxTotal = CStr(tmp)
     End If
+    recalc_total_textbox
+End Sub
+
+Private Sub UserForm_Activate()
+    recalc_total_textbox
+End Sub
+
+Private Sub UserForm_Click()
+    recalc_total_textbox
+End Sub
+
+
+Private Sub UserForm_Initialize()
+    recalc_total_textbox
+End Sub
+
+
+Private Sub UserForm_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    recalc_total_textbox
 End Sub

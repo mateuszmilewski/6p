@@ -1,4 +1,22 @@
 Attribute VB_Name = "GlobalFooModule"
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 Public Function parse_from_date_to_yyyycw(d As Date) As String
     
     
@@ -14,20 +32,26 @@ End Function
 
 
 Public Function from_yyyy_cw_to_monday_from_this_week(yyyycw As String) As Date
+
+
+    If CStr(Trim(yyyycw)) = "" Then
+        from_yyyy_cw_to_monday_from_this_week = Date
+    Else
     
-    y = Left(yyyycw, 4)
-    cw = Right(yyyycw, 2)
+        Y = Left(yyyycw, 4)
+        cw = Right(yyyycw, 2)
+            
+        ' -------------------- ' -------------------- ' --------------------
         
-    ' -------------------- ' -------------------- ' --------------------
-    
-    Dim d As Date
-    d = CDate(y & "-01-01")
-    
-    Do
-        d = d + 1
-    Loop Until CLng(Application.WorksheetFunction.IsoWeekNum(CDbl(d))) = CLng(cw)
-    
-    from_yyyy_cw_to_monday_from_this_week = d
+        Dim d As Date
+        d = CDate(Y & "-01-01")
+        
+        Do
+            d = d + 1
+        Loop Until CLng(Application.WorksheetFunction.IsoWeekNum(CDbl(d))) = CLng(cw)
+        
+        from_yyyy_cw_to_monday_from_this_week = d
+    End If
 End Function
 
 Public Sub global_goto_main_sheet_with_selection_on_data(r As Range)
@@ -49,3 +73,100 @@ Public Sub global_goto_main_sheet_with_selection_on_data(r As Range)
         End If
     End If
 End Sub
+
+Public Sub global_form_openers(r As Range)
+    
+    If r.Column > 4 Then
+        If Trim(r.Parent.Cells(r.Row, SIXP.e_link_project)) <> "" Then
+        
+            ' ----------------------------------------------------------
+            ''
+            '
+            
+            ' mamy tutaj dwa obiekty: jeden typu T_Link, drugi typu Linker
+            ' tak jak czesto gesto korzytam z samego Linku, tak linker pozostawal
+            ' w tyle, jednak teraz w tej logice wrocil do lask
+            ' jeszcze kwestia filozoficznam czy przypadkiem Linker nie powinien ze swoimi
+            ' metodami nie byc czescia jako komponent obiektu typu T_Link
+            ' ale powiem szczerze nie chce mi sie juz tego reimplemntowac ponownie
+            Dim used_to_be_txt_from_combobox As String
+            
+            Dim l As T_Link
+            Set l = New T_Link
+            Dim lr As Linker
+            Set lr = New Linker
+            ' l.zrob_mnie_z_argsow proj_txt, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxCW
+            l.zrob_mnie_z_argsow CStr(r.Parent.Cells(r.Row, SIXP.e_link_project)), _
+                CStr(r.Parent.Cells(r.Row, SIXP.e_link_plt)), _
+                CStr(r.Parent.Cells(r.Row, SIXP.e_link_faza)), _
+                CStr(r.Parent.Cells(r.Row, SIXP.e_link_cw))
+                
+            used_to_be_txt_from_combobox = CStr(lr.return_full_concated_r_string_comma_seperated(l))
+            
+            If r.Parent.Name = SIXP.G_order_release_status_sh_nm Then
+                
+                SIXP.DataFlowPodFormMainModule.zrob_order_release_status _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_cont_pnoc_sh_nm Then
+                
+                SIXP.DataFlowPodFormMainModule.zrob_contracted_pnoc _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_del_conf_sh_nm Then
+                
+                SIXP.DataFlowPodFormMainModule.zrob_del_conf _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_open_issues_sh_nm Then
+                
+                SIXP.DataFlowPodFormMainModule.zrob_open_issues _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_osea_sh_nm Then
+                
+                SIXP.DataFlowPodFormMainModule.zrob_osea_scope _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_recent_build_plan_changes_sh_nm Then
+                
+                SIXP.DataFlowPodFormMainModule.zrob_recent_build_plan_changes _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_resp_sh_nm Then
+            
+                SIXP.DataFlowPodFormMainModule.zrob_resp _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_totals_sh_nm Then
+            
+                SIXP.DataFlowPodFormMainModule.zrob_total _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                    
+            ElseIf r.Parent.Name = SIXP.G_xq_sh_nm Then
+            
+                SIXP.DataFlowPodFormMainModule.zrob_xq _
+                    SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
+                
+            End If
+            
+            '
+            ''
+            ' ----------------------------------------------------------
+        End If
+    End If
+End Sub
+
+Public Function global_check_if_empty_and_put_zero(s As String) As String
+    
+    If Trim(s) = "" Then
+        global_check_if_empty_and_put_zero = "0"
+    Else
+        global_check_if_empty_and_put_zero = Trim(s)
+    End If
+End Function
+
+' alias
+Public Function global_cpz(s As String) As String
+    global_cpz = CStr(global_check_if_empty_and_put_zero(CStr(s)))
+End Function

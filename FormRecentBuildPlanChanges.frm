@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormRecentBuildPlanChanges 
    Caption         =   "FormRecentBuildPlanChanges"
-   ClientHeight    =   4815
+   ClientHeight    =   5640
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4545
@@ -13,6 +13,36 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+Private Sub BtnClear_Click()
+    
+    With Me
+        .TextBoxCmnt = ""
+        .TextBoxNoOfVeh = 0
+        .TextBoxReleased = ""
+        .TextBoxTBW = ""
+    End With
+End Sub
+
 ' DTPICKERS!
 ' ------------------------------------------------------------------------------------------------------------------
 ' ------------------------------------------------------------------------------------------------------------------
@@ -33,10 +63,10 @@ Private Sub BtnSubmit_Click()
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    Hide
+    'Hide
     inner_calc
     
-    run_FormMain Me.LabelTitle
+    ' run_FormMain Me.LabelTitle
 End Sub
 
 
@@ -99,10 +129,11 @@ Private Sub inner_calc()
             Set r = r.Offset(1, 0)
         Loop Until Trim(r) = ""
         
+        Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For x = 0 To 3
-            r.Offset(0, x) = arr(x)
-        Next x
+        For X = 0 To 3
+            r.Offset(0, X) = Trim(arr(X))
+        Next X
         
         
         give_data_to_ranges r

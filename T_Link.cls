@@ -7,6 +7,25 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 Public project As String
 Public plt As String
 Public faza As String
@@ -54,21 +73,25 @@ Public Function znajdz_siebie_w_arkuszu(sh As Worksheet) As Range
 End Function
 
 Public Sub zrob_mnie_z_range(r As Range)
+
+    
     
     If r.Column = 1 Then
         project = Trim(r)
         plt = Trim(r.Offset(0, 1))
         faza = Trim(r.Offset(0, 2))
+        cw = 0
+        
         On Error Resume Next
-        cw = CLng(r.Offset(0, 3))
+        cw = CLng(Trim(r.Offset(0, 3)))
     End If
 End Sub
 
 Public Sub zrob_mnie_z_argsow(mproj, mplt, mfaza, mcw)
-    project = mproj
-    plt = mplt
-    faza = mfaza
-    cw = mcw
+    project = Trim(mproj)
+    plt = Trim(mplt)
+    faza = Trim(mfaza)
+    cw = CLng(Trim(mcw))
 End Sub
 
 ' super wazna czesc tej implementacji!

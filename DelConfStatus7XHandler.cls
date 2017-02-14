@@ -7,6 +7,24 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ' klasa ta ma sie zajmowac kontrola danych miedzy order releasami a main ogolnie
 ' dobrze by bylo potrfila wpisywac ladnie aktualny ycw dla update'u arkusza
 ' order release, dzieki czemu bedziemy mogli miec porownanie z aktualnym cw w arkuszu main
@@ -75,9 +93,9 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxHO = "0"
             .TextBoxNA = "0"
             .TextBoxOnStock = "0"
-            .TextBoxOPEN = "0"
+            .TextBoxOpen = "0"
             .TextBoxPotITDC = "0"
-            .TextBoxUNDEF = "0"
+            .TextBoxTooLate = "0"
             
             ' ---------------------------------------------------------
         End With
@@ -101,23 +119,40 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         ' ---------------------------------------------------------
 
 
-                        .TextBoxAfterALTMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_alt - 1))
-                        .TextBoxAfterMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_mrd - 1))
-                        .TextBoxAfterSMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_smrd - 1))
-                        .TextBoxAfterTMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_twomrd - 1))
-                        .TextBoxAfterTSMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_twosmrd - 1))
-                        .TextBoxEDI = CStr(r.Offset(0, SIXP.e_del_conf_edi - 1))
-                        .TextBoxForALTMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_alt - 1))
-                        .TextBoxForMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_mrd - 1))
-                        .TextBoxForSMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_smrd - 1))
-                        .TextBoxForTMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_twomrd - 1))
-                        .TextBoxForTSMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_twosmrd - 1))
-                        .TextBoxHO = CStr(r.Offset(0, SIXP.e_del_conf_ho - 1))
-                        .TextBoxNA = CStr(r.Offset(0, SIXP.e_del_conf_na - 1))
-                        .TextBoxOnStock = CStr(r.Offset(0, SIXP.e_del_conf_on_stock - 1))
-                        .TextBoxOPEN = CStr(r.Offset(0, SIXP.e_del_conf_open - 1))
-                        .TextBoxPotITDC = CStr(r.Offset(0, SIXP.e_del_conf_pot_itdc - 1))
-                        .TextBoxUNDEF = CStr(r.Offset(0, SIXP.e_del_conf_undef - 1))
+                        .TextBoxAfterALTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_alt - 1)))
+                        .TextBoxAfterMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_mrd - 1)))
+                        .TextBoxAfterSMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_smrd - 1)))
+                        .TextBoxAfterTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_twomrd - 1)))
+                        .TextBoxAfterTSMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_twosmrd - 1)))
+                        .TextBoxEDI = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_edi - 1)))
+                        .TextBoxForALTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_alt - 1)))
+                        .TextBoxForMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_mrd - 1)))
+                        .TextBoxForSMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_smrd - 1)))
+                        .TextBoxForTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_twomrd - 1)))
+                        .TextBoxForTSMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_twosmrd - 1)))
+                        .TextBoxHO = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_ho - 1)))
+                        .TextBoxNA = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_na - 1)))
+                        .TextBoxOnStock = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_on_stock - 1)))
+                        .TextBoxOpen = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_open - 1)))
+                        .TextBoxPotITDC = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_pot_itdc - 1)))
+                        .TextBoxTooLate = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_too_late - 1)))
                         
                         ' ---------------------------------------------------------
                     

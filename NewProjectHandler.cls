@@ -7,6 +7,25 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2016 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 Private ac As Range
 
 Private Sub Class_Initialize()
@@ -40,6 +59,8 @@ Private Sub Class_Initialize()
             
             prepare_comboboxes_and_dt_picker
             
+            .CheckBoxWizardContent.Value = False
+            .CheckBoxWizardContent.Enabled = False
             
             
             .Show ' vbModeless
@@ -55,21 +76,21 @@ Private Sub prepare_comboboxes_and_dt_picker()
     With NewProj
         .ComboBoxStatus.Clear
         
-        For x = 2 To 4
+        For X = 2 To 4
         
-            .ComboBoxStatus.AddItem CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
+            .ComboBoxStatus.AddItem CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(X, 1))
             
-            If x = 2 Then
+            If X = 2 Then
                 .ComboBoxStatus.Value = _
-                    CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
+                    CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(X, 1))
             End If
-        Next x
+        Next X
         
         
         .ComboBoxFAZA.Clear
         
         Dim r As Range
-        Set r = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("C2")
+        Set r = ThisWorkbook.Sheets(SIXP.G_PHASE_LIST_SH_NM).Range("B2")
         Do
             ' ----------------------------------
             .ComboBoxFAZA.AddItem CStr(r)

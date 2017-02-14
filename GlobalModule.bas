@@ -30,12 +30,49 @@ Global Const G_config_sh_nm = "config"
 Global Const G_totals_sh_nm = "TOTALS"
 Global Const G_del_conf_sh_nm = "DELIVERY CONFIRMATION STATUS"
 Global Const G_one_pager_sh_nm = "ONE PAGER"
+' ----------------------------------------------------------
+' ----------------------------------------------------------
+Global Const G_chart1_handler_sh_nm = "CHART1_Handler"
+Global Const G_chart2_handler_sh_nm = "CHART2_Handler"
+Global Const G_chart3_handler_sh_nm = "CHART3_Handler"
+
+' nazwy chartow raportu
+' ----------------------------------------------------------
+Global Const G_CHART_1_NM = "Chart PNOC"
+Global Const G_CHART_2_NM = "Chart OSEA"
+Global Const G_CHART_3_NM = "Chart Total"
+' ----------------------------------------------------------
+
+' ----------------------------------------------------------
+' ----------------------------------------------------------
 Global Const G_xq_sh_nm = "XQ HANDLER"
 
+Global Const G_PHASE_LIST_SH_NM = "PHASE_LIST"
+Global Const G_WIZARD_BUFF_SH_NM = "WIZARD_BUFF"
+Global Const G_DEL_CONF_SPECIAL_SH_NM = "delivery_confirmation_special"
+
+Global Const G_CC_SH_NM = "CountryCodes"
+
+
+Global Const POLOWA_CAPACITY_ARKUSZA = 524288 ' 2^19 polowa capacity akursza excela
+Global Const CAPACITY_ARKUSZA = 1048576
 
 
 ' text na guziki
 Global Const G_BTN_TEXT_ADD = "Dodaj"
 Global Const G_BTN_TEXT_EDIT = "Edytuj"
+
+Global Const G_ORDER_RELEASE_STATUS_LIMIT = 8
+Global Const G_RECENT_BUILD_PLAN_CHANGES_LIMIT = 4
+Global Const G_CHART1_CONTRACTED_PNOC_LIMIT = 5
+Global Const G_OPEN_ISSUES_LIMIT = 23
+
+
+
+Global Const G_SEPARATOR = "qwertyuiopasdfghjkl"
+
+
+
+
 
 

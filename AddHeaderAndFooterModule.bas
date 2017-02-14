@@ -1,4 +1,4 @@
-Attribute VB_Name = "RibbonModule"
+Attribute VB_Name = "AddHeaderAndFooterModule"
 ' FORREST SOFTWARE
 ' Copyright (c) 2016 Mateusz Forrest Milewski
 '
@@ -17,12 +17,11 @@ Attribute VB_Name = "RibbonModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Public Sub fill_details(i As IRibbonControl)
-    run_FormMain
+Public Sub addFooter(str As String)
+Attribute addFooter.VB_ProcData.VB_Invoke_Func = " \n14"
+    Sheets(SIXP.G_one_pager_sh_nm).PageSetup.CenterFooter = "&K02-024 " & CStr(str)
 End Sub
 
-
-Public Sub add_new(i As IRibbonControl)
-    add_new_project
+Public Sub addHeader(str As String)
+    Sheets(SIXP.G_one_pager_sh_nm).PageSetup.CenterHeader = "&K02-024 " & CStr(str)
 End Sub
-
