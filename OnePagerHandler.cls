@@ -52,6 +52,9 @@ Private Sub Class_Initialize()
     Set kolekcja_linkow = New Collection
     
     
+    ' procedura z moduly (public sub!)
+    clear_one_pager
+    
     
     ' heading
     ' 1 == main enum
@@ -97,7 +100,7 @@ End Sub
 
 Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
 
-    Dim sh As Worksheet, r As Range, rf As Range, pd As Range
+    Dim sh As Worksheet, r As Range, rf As Range, pD As Range
     
     inicjuj_power_pointa_jesli_taka_jest_konfiguracja e
 
@@ -132,21 +135,21 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
                 ' --------------------------------------------------------------------------
                 
                 If X = SIXP.e_pcs_order_release_status Then
-                    wypelnienie_pcs_order_release_status rf, pd, sh, link_raportu
+                    wypelnienie_pcs_order_release_status rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_pnoc Then
-                    wypelnienie_pcs_pnoc rf, pd, sh, link_raportu
+                    wypelnienie_pcs_pnoc rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_osea Then
-                    wypelnienie_pcs_osea rf, pd, sh, link_raportu
+                    wypelnienie_pcs_osea rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_recent_build_plan_changes Then
-                    wypelnienie_pcs_recent_build_plan_changes rf, pd, sh, link_raportu
+                    wypelnienie_pcs_recent_build_plan_changes rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_totals Then
-                    wypelnienie_pcs_totals rf, pd, sh, link_raportu
+                    wypelnienie_pcs_totals rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_delivery_confirmation Then
-                    wypelnienie_pcs_del_conf rf, pd, sh, link_raportu
+                    wypelnienie_pcs_del_conf rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_resp Then
-                    wypelnienie_pcs_resp rf, pd, sh, link_raportu
+                    wypelnienie_pcs_resp rf, pD, sh, link_raportu
                 ElseIf X = SIXP.e_pcs_open_issues Then
-                    wypelnienie_pcs_open_issues rf, pd, sh, link_raportu
+                    wypelnienie_pcs_open_issues rf, pD, sh, link_raportu
                 End If
                 
                 
@@ -168,6 +171,9 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
             addHeader .plt & " " & .project & " " & .faza & " " & .cw
         End With
         
+        
+        przesortuj_raz_jeszcze_order_release_status_w_zgodzie_z_phase_list
+        
         ' tutaj koniec iteracji dla calego linku odnoszacego sie do projektu
         ' w tym miejscu arkusz one pager jest juz uzupelniony zatem bez cisnien
         ' mozna dokonac wyciagniecia tego projektu do niezaleznego excela albo do kolejnego slajdu w power poincie
@@ -178,6 +184,72 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
     
     pcs(1).Activate
 End Sub
+
+
+Private Sub przesortuj_raz_jeszcze_order_release_status_w_zgodzie_z_phase_list()
+    
+    Dim orsRangeFromSecond As Range
+    Set orsRangeFromSecond = ThisWorkbook.Sheets("ONE PAGER").Range("A4:A10")
+    
+    
+    Dim orderFromPhaseListR1 As Integer, orderFromPhaseListR2 As Integer
+    
+    
+    Dim tmp As String
+    
+    
+    Dim r1 As Range, r2 As Range, ir As Range
+    For Each ir In orsRangeFromSecond
+        If Trim(ir) <> "" Then
+        
+            If Trim(ir.Offset(1, 0)) <> "" Then
+        
+                Set r1 = ir
+                Set r2 = ir.Offset(1, 0)
+                
+                orderFromPhaseListR1 = getOrderFromPhaseList(r1)
+                orderFromPhaseListR2 = getOrderFromPhaseList(r2)
+                
+                If orderFromPhaseListR1 > orderFromPhaseListR2 Then
+                
+                    For X = 1 To 8
+                        tmp = CStr(ir.Offset(0, X - 1).Value)
+                        r1.Offset(0, X - 1).Value = CStr(r2.Offset(0, X - 1).Value)
+                        r2.Offset(0, X - 1).Value = CStr(tmp)
+                    Next X
+                    
+                    
+                    Set ir = ThisWorkbook.Sheets("ONE PAGER").Range("A3")
+                    
+                End If
+                
+            Else
+                Exit For
+            End If
+            
+        End If
+    Next ir
+End Sub
+
+Private Function getOrderFromPhaseList(r As Range) As Integer
+
+    getOrderFromPhaseList = 100
+    
+    Dim plr As Range
+    Set plr = ThisWorkbook.Sheets(SIXP.G_PHASE_LIST_SH_NM).Range("A2")
+    Set plr = plr.Parent.Range(plr, plr.End(xlDown))
+    
+    Dim iplr As Range
+    For Each iplr In plr
+        
+        If Trim(CStr(iplr.Offset(0, 1))) = Trim(CStr(r)) Then
+            getOrderFromPhaseList = Int(iplr)
+            Exit Function
+        End If
+    Next iplr
+    
+    
+End Function
 
 Private Function assign_qty_to_on_stock(mtl As T_Link) As Long
     assign_qty_to_on_stock = CLng(common_assign_del_conf_qty(mtl, e_del_conf_on_stock))
@@ -219,6 +291,10 @@ Private Function assign_qty_to_mrd_staggered_after_yellow(mtl As T_Link) As Long
     assign_qty_to_mrd_staggered_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_smrd))
 End Function
 
+
+
+' obsolete
+' --------------------------------------------------------------------------------------------------------------------
 Private Function assign_qty_to_mrd_staggered_two_for_green(mtl As T_Link) As Long
     assign_qty_to_mrd_staggered_two_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_twosmrd))
 End Function
@@ -226,6 +302,50 @@ End Function
 Private Function assign_qty_to_mrd_staggered_two_after_yellow(mtl As T_Link) As Long
     assign_qty_to_mrd_staggered_two_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_twosmrd))
 End Function
+' --------------------------------------------------------------------------------------------------------------------
+
+
+
+' new
+' --------------------------------------------------------------------------------------------------------------------
+Private Function assign_qty_to_mrd_staggered_oncost_for_green(mtl As T_Link) As Long
+    assign_qty_to_mrd_staggered_oncost_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_soncostmrd))
+End Function
+
+Private Function assign_qty_to_mrd_staggered_oncost_after_yellow(mtl As T_Link) As Long
+    assign_qty_to_mrd_staggered_oncost_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_soncostmrd))
+End Function
+
+
+Private Function assign_qty_to_mrd_oncost_for_green(mtl As T_Link) As Long
+    assign_qty_to_mrd_oncost_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_oncostmrd))
+End Function
+
+Private Function assign_qty_to_mrd_oncost_after_yellow(mtl As T_Link) As Long
+    assign_qty_to_mrd_oncost_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_oncostmrd))
+End Function
+
+
+Private Function assign_qty_to_mrd_alt_two_for_green(mtl As T_Link) As Long
+    assign_qty_to_mrd_alt_two_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_alttwomrd))
+End Function
+
+Private Function assign_qty_to_mrd_alt_two_after_yellow(mtl As T_Link) As Long
+    assign_qty_to_mrd_alt_two_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_alttwomrd))
+End Function
+
+
+Private Function assign_qty_to_mrd_staggered_alt_two_for_green(mtl As T_Link) As Long
+    assign_qty_to_mrd_staggered_alt_two_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_salttwomrd))
+End Function
+
+Private Function assign_qty_to_mrd_staggered_alt_two_after_yellow(mtl As T_Link) As Long
+    assign_qty_to_mrd_staggered_alt_two_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_salttwomrd))
+End Function
+' --------------------------------------------------------------------------------------------------------------------
+
+
+
 
 Private Function assign_qty_to_mrd_two_for_green(mtl As T_Link) As Long
     assign_qty_to_mrd_two_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_twomrd))
@@ -247,7 +367,7 @@ End Function
 
 Private Function assign_qty_to_too_late(mtl As T_Link) As Long
     ' T32 - too late open / alias undef - tak bylo wczesniej
-    assign_qty_to_undef = CLng(common_assign_del_conf_qty(mtl, e_del_conf_too_late))
+    assign_qty_to_too_late = CLng(common_assign_del_conf_qty(mtl, e_del_conf_too_late))
 End Function
 
 
@@ -274,20 +394,20 @@ Private Function common_assign_del_conf_qty(mtl As T_Link, e As E_DEL_CONF_ORDER
         End If
         
         
-        ' 1 kolumna order release status
+        
         If Trim(del_conf_rf) = Trim(mtl.project) Then
         
-            ' 2 kolumna order release status
             If Trim(del_conf_rf.Offset(0, 1)) = Trim(mtl.plt) Then
             
-            
-                ' plus patrzymymy sobie na wszystkie update'y do ostatniego cw
-                ' o ktory sami poprosilismy :)
-                ' dzieki temu ze wykorzystujemy zapis yyyycw
-                ' mozemy korzystac ze zwyklej arytmetyki >< :)
-                If CLng(del_conf_rf.Offset(0, 3)) <= CLng(mtl.cw) Then
-                    Set del_confs(xx) = del_conf_rf
-                    xx = xx + 1
+                If Trim(del_conf_rf.Offset(0, 2)) = Trim(mtl.faza) Then
+                    ' plus patrzymymy sobie na wszystkie update'y do ostatniego cw
+                    ' o ktory sami poprosilismy :)
+                    ' dzieki temu ze wykorzystujemy zapis yyyycw
+                    ' mozemy korzystac ze zwyklej arytmetyki >< :)
+                    If CLng(del_conf_rf.Offset(0, 3)) <= CLng(mtl.cw) Then
+                        Set del_confs(xx) = del_conf_rf
+                        xx = xx + 1
+                    End If
                 End If
             End If
             
@@ -353,13 +473,13 @@ Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGER
         
         ' tutaj akursz one pagera
         Set source_sh = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm)
-        source_sh.Copy before:=w.Sheets(1)
+        source_sh.Copy Before:=w.Sheets(1)
         
         ' pasuje dodac jeszcze arkusze zawierajace zrodla dla
         ' charty 1, 2, 3
-        ThisWorkbook.Sheets(SIXP.G_chart1_handler_sh_nm).Copy before:=w.Sheets(1)
-        ThisWorkbook.Sheets(SIXP.G_chart2_handler_sh_nm).Copy before:=w.Sheets(1)
-        ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm).Copy before:=w.Sheets(1)
+        ThisWorkbook.Sheets(SIXP.G_chart1_handler_sh_nm).Copy Before:=w.Sheets(1)
+        ThisWorkbook.Sheets(SIXP.G_chart2_handler_sh_nm).Copy Before:=w.Sheets(1)
+        ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm).Copy Before:=w.Sheets(1)
         
         
         Dim obiekty As ChartObjects
@@ -384,19 +504,19 @@ Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGER
             
             If Not wykres Is Nothing Then
             
-                If CStr(wykres.Name) Like "*" & CStr(SIXP.G_CHART_1_NM) & "*" Then
+                If CStr(wykres.name) Like "*" & CStr(SIXP.G_CHART_1_NM) & "*" Then
                 
                 
                     
                     ' =CHART1_Handler!$C$5:$E$12
                     wykres.SetSourceData Source:=w.Sheets(SIXP.G_chart1_handler_sh_nm).Range("C5:E12")
                     
-                ElseIf CStr(wykres.Name) Like "*" & CStr(SIXP.G_CHART_2_NM) & "*" Then
+                ElseIf CStr(wykres.name) Like "*" & CStr(SIXP.G_CHART_2_NM) & "*" Then
                 
                     ' =CHART2_Handler!$C$5:$I$6
                     wykres.SetSourceData Source:=w.Sheets(SIXP.G_chart2_handler_sh_nm).Range("C5:I16")
                 
-                ElseIf CStr(wykres.Name) Like "*" & CStr(SIXP.G_CHART_3_NM) & "*" Then
+                ElseIf CStr(wykres.name) Like "*" & CStr(SIXP.G_CHART_3_NM) & "*" Then
                 
                     ' =CHART3_Handler!$C$5:$N$8
                     wykres.SetSourceData Source:=w.Sheets(SIXP.G_chart3_handler_sh_nm).Range("C5:N8")
@@ -502,7 +622,7 @@ Private Function przelicz(slideWidth, imgWidth) As Integer
     przelicz = Int((slideWidth - imgWidth) / 2)
 End Function
 
-Private Sub wypelnienie_pcs_order_release_status(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' specjalne zachowanie dla order release status
     ' tworzymy tabele nie tylko dla wybranego linku ale rowniez dla innych elementow
     ' dla innych faz tego samego projektu - co nieco komplikuje sprawe - jednak nie jest
@@ -550,7 +670,13 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pd As Range, sh As
         Set rf = rf.Offset(1, 0)
     Loop Until Trim(rf) = ""
     
+    
+    
+    ' bubble sorting po dacie trzeciej kolumny?
+    ' tutaj do rozwazenia wykorzystania jednak nie sortowania prostego
+    ' jednak wykorzystania listy PHASE_LSIT
     bubble_sort orders_coll, 3, E_DESCENDING
+    ' phase_list_sort orders_coll
     
     
     ' ok dane najmlodsze na samej "gorze" od pierwszego itemu
@@ -562,7 +688,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pd As Range, sh As
     
     ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("A3:O10").Value = ""
     
-    Set pd = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("A3")
+    Set pD = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("A3")
     For xxx = LBound(orders_coll) To UBound(orders_coll)
     
     
@@ -582,28 +708,28 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pd As Range, sh As
                 If warunek_czy_jest_dana_faza_sie_nie_pojawila(ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("A3:A10"), rf.Offset(0, SIXP.e_link_faza - 1)) Then
                     
                     ' PHASE
-                    pd.Offset(i, 0) = rf.Offset(0, SIXP.e_link_faza - 1)
+                    pD.Offset(i, 0) = rf.Offset(0, SIXP.e_link_faza - 1)
                     
                     ' MRD
-                    pd.Offset(i, 1) = rf.Offset(0, SIXP.e_order_release_mrd - 1)
+                    pD.Offset(i, 1) = rf.Offset(0, SIXP.e_order_release_mrd - 1)
                     
                     ' Build
-                    pd.Offset(i, 3) = rf.Offset(0, SIXP.e_order_release_build - 1)
+                    pD.Offset(i, 3) = rf.Offset(0, SIXP.e_order_release_build - 1)
                     
                     ' bom freeze
-                    pd.Offset(i, 5) = rf.Offset(0, SIXP.e_order_release_bom_freeze - 1)
+                    pD.Offset(i, 5) = rf.Offset(0, SIXP.e_order_release_bom_freeze - 1)
                     
                     ' # of veh
-                    pd.Offset(i, 7) = rf.Offset(0, SIXP.e_order_release_no_of_veh - 1)
+                    pD.Offset(i, 7) = rf.Offset(0, SIXP.e_order_release_no_of_veh - 1)
                     
                     ' orders due
-                    pd.Offset(i, 9) = rf.Offset(0, SIXP.e_order_release_orders_due - 1)
+                    pD.Offset(i, 9) = rf.Offset(0, SIXP.e_order_release_orders_due - 1)
                     
                     ' released
-                    pd.Offset(i, 11) = rf.Offset(0, SIXP.e_order_release_released - 1)
+                    pD.Offset(i, 11) = rf.Offset(0, SIXP.e_order_release_released - 1)
                     
                     ' weeks delay
-                    pd.Offset(i, 13) = rf.Offset(0, SIXP.e_order_release_weeks_delay - 1)
+                    pD.Offset(i, 13) = rf.Offset(0, SIXP.e_order_release_weeks_delay - 1)
                     
                     
                     i = i + 1
@@ -622,7 +748,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pd As Range, sh As
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_pnoc(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' te dane sa pod wykres wraz z danymi historycznymi
     ' - zatem patrzymy na ten sam projekt z perspektywy
     ' roznych CW
@@ -684,7 +810,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pd As Range, sh As Worksheet, tl A
     ' poczatek danych order release na one pagerze
     ThisWorkbook.Sheets(SIXP.G_chart1_handler_sh_nm).Range("D6:F12").Clear
     ' Dim pd As Range
-    Set pd = ThisWorkbook.Sheets(SIXP.G_chart1_handler_sh_nm).Range("D8")
+    Set pD = ThisWorkbook.Sheets(SIXP.G_chart1_handler_sh_nm).Range("D8")
     ' recent_bp_changes()
     For xxx = LBound(fst_chart) To UBound(fst_chart)
     
@@ -711,9 +837,9 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pd As Range, sh As Worksheet, tl A
             If i < SIXP.G_RECENT_BUILD_PLAN_CHANGES_LIMIT Then
                  
                 ' CONTRACTED
-                pd.Offset(i, 0) = rf.Offset(0, SIXP.e_cont_pnoc_chart_contracted - 1)
-                pd.Offset(i, 1) = rf.Offset(0, SIXP.e_cont_pnoc_chart_pnoc - 1)
-                pd.Offset(i, 2) = rf.Offset(0, SIXP.e_link_cw - 1)
+                pD.Offset(i, 0) = rf.Offset(0, SIXP.e_cont_pnoc_chart_contracted - 1)
+                pD.Offset(i, 1) = rf.Offset(0, SIXP.e_cont_pnoc_chart_pnoc - 1)
+                pD.Offset(i, 2) = rf.Offset(0, SIXP.e_link_cw - 1)
                 
                 i = i + 1
     
@@ -736,7 +862,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pd As Range, sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_osea(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -795,7 +921,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pd As Range, sh As Worksheet, tl A
     ' poczatek danych order release na one pagerze
     ThisWorkbook.Sheets(SIXP.G_chart2_handler_sh_nm).Range("C6:I6").Clear
     ' Dim pd As Range
-    Set pd = ThisWorkbook.Sheets(SIXP.G_chart2_handler_sh_nm).Range("C6")
+    Set pD = ThisWorkbook.Sheets(SIXP.G_chart2_handler_sh_nm).Range("C6")
     ' recent_bp_changes()
     For xxx = LBound(sec_chart) To UBound(sec_chart)
     
@@ -805,17 +931,17 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pd As Range, sh As Worksheet, tl A
         If Not rf Is Nothing Then
         
         
-            If pd.Value = "" Then
+            If pD.Value = "" Then
             
-                pd.Value = rf.Offset(0, SIXP.e_osea_order_total - 1)
-                pd.Offset(0, 1).Value = rf.Offset(0, SIXP.e_osea_order_on_stock - 1)
-                pd.Offset(0, 2).Value = rf.Offset(0, SIXP.e_osea_order_ordered - 1)
-                pd.Offset(0, 3).Value = rf.Offset(0, SIXP.e_osea_order_confirmed - 1)
-                pd.Offset(0, 4).Value = rf.Offset(0, SIXP.e_osea_order_for_mrd - 1)
-                pd.Offset(0, 5).Value = rf.Offset(0, SIXP.e_osea_order_after_mrd - 1)
-                pd.Offset(0, 6).Value = rf.Offset(0, SIXP.e_osea_order_open - 1)
+                pD.Value = rf.Offset(0, SIXP.e_osea_order_total - 1)
+                pD.Offset(0, 1).Value = rf.Offset(0, SIXP.e_osea_order_on_stock - 1)
+                pD.Offset(0, 2).Value = rf.Offset(0, SIXP.e_osea_order_ordered - 1)
+                pD.Offset(0, 3).Value = rf.Offset(0, SIXP.e_osea_order_confirmed - 1)
+                pD.Offset(0, 4).Value = rf.Offset(0, SIXP.e_osea_order_for_mrd - 1)
+                pD.Offset(0, 5).Value = rf.Offset(0, SIXP.e_osea_order_after_mrd - 1)
+                pD.Offset(0, 6).Value = rf.Offset(0, SIXP.e_osea_order_open - 1)
                     
-            ElseIf pd.Value <> "" Then
+            ElseIf pD.Value <> "" Then
                 Exit For
             End If
     
@@ -836,7 +962,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pd As Range, sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     
@@ -899,7 +1025,7 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pd As Range, 
     
     ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("R3:Z9").Value = ""
     
-    Set pd = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("R3")
+    Set pD = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("R3")
     ' recent_bp_changes()
     For xxx = LBound(recent_bp_changes) To UBound(recent_bp_changes)
     
@@ -912,28 +1038,32 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pd As Range, 
             ' dzielenie przez dwa poniewaz sa mergi i w sumie przeskakuje na co drugi wiersz
             ' sumarycznie contentu jest 4 jednak wizualnie zaafektowane jest 8 wierszy arkusza
             If Int(i / 2#) < SIXP.G_RECENT_BUILD_PLAN_CHANGES_LIMIT Then
-                 
-                ' PHASE
-                ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("R" & CStr(3 + i)) = _
-                    rf.Offset(0, SIXP.e_link_faza - 1)
-                
-                ' # of veh
-                ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("T" & CStr(3 + i)) = _
-                    rf.Offset(0, SIXP.e_recent_bp_ch_no_of_veh - 1)
-                
-                ' TBW
-                ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("V" & CStr(3 + i)) = _
-                    rf.Offset(0, SIXP.e_recent_bp_ch_tbw - 1)
-                
-                ' order release change
-                ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("X" & CStr(3 + i)) = _
-                    rf.Offset(0, SIXP.e_recent_bp_ch_order_release_ch - 1)
-                
-                ' cmnt
-                ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("Z" & CStr(3 + i)) = _
-                    rf.Offset(0, SIXP.e_recent_bp_ch_comment - 1)
-                
-                i = i + 2
+            
+            
+                If isThereAnyContent(rf) Then
+                     
+                    ' PHASE
+                    ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("R" & CStr(3 + i)) = _
+                        rf.Offset(0, SIXP.e_link_faza - 1)
+                    
+                    ' # of veh
+                    ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("T" & CStr(3 + i)) = _
+                        rf.Offset(0, SIXP.e_recent_bp_ch_no_of_veh - 1)
+                    
+                    ' TBW
+                    ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("V" & CStr(3 + i)) = _
+                        rf.Offset(0, SIXP.e_recent_bp_ch_tbw - 1)
+                    
+                    ' order release change
+                    ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("X" & CStr(3 + i)) = _
+                        rf.Offset(0, SIXP.e_recent_bp_ch_order_release_ch - 1)
+                    
+                    ' cmnt
+                    ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("Z" & CStr(3 + i)) = _
+                        rf.Offset(0, SIXP.e_recent_bp_ch_comment - 1)
+                    
+                    i = i + 2
+                End If
     
             Else
                 Exit For
@@ -954,7 +1084,24 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pd As Range, 
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_totals(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+
+Private Function isThereAnyContent(rf As Range) As Boolean
+    isThereAnyContent = False
+    
+    dlugoscStr = 0
+    dlugoscStr = dlugoscStr + Len(Trim(rf.Offset(0, SIXP.e_recent_bp_ch_no_of_veh - 1)))
+    dlugoscStr = dlugoscStr + Len(Trim(rf.Offset(0, SIXP.e_recent_bp_ch_tbw - 1)))
+    dlugoscStr = dlugoscStr + Len(Trim(rf.Offset(0, SIXP.e_recent_bp_ch_order_release_ch - 1)))
+    dlugoscStr = dlugoscStr + Len(Trim(rf.Offset(0, SIXP.e_recent_bp_ch_comment - 1)))
+    
+    
+    If dlugoscStr > 0 Then
+        isThereAnyContent = True
+    End If
+    
+End Function
+
+Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -1011,10 +1158,10 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pd As Range, sh As Worksheet, tl
     
     i = 0
     ' poczatek danych order release na one pagerze
-    ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm).Range("C6:N7").Clear
+    ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm).Range("C6:N10").Clear
     'Dim pd As Range
-    Set pd = ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm).Range("C6")
-    ' recent_bp_changes()
+    Set pD = ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm).Range("C6")
+
     For xxx = LBound(third_chart) To UBound(third_chart)
     
     
@@ -1022,38 +1169,40 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pd As Range, sh As Worksheet, tl
         
         If Not rf Is Nothing Then
         
+            Debug.Print rf.Offset(0, 3)
         
-            If pd.Value = "" Then
+        
+            If pD.Value = "" Then
             
-                pd.Value = rf.Offset(0, SIXP.e_5p_total)
+                pD.Value = rf.Offset(0, SIXP.e_5p_total - 1)
                 ' N/A
-                pd.Offset(0, 1).Value = rf.Offset(0, SIXP.e_5p_na)
+                pD.Offset(0, 1).Value = rf.Offset(0, SIXP.e_5p_na - 1)
                 
                 ' ITDC
-                pd.Offset(0, 2).Value = rf.Offset(0, SIXP.e_5p_itdc)
+                pD.Offset(0, 2).Value = rf.Offset(0, SIXP.e_5p_itdc - 1)
                 
                 ' PNOC
-                pd.Offset(0, 3).Value = rf.Offset(0, SIXP.e_5p_pnoc)
+                pD.Offset(0, 3).Value = rf.Offset(0, SIXP.e_5p_pnoc - 1)
                 
                 ' FMA OSEA
-                pd.Offset(0, 4).Value = rf.Offset(0, SIXP.e_5p_fma_osea)
+                pD.Offset(0, 4).Value = rf.Offset(0, SIXP.e_5p_fma_osea - 1)
                 ' FMA EUR
-                pd.Offset(1, 4).Value = rf.Offset(0, SIXP.e_5p_fma_eur)
+                pD.Offset(1, 4).Value = rf.Offset(0, SIXP.e_5p_fma_eur - 1)
                 
                 ' ORDERED
-                pd.Offset(0, 6).Value = rf.Offset(0, SIXP.e_5p_ordered)
+                pD.Offset(0, 6).Value = rf.Offset(0, SIXP.e_5p_ordered - 1)
                 
                 ' TRANSIT arrived / in transit / future
-                pd.Offset(0, 8).Value = rf.Offset(0, SIXP.e_5p_arrived)
-                pd.Offset(1, 8).Value = rf.Offset(0, SIXP.e_5p_in_transit)
-                pd.Offset(2, 8).Value = rf.Offset(0, SIXP.e_5p_future)
+                pD.Offset(0, 8).Value = rf.Offset(0, SIXP.e_5p_arrived - 1)
+                pD.Offset(1, 8).Value = rf.Offset(0, SIXP.e_5p_in_transit - 1)
+                pD.Offset(2, 8).Value = rf.Offset(0, SIXP.e_5p_future - 1)
                 
                 
                 ' ppaps
-                pd.Offset(0, 10).Value = rf.Offset(0, SIXP.e_5p_ppap_status)
-                pd.Offset(0, 11).Value = rf.Offset(0, SIXP.e_5p_no_ppap_status)
+                pD.Offset(0, 10).Value = rf.Offset(0, SIXP.e_5p_ppap_status - 1)
+                pD.Offset(0, 11).Value = rf.Offset(0, SIXP.e_5p_no_ppap_status - 1)
                     
-            ElseIf pd.Value <> "" Then
+            ElseIf pD.Value <> "" Then
                 Exit For
             End If
     
@@ -1074,7 +1223,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pd As Range, sh As Worksheet, tl
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_del_conf(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     'Dim pd As Range, sh As Worksheet
@@ -1083,52 +1232,92 @@ Private Sub wypelnienie_pcs_del_conf(rf As Range, pd As Range, sh As Worksheet, 
     Set ssh = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm)
     
     
+    With ssh
+        ' zera na del confie
+        ' ------------------
+        
+        ' calci after & before
+        .Range("AA25:AA31") = 0
+        .Range("AC25:AC31") = 0
+        
+        
+        ' green
+        .Range("T25:T28") = 0
+        
+        
+        ' red
+        .Range("T30:T32") = 0
+    End With
+    
+    
     ' GREEN GROUP
     ' ----------------------------------------------------------------
     ' T25 - on stock
-    Set pd = ssh.Range("T25")
-    pd.Value = assign_qty_to_on_stock(tl)
+    Set pD = ssh.Range("T25")
+    pD.Value = assign_qty_to_on_stock(tl)
     
     ' T26 - EDI
-    Set pd = ssh.Range("T26")
-    pd.Value = assign_qty_to_edi(tl)
+    Set pD = ssh.Range("T26")
+    pD.Value = assign_qty_to_edi(tl)
     
     ' T27 - H/O
-    Set pd = ssh.Range("T27")
-    pd.Value = assign_qty_to_h_slash_o(tl)
+    Set pD = ssh.Range("T27")
+    pD.Value = assign_qty_to_h_slash_o(tl)
     
     ' T28 - N/A
-    Set pd = ssh.Range("T28")
-    pd.Value = assign_qty_to_n_slash_a(tl)
+    Set pD = ssh.Range("T28")
+    pD.Value = assign_qty_to_n_slash_a(tl)
     ' ----------------------------------------------------------------
     
     ' MRD FOR / AFTER GROUP
     ' ----------------------------------------------------------------
     
     ' AA25 - MRD
-    Set pd = ssh.Range("AA25")
-    pd.Value = assign_qty_to_mrd_for_green(tl)
+    Set pD = ssh.Range("AA25")
+    pD.Value = assign_qty_to_mrd_for_green(tl)
     ssh.Range("AC25").Value = assign_qty_to_mrd_after_yellow(tl)
     
     ' AA26 - MRD alt
-    Set pd = ssh.Range("AA26")
-    pd.Value = assign_qty_to_mrd_alt_for_green(tl)
+    Set pD = ssh.Range("AA26")
+    pD.Value = assign_qty_to_mrd_alt_for_green(tl)
     ssh.Range("AC26").Value = assign_qty_to_mrd_alt_after_yellow(tl)
     
+    
     ' AA27 - MRD stagg
-    Set pd = ssh.Range("AA27")
-    pd.Value = assign_qty_to_mrd_staggered_for_green(tl)
+    Set pD = ssh.Range("AA27")
+    pD.Value = assign_qty_to_mrd_staggered_for_green(tl)
     ssh.Range("AC27").Value = assign_qty_to_mrd_staggered_after_yellow(tl)
     
-    ' AA28 - MRD stagg two
-    Set pd = ssh.Range("AA28")
-    pd.Value = assign_qty_to_mrd_staggered_two_for_green(tl)
-    ssh.Range("AC28").Value = assign_qty_to_mrd_staggered_two_after_yellow(tl)
+    ' AA28 - MRD stagg oncost
+    Set pD = ssh.Range("AA28")
+    pD.Value = assign_qty_to_mrd_staggered_oncost_for_green(tl)
+    ssh.Range("AC28").Value = assign_qty_to_mrd_staggered_oncost_after_yellow(tl)
     
-    ' AA29 - MRD two
-    Set pd = ssh.Range("AA29")
-    pd.Value = assign_qty_to_mrd_two_for_green(tl)
-    ssh.Range("AC29").Value = assign_qty_to_mrd_two_after_yellow(tl)
+    ' AA29 - MRD oncost
+    Set pD = ssh.Range("AA29")
+    pD.Value = assign_qty_to_mrd_oncost_for_green(tl)
+    ssh.Range("AC29").Value = assign_qty_to_mrd_oncost_after_yellow(tl)
+    
+    ' AA30 - MRD oncost
+    Set pD = ssh.Range("AA30")
+    pD.Value = assign_qty_to_mrd_alt_two_for_green(tl)
+    ssh.Range("AC30").Value = assign_qty_to_mrd_alt_two_after_yellow(tl)
+    
+    
+    ' AA31 - MRD oncost
+    Set pD = ssh.Range("AA31")
+    pD.Value = assign_qty_to_mrd_staggered_alt_two_for_green(tl)
+    ssh.Range("AC31").Value = assign_qty_to_mrd_staggered_alt_two_after_yellow(tl)
+    
+    ' AA28 - MRD stagg two - obsolete
+    'Set pD = ssh.Range("AA28")
+    'pD.Value = assign_qty_to_mrd_staggered_two_for_green(tl)
+    'ssh.Range("AC28").Value = assign_qty_to_mrd_staggered_two_after_yellow(tl)
+    
+    ' AA29 - MRD two - obsolete
+    'Set pD = ssh.Range("AA29")
+    'pD.Value = assign_qty_to_mrd_two_for_green(tl)
+    'ssh.Range("AC29").Value = assign_qty_to_mrd_two_after_yellow(tl)
     ' ----------------------------------------------------------------
     
     
@@ -1136,24 +1325,24 @@ Private Sub wypelnienie_pcs_del_conf(rf As Range, pd As Range, sh As Worksheet, 
     ' ----------------------------------------------------------------
     
     ' T30 - open
-    Set pd = ssh.Range("T30")
-    pd.Value = assign_qty_to_open(tl)
+    Set pD = ssh.Range("T30")
+    pD.Value = assign_qty_to_open(tl)
     
     ' T31 - pot itdc
-    Set pd = ssh.Range("T31")
-    pd.Value = assign_qty_to_pot_itdc(tl)
+    Set pD = ssh.Range("T31")
+    pD.Value = assign_qty_to_pot_itdc(tl)
     
     ' T32 - undef / too late
-    Set pd = ssh.Range("T32")
+    Set pD = ssh.Range("T32")
     ' too late
-    pd.Value = assign_qty_to_too_late(tl)
+    pD.Value = assign_qty_to_too_late(tl)
     
     ' ----------------------------------------------------------------
     
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_resp(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     Dim ssh As Worksheet
@@ -1163,26 +1352,26 @@ Private Sub wypelnienie_pcs_resp(rf As Range, pd As Range, sh As Worksheet, tl A
     ' resp
     ' ----------------------------------------------------------------
     ' a37 PEM
-    Set pd = ssh.Range("A37")
-    pd.Value = "PEM: " & find_PEM_for_this_rep(tl)
+    Set pD = ssh.Range("A37")
+    pD.Value = "PEM: " & find_PEM_for_this_rep(tl)
     
     ' k37 PPM
-    Set pd = ssh.Range("K37")
-    pd.Value = "PPM: " & find_PPM_for_this_rep(tl)
+    Set pD = ssh.Range("K37")
+    pD.Value = "PPM: " & find_PPM_for_this_rep(tl)
     
     ' u37 FMA
-    Set pd = ssh.Range("U37")
-    pd.Value = "FMA: " & find_FMA_for_this_rep(tl)
+    Set pD = ssh.Range("U37")
+    pD.Value = "FMA: " & find_FMA_for_this_rep(tl)
     
     'pd.Select
     
     ' a39 SQE
-    Set pd = ssh.Range("A39")
-    pd.Value = "SQE: " & find_SQE_for_this_rep(tl)
+    Set pD = ssh.Range("A39")
+    pD.Value = "SQE: " & find_SQE_for_this_rep(tl)
     
     ' k39 SQE
-    Set pd = ssh.Range("K39")
-    pd.Value = "OSEA: " & find_OSEA_for_this_rep(tl)
+    Set pD = ssh.Range("K39")
+    pD.Value = "OSEA: " & find_OSEA_for_this_rep(tl)
     
     
     ' ----------------------------------------------------------------
@@ -1249,7 +1438,7 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     Loop Until r.Row = 1
 End Function
 
-Private Sub wypelnienie_pcs_open_issues(rf As Range, pd As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
 
     ' ------------------------------------------------------------------------------------------------
     
@@ -1313,7 +1502,7 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pd As Range, sh As Workshee
     
     ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("AG3:AP25").Value = ""
     
-    Set pd = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("AG3")
+    Set pD = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("AG3")
     ' recent_bp_changes()
     For xxx = LBound(open_issues_arr) To UBound(open_issues_arr)
     

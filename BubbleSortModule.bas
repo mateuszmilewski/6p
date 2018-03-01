@@ -1,4 +1,87 @@
 Attribute VB_Name = "BubbleSortModule"
+' FORREST SOFTWARE
+' Copyright (c) 2018 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+
+Public Sub phase_list_sort(ByRef c() As Range)
+    
+    
+    Dim pl As Worksheet, plr As Range
+    Set pl = ThisWorkbook.Sheets(SIXP.G_PHASE_LIST_SH_NM)
+    Set plr = pl.Range("A2")
+    
+    Set plr = pl.Range(plr, plr.End(xlDown))
+    
+    
+    Dim orderForR1 As Integer, orderForR2 As Integer
+    Dim r1 As Range, r2 As Range, o02r1 As Range, o02r2 As Range, tmp As Range
+    
+    
+    For i = LBound(c) To UBound(c)
+    
+        If Not c(i + 1) Is Nothing Then
+        
+            
+            Set r1 = c(i)
+            Set r2 = c(i + 1)
+            
+            Set o02r1 = r1.Offset(0, 2)
+            Set o02r2 = r2.Offset(0, 2)
+            
+            orderForR1 = Int(checkOrder(o02r1, plr))
+            orderForR2 = Int(checkOrder(o02r2, plr))
+            
+        
+        
+            If Int(orderForR1) > Int(orderForR2) Then
+            
+                Set tmp = r1
+                Set c(i) = r2
+                Set c(i + 1) = r1
+            
+            
+                ' zaczynamy od -1 poniewaz next i da interacje do przodu tak, czy inaczej
+                i = LBound(c) - 1
+            End If
+        Else
+            Exit For
+        End If
+    Next i
+    
+    
+    
+End Sub
+
+Private Function checkOrder(r, plr) As Integer
+
+    checkOrder = 100
+
+    For Each iplr In plr
+        
+        If Trim(CStr(iplr.Offset(0, 1))) = Trim(CStr(r)) Then
+            checkOrder = Int(iplr)
+            Exit Function
+        End If
+    Next iplr
+End Function
+
 ' bubble_range_sort
 Public Sub bubble_sort(ByRef c() As Range, ofst, e As E_SORT_TYPE)
     

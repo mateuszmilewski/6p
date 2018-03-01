@@ -72,6 +72,9 @@ Global Const G_OPEN_ISSUES_LIMIT = 23
 Global Const G_SEPARATOR = "qwertyuiopasdfghjkl"
 
 
+Global Const G_MAIN_TB_FROM_Q = "main_table"
+
+
 
 
 

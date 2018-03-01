@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 ' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ' klasa ta ma sie zajmowac kontrola danych miedzy order releasami a main ogolnie
 ' dobrze by bylo potrfila wpisywac ladnie aktualny ycw dla update'u arkusza
 ' order release, dzieki czemu bedziemy mogli miec porownanie z aktualnym cw w arkuszu main

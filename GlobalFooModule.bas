@@ -103,47 +103,47 @@ Public Sub global_form_openers(r As Range)
                 
             used_to_be_txt_from_combobox = CStr(lr.return_full_concated_r_string_comma_seperated(l))
             
-            If r.Parent.Name = SIXP.G_order_release_status_sh_nm Then
+            If r.Parent.name = SIXP.G_order_release_status_sh_nm Then
                 
                 SIXP.DataFlowPodFormMainModule.zrob_order_release_status _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_cont_pnoc_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_cont_pnoc_sh_nm Then
                 
                 SIXP.DataFlowPodFormMainModule.zrob_contracted_pnoc _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_del_conf_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_del_conf_sh_nm Then
                 
                 SIXP.DataFlowPodFormMainModule.zrob_del_conf _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_open_issues_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_open_issues_sh_nm Then
                 
                 SIXP.DataFlowPodFormMainModule.zrob_open_issues _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_osea_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_osea_sh_nm Then
                 
                 SIXP.DataFlowPodFormMainModule.zrob_osea_scope _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_recent_build_plan_changes_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_recent_build_plan_changes_sh_nm Then
                 
                 SIXP.DataFlowPodFormMainModule.zrob_recent_build_plan_changes _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_resp_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_resp_sh_nm Then
             
                 SIXP.DataFlowPodFormMainModule.zrob_resp _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_totals_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_totals_sh_nm Then
             
                 SIXP.DataFlowPodFormMainModule.zrob_total _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)
                     
-            ElseIf r.Parent.Name = SIXP.G_xq_sh_nm Then
+            ElseIf r.Parent.name = SIXP.G_xq_sh_nm Then
             
                 SIXP.DataFlowPodFormMainModule.zrob_xq _
                     SIXP.G_BTN_TEXT_EDIT, CStr(used_to_be_txt_from_combobox)

@@ -50,9 +50,15 @@ Public Sub catch(ByRef w As Workbook)
     
     
     
-    inner_6p_time master, details, puses
+    
     
     ' ------------------------------------------------------------------------------
+End Sub
+
+
+Public Sub go_with_6p_time()
+    
+    inner_6p_time master, details, puses
 End Sub
 
 

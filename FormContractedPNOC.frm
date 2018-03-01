@@ -46,20 +46,18 @@ Private Sub BtnImport_Click()
     
     
     ' rngv - range values, range labels
-    Dim rngv As Range, rngl As Range, h1_total
+    Dim rngv As Range, rngl As Range, total_total
     Set rngv = buff.Cells(3, 1)
     Set rngl = buff.Cells(2, 1)
-    Set h1_total = buff.Range("H1")
+    Set total_total = buff.Range("B4")
     
     
     With buff
-    
-        ' 2: TOTAL FMA*
-        ' 3. values
+
         Me.TextBoxPNOC.Value = CStr(SIXP.GetDataFromWizardBufferModule.get_all_values("PNOC", rngl))
-        Me.TextBox1.Value = CStr(h1_total.Value)
-        ' Me.TextBoxContracted = CStr(CLng(buff.Range("H1"))) '  - CLng(Me.TextBoxPNOC))
-        ' Me.TextBoxForALTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_ALT_MRD))
+        ' total total
+        Me.TextBox1.Value = CStr(CLng(total_total.Value)) ' - CLng(Me.TextBoxPNOC.Value))
+        Me.TextBoxContracted = CStr(CLng(Me.TextBox1.Value) - CLng(Me.TextBoxPNOC))
     End With
     
     

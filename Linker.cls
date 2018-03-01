@@ -30,7 +30,15 @@ Attribute VB_Exposed = False
 
 Public Function return_full_concated_r_string(link As T_Link) As String
     
-    return_concated_r_string = Trim(link.project) & Trim(link.plt) & Trim(link.faza) & Trim(link.cw)
+    tmp = Trim(link.project) & Trim(link.plt) & Trim(link.faza) & Trim(link.cw)
+    tmp = Replace(tmp, " ", "")
+    tmp = Replace(tmp, ",", "")
+    tmp = Replace(tmp, ".", "")
+    tmp = Replace(tmp, "/", "")
+    tmp = Replace(tmp, "\", "")
+    
+    
+    return_full_concated_r_string = CStr(tmp)
 End Function
 
 Public Function return_full_concated_r_string_comma_seperated(link As T_Link) As String

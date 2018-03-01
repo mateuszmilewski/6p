@@ -61,6 +61,7 @@ Public Function znajdz_siebie_w_arkuszu(sh As Worksheet) As Range
                 If Trim(CStr(r.Offset(0, 2))) = Trim(CStr(faza)) Then
                     If CLng(r.Offset(0, 3)) = (CLng(cw)) Then
                     
+                        lr = r.Row
                         Set znajdz_siebie_w_arkuszu = r
                         
                         Exit Do

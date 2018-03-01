@@ -80,14 +80,30 @@ Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAG
         Set r = r.Offset(1, 0)
     Loop Until Trim(r) = ""
     
-    Dim oph As OnePagerHandler
-    Set oph = New OnePagerHandler
     
-    oph.przypisz_kolekcje_linkow kolekcja_linkow
-    oph.generuj_raporty e
     
-    Set oph = Nothing
     
+    ' heurystycznie dobieram zbior ilosci raportow miedzy o a 100 wydaje sie rozsadnym by nie pozwalac generowac wiecej niz 100 raportow czyz nie? :D
+    If kolekcja_linkow.Count > 0 And kolekcja_linkow.Count < 100 Then
+    
+        
+        ans = MsgBox("Logika wygenerowala: " & kolekcja_linkow.Count & " potencjalnych raportow; chcesz kontynuowac?", vbYesNo)
+        
+        
+        If ans = vbYes Then
+            Dim oph As OnePagerHandler
+            Set oph = New OnePagerHandler
+            
+            oph.przypisz_kolekcje_linkow kolekcja_linkow
+            oph.generuj_raporty e
+            
+            Set oph = Nothing
+        Else
+            MsgBox "Nic nie zostanie wygenerowane... Dobranoc :D!"
+        End If
+    Else
+        MsgBox "niewlasciwa konfiguracja startowa... err: !(kolekcja_linkow.Count > 0 And kolekcja_linkow.Count < 100)"
+    End If
     
     Set kolekcja_linkow = Nothing
 End Sub

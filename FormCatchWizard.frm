@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormCatchWizard 
    Caption         =   "Catch Wizard"
-   ClientHeight    =   4395
+   ClientHeight    =   5565
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4710
@@ -33,6 +33,17 @@ Attribute VB_Exposed = False
 
 
 Public czy_start_pochodzi_z_open_issues As Boolean
+Public wez_text_z_open_issues_form As String
+
+Private Sub BtnGetFrom6P_Click()
+    Hide
+
+    ' in import from 6p module
+    ' -------------------------------------
+    innerRunLogicFor6P Me
+    ' -------------------------------------
+
+End Sub
 
 Private Sub BtnImportOpenIssues_Click()
     inner_ False
@@ -78,23 +89,56 @@ Private Sub inner_(go_back As Boolean)
         ' -------------------------------------------------------------------------------------------------------------------
         '''
         ''
-        Me.BtnImportOpenIssues.Enabled = True
-        Me.BtnJustImport.Enabled = False
-        Me.BtnSubmit.Enabled = False
+        'Me.BtnImportOpenIssues.Enabled = True
+        'Me.BtnJustImport.Enabled = False
+        'Me.BtnSubmit.Enabled = False
         
-        Dim m_sh As Worksheet, r As Range
         
-        Dim oi As Worksheet
-        Set oi = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
+        ' jednak zanim cos zrobimy sprawdzmy jeszcze czy mamy zaciagniety label
+        If Me.wez_text_z_open_issues_form <> "" Then
         
-        Set m_sh = wizard_workbook.Sheets("MASTER")
-        Set r = m_sh.Range("A2")
         
-        ' -------------------------------------------------------------------------------------------------------------------
-        ' pracujemy na wizard_workbook - musimy zaciagnac komentarze per duns!
-        ''
-        '
-        ' przygotujemy najpierw slownik dla kazdego dunsu kolejne open issues
+            
+            
+        
+            Dim m_sh As Worksheet, r As Range, details_sh As Worksheet
+            
+            Dim oi As Worksheet
+            Set oi = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
+            
+            Set m_sh = wizard_workbook.Sheets("MASTER")
+            Set details_sh = wizard_workbook.Sheets("DETAILS")
+            Set r = m_sh.Range("A2")
+            
+            
+            ' ale nawet jesli mamy juz tekst z open issues fajnie by bylo sprawdzic czy to jest ten sam td
+            ' If sprawdz_zgodnosc_danych_miedzy_arkuszem_master_a_labelka(wh) Then
+            If True Then ' usunalem to srogie sprawdzanie danych ponowne!
+            
+                ' -------------------------------------------------------------------------------------------------------------------
+                ' pracujemy na wizard_workbook - musimy zaciagnac komentarze per duns!
+                ''
+                '
+                ' przygotujemy najpierw slownik dla kazdego dunsu kolejne open issues
+                Dim oih As OpenIssues8XHandler
+                Set oih = New OpenIssues8XHandler
+                
+                oih.currProj = CStr(wez_text_z_open_issues_form)
+                
+                With oih
+                   ' .label = Me.wez_text_z_open_issues_formd
+                    If .wypelnij_slownik_dunsami_jako_kluczami_pod_open_issues_z_mass_impotu_z_wizarda(oi, m_sh, r, details_sh) Then
+                        .zrzuc_dane_ze_slownika_do_arkusza_open_issues
+                        .usun_duplikaty
+                        .otworz_formularz_ponownie
+                    Else
+                        .otworz_formularz_ponownie_bez_danych Me.wez_text_z_open_issues_form
+                    End If
+                End With
+            Else
+                MsgBox "niezgodnosc danych miedzy rekordem z ktorego uruchomiono mass import a wizardem!"
+            End If
+        End If
         '
         ''
         ' -------------------------------------------------------------------------------------------------------------------
@@ -102,6 +146,8 @@ Private Sub inner_(go_back As Boolean)
         '''
         ' -------------------------------------------------------------------------------------------------------------------
     Else
+    
+        wh.go_with_6p_time
         
         Me.BtnImportOpenIssues.Enabled = False
         Me.BtnJustImport.Enabled = True
@@ -123,7 +169,9 @@ Private Sub inner_(go_back As Boolean)
                 ' -----------------------------------------------
                 '
                 ' odblokowuje opcje zaciagania z buffa ale musi jeszcze user dokliknac
-                .CheckBoxWizardContent.Enabled = True
+                ' bylo blokowanie, ale jednak zostawie to - dam mu zaciagnac dane normalnie
+                ' walidacje dam nieco pozniej czy te dane sie trzymaja kupy
+                ' .CheckBoxWizardContent.Enabled = True
                 .CheckBoxWizardContent.Value = False
                 
                 .Show
@@ -132,3 +180,31 @@ Private Sub inner_(go_back As Boolean)
         End If
     End If
 End Sub
+
+
+Private Function sprawdz_zgodnosc_danych_miedzy_arkuszem_master_a_labelka(wh As WizardHandler) As Boolean
+    sprawdz_zgodnosc_danych_miedzy_arkuszem_master_a_labelka = False
+    
+    
+    ' TODO: check compatibility between data
+    ' ---------------------------------------------------------------------------------------
+    
+    ' sprawdzmy czy wystepuje ta sama proj, faza, plt
+    
+    ' tutaj na proj mniejsza restrykcja: zamiast sprawdzac czy faktycznie sa spacje miedzy kolejnymi argumentami
+    ' wrzucam po prostu wildcardy
+    If CStr(Me.wez_text_z_open_issues_form) Like "*" & wh.get_proj() & "*MY*" & wh.get_my & "*" Then
+        If CStr(Me.wez_text_z_open_issues_form) Like "*" & CStr(wh.get_faza) & "*" Then
+            If CStr(Me.wez_text_z_open_issues_form) Like "*" & CStr(wh.get_plt) & "*" Then
+            
+                ' dosyc ostre warunki zostaly spelnione
+                ' mozemy mysle zabrac sie za import danych
+                ' -------------------------------------------------------------------------------------
+                sprawdz_zgodnosc_danych_miedzy_arkuszem_master_a_labelka = True
+                ' -------------------------------------------------------------------------------------
+            End If
+        End If
+    End If
+    
+    ' ---------------------------------------------------------------------------------------
+End Function

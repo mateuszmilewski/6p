@@ -86,7 +86,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxConfirmed = "0"
             .TextBoxForMRD = "0"
             .TextBoxOnStock = "0"
-            .TextBoxOpen = "0"
+            .TextBoxOPEN = "0"
             .TextBoxOrdered = "0"
             .TextBoxTotal = "0"
             
@@ -122,7 +122,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_for_mrd - 1)))
                         .TextBoxOnStock = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_on_stock - 1)))
-                        .TextBoxOpen = _
+                        .TextBoxOPEN = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_open - 1)))
                         .TextBoxOrdered = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_ordered - 1)))
@@ -131,7 +131,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         
                         On Error Resume Next
                         .TextBoxTotal = CStr(Int(.TextBoxAfterMRD) + Int(.TextBoxConfirmed) + _
-                            Int(.TextBoxForMRD) + Int(.TextBoxOnStock) + Int(.TextBoxOpen) + _
+                            Int(.TextBoxForMRD) + Int(.TextBoxOnStock) + Int(.TextBoxOPEN) + _
                             Int(.TextBoxOrdered))
 
                         ' ---------------------------------------------------------

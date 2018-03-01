@@ -29,10 +29,16 @@ Attribute VB_Exposed = False
 Public Sub usun_wszystko()
     
     stale_wygodne_odniesienie = "A2:AA500000"
+    strrows = "2:500000"
+    
     
     
     Dim sh As Worksheet, rng As Range
     For Each sh In ThisWorkbook.Sheets
+    
+        On Error Resume Next
+        sh.ShowAllData
+        
     
         Set rng = sh.Cells(1, 1)
         
@@ -40,8 +46,13 @@ Public Sub usun_wszystko()
             If rng.Offset(0, 1) = "Plant Code" Then
                 If rng.Offset(0, 2) = "Faza" Then
                     If rng.Offset(0, 3) = "CW" Then
+                    
+                        
+                        
+                    
                         sh.Range(stale_wygodne_odniesienie).ClearComments
                         sh.Range(stale_wygodne_odniesienie).Value = ""
+                        sh.Rows(strrows).Delete xlUp
                     End If
                 End If
             End If
@@ -150,6 +161,9 @@ Private Sub iteracja_po_kolejnych_wierszach_dla(shnm As String, strlink As Strin
     
     Dim sh As Worksheet
     Set sh = ThisWorkbook.Sheets(shnm)
+    
+    On Error Resume Next
+    sh.ShowAllData
     
     Dim r As Range
     Set r = sh.Range("A2")

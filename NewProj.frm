@@ -42,6 +42,77 @@ Private Sub BtnClear_Click()
     Me.TextBoxCW = SIXP.GlobalFooModule.parse_from_date_to_yyyycw(Date)
 End Sub
 
+Private Sub BtnCopy_Click()
+
+    If Trim(Me.TextBoxProj.Value) <> "" Then
+    
+        If CStr(Me.TextBoxSelectedCW) <> CStr(Me.TextBoxCW) Then
+        
+            Dim m As Worksheet
+            Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
+            
+            Dim r As Range
+            ' oprocz tego co pisze w nazwie funkcji dodatkowo sprawdza te same projekty
+            ' z roznymi cw i podputyuje co z tym fantem zrobic
+            ' jesli chodzi o status to nie ma znaczenia
+            Set r = validate_and_then_go_to_first_empty_cell(m)
+            
+            r.Value = Me.TextBoxProj
+            r.Offset(0, 1).Value = Me.TextBoxPlt
+            r.Offset(0, 2).Value = Me.TextBoxFaza
+            r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
+            r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
+    
+    
+            skopiuj_dane_z_innego_projektu CStr(Me.TextBoxProj), CStr(Me.TextBoxPlt), CStr(Me.TextBoxFaza), CStr(Me.TextBoxCW), CStr(Me.ComboBoxStatus)
+        End If
+    End If
+End Sub
+
+
+Private Sub skopiuj_dane_z_innego_projektu(proj, plt, faza, cw, status)
+    
+    Hide
+    
+    Dim myNewLink As T_Link
+    Set myNewLink = New T_Link
+    
+    myNewLink.zrob_mnie_z_argsow proj, plt, faza, cw
+    
+    
+    Dim sh As Worksheet
+    Set sh = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
+    Dim r As Range
+    Set r = sh.Range("A2")
+    
+    GetProject.ListBoxProjects.Clear
+    GetProject.ListBoxPLT.Clear
+    GetProject.ListBoxFaza.Clear
+    GetProject.ListBoxCW.Clear
+    
+    
+    Do
+        ' --------------------------------------------------------------------------------------------------------------------
+        Set SIXP.GetProject.newLink = myNewLink
+        ' SIXP.GetProject.ListBoxProjects.AddItem qinnercncat(r, r.Offset(0, 1), r.Offset(0, 2), r.Offset(0, 3), r.Offset(0, 4))
+        GetProject.ListBoxProjects.AddItem r
+        GetProject.ListBoxPLT.AddItem r.Offset(0, 1)
+        GetProject.ListBoxFaza.AddItem r.Offset(0, 2)
+        GetProject.ListBoxCW.AddItem r.Offset(0, 3)
+        ' --------------------------------------------------------------------------------------------------------------------
+        Set r = r.Offset(1, 0)
+    Loop Until Trim(r) = ""
+    
+    
+    SIXP.GetProject.Show
+    
+End Sub
+
+Private Function qinnercncat(r, r01, r02, r03, r04)
+    
+    qinnercncat = "" & r & ";" & r01 & ";" & r02 & ";" & r03 & ";" & r04
+End Function
+
 Private Sub BtnDelete_Click()
 
 
@@ -53,7 +124,7 @@ Private Sub BtnDelete_Click()
         Dim m As Worksheet, r As Range
         Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
         
-        If ThisWorkbook.ActiveSheet.Name = m.Name Then
+        If ThisWorkbook.ActiveSheet.name = m.name Then
         
             ' ==================================================
             Set r = validate_and_then_go_to_active_cell
@@ -100,7 +171,7 @@ Private Sub BtnEdit_Click()
     Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
     
     
-    If ThisWorkbook.ActiveSheet.Name = m.Name Then
+    If ThisWorkbook.ActiveSheet.name = m.name Then
     
     
         ' ==================================================
@@ -129,13 +200,21 @@ Private Sub BtnEdit_Click()
 End Sub
 
 Private Sub BtnGoToDetails_Click()
-    Hide
-    Dim l As T_Link
-    Set l = New T_Link
-    Dim lr As Linker
-    Set lr = New Linker
-    l.zrob_mnie_z_argsow Me.TextBoxProj, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxCW
-    run_FormMain CStr(lr.return_full_concated_r_string_comma_seperated(l))
+
+
+    If Trim(Me.TextBoxProj.Value) = "" Then
+        MsgBox "Brak nazwy projektu!"
+    Else
+
+        Hide
+        Dim l As T_Link
+        Set l = New T_Link
+        Dim lr As Linker
+        Set lr = New Linker
+        l.zrob_mnie_z_argsow Me.TextBoxProj, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxCW
+        run_FormMain CStr(lr.return_full_concated_r_string_comma_seperated(l))
+    
+    End If
 End Sub
 
 Private Sub BtnImport_Click()
@@ -155,10 +234,11 @@ Private Sub BtnImport_Click()
         ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("a1:zz1000").Clear
         
         FormCatchWizard.ListBox1.Clear
+        FormCatchWizard.ListBox1.MultiSelect = fmMultiSelectSingle
         
         For Each w In Workbooks
             With FormCatchWizard.ListBox1
-                .AddItem w.Name
+                .AddItem w.name
             End With
         Next w
         FormCatchWizard.czy_start_pochodzi_z_open_issues = False
@@ -204,29 +284,88 @@ End Sub
 Private Sub BtnSubmit_Click()
     ' tutaj dodajemy nowy projekt na spod w arkuszu main
     
-    Dim m As Worksheet
-    Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
+    If Me.TextBoxProj <> "" And Me.TextBoxPlt <> "" And Me.TextBoxFaza.Value <> "" Then
     
-    Dim r As Range
-    ' oprocz tego co pisze w nazwie funkcji dodatkowo sprawdza te same projekty
-    ' z roznymi cw i podputyuje co z tym fantem zrobic
-    ' jesli chodzi o status to nie ma znaczenia
-    Set r = validate_and_then_go_to_first_empty_cell(m)
     
-    r.Value = Me.TextBoxProj
-    r.Offset(0, 1).Value = Me.TextBoxPlt
-    r.Offset(0, 2).Value = Me.TextBoxFaza
-    r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
-    r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
+        Dim m As Worksheet
+        Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
+        
+        Dim r As Range
+        ' oprocz tego co pisze w nazwie funkcji dodatkowo sprawdza te same projekty
+        ' z roznymi cw i podputyuje co z tym fantem zrobic
+        ' jesli chodzi o status to nie ma znaczenia
+        Set r = validate_and_then_go_to_first_empty_cell(m)
+        
+        r.Value = Me.TextBoxProj
+        r.Offset(0, 1).Value = Me.TextBoxPlt
+        r.Offset(0, 2).Value = Me.TextBoxFaza
+        r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
+        r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
+        
+        If Me.CheckBoxWizardContent.Value Then
+        
+            ' zbieramy dodatkowo info z buffa
+            ' ---------------------------------------------------------------------------
+            ' MsgBox "not implemented yet!"
+            If sprawdzCzyMaSensZaciagacDaneZWizardBuff() Then
+                doMassImport r
+            Else
+                MsgBox "nie ma czego importowac z wizard buffer!"
+            End If
+            ' ---------------------------------------------------------------------------
+        End If
     
-    If Me.CheckBoxWizardContent.Value Then
     
-        ' zbieramy dodatkowo info z buffa
-        ' ---------------------------------------------------------------------------
-        MsgBox "not implemented yet!"
-        ' ---------------------------------------------------------------------------
+    Else
+        ' no project at all pls fill data
+        MsgBox "no input data!"
     End If
 End Sub
+
+
+Private Function sprawdzCzyMaSensZaciagacDaneZWizardBuff() As Boolean
+
+
+    sprawdzCzyMaSensZaciagacDaneZWizardBuff = False
+    sprawdzCzyMaSensZaciagacDaneZWizardBuff = checkWizardBufferCells()
+    
+End Function
+
+Private Function checkWizardBufferCells() As Boolean
+    
+    checkWizardBufferCells = False
+    tmp = False
+    
+    Dim sh As Worksheet
+    Set sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
+    
+    Dim r As Range
+    Set r = sh.Range("A1")
+    
+    If r.Value = "6P" Then
+        tmp = True
+    End If
+    
+    If sh.Cells(2, 1).Value Like "*TOTAL FMA*" Then
+        tmp = tmp And True
+    End If
+    
+    If sh.Range("C1").Value Like "*Y*CW*" Then
+        tmp = tmp And True
+    End If
+    
+    If sh.Range("G1").Value = "IN SCOPE" Then
+        tmp = tmp And True
+    End If
+    
+    If sh.Range("O1").Value <> "" Then
+        tmp = tmp And True
+    End If
+    
+    checkWizardBufferCells = tmp
+    
+End Function
+
 
 
 
@@ -294,39 +433,46 @@ Private Sub BtnZduplikuj_Click()
     
     If ans = vbOK Then
     
-        If CStr(Me.TextBoxSelectedCW) <> CStr(Me.TextBoxCW) Then
     
-            Dim m As Worksheet
-            Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
-            
-            Dim r As Range
-            ' oprocz tego co pisze w nazwie funkcji dodatkowo sprawdza te same projekty
-            ' z roznymi cw i podputyuje co z tym fantem zrobic
-            ' jesli chodzi o status to nie ma znaczenia
-            Set r = validate_and_then_go_to_first_empty_cell(m)
-            
-            r.Value = Me.TextBoxProj
-            r.Offset(0, 1).Value = Me.TextBoxPlt
-            r.Offset(0, 2).Value = Me.TextBoxFaza
-            r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
-            r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
-            
-            ' tl_old i new roznica sie data
-            Dim tl_old As T_Link, tl_new As T_Link
-            Set tl_old = New T_Link
-            Set tl_new = New T_Link
-            tl_old.zrob_mnie_z_argsow Me.TextBoxProj, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxSelectedCW
-            tl_new.zrob_mnie_z_argsow Me.TextBoxProj, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxCW
-            dane_dla_nowego_skopiuj_ze_starego tl_old, tl_new, m
-            
-        Else
+        If Trim(Me.TextBoxProj.Value) <> "" Then
         
-            MsgBox "probujesz zrobic duplikat z ta sama data - uzyj przycisku edytuj!"
+    
+            If CStr(Me.TextBoxSelectedCW) <> CStr(Me.TextBoxCW) Then
+        
+                Dim m As Worksheet
+                Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
+                
+                Dim r As Range
+                ' oprocz tego co pisze w nazwie funkcji dodatkowo sprawdza te same projekty
+                ' z roznymi cw i podputyuje co z tym fantem zrobic
+                ' jesli chodzi o status to nie ma znaczenia
+                Set r = validate_and_then_go_to_first_empty_cell(m)
+                
+                r.Value = Me.TextBoxProj
+                r.Offset(0, 1).Value = Me.TextBoxPlt
+                r.Offset(0, 2).Value = Me.TextBoxFaza
+                r.Offset(0, 3).Value = CLng(Me.TextBoxCW)
+                r.Offset(0, 4).Value = Me.ComboBoxStatus.Value
+                
+                ' tl_old i new roznica sie data
+                Dim tl_old As T_Link, tl_new As T_Link
+                Set tl_old = New T_Link
+                Set tl_new = New T_Link
+                tl_old.zrob_mnie_z_argsow Me.TextBoxProj, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxSelectedCW
+                tl_new.zrob_mnie_z_argsow Me.TextBoxProj, Me.TextBoxPlt, Me.TextBoxFaza, Me.TextBoxCW
+                dane_dla_nowego_skopiuj_ze_starego tl_old, tl_new, m
+                
+            Else
+            
+                MsgBox "probujesz zrobic duplikat z ta sama data - uzyj przycisku edytuj!"
+            End If
+        Else
+            MsgBox "Brak nazwy projektu!"
         End If
     End If
 End Sub
 
-Private Sub dane_dla_nowego_skopiuj_ze_starego(old_tl As T_Link, new_tl As T_Link, m As Worksheet)
+Public Sub dane_dla_nowego_skopiuj_ze_starego(old_tl As T_Link, new_tl As T_Link, m As Worksheet)
 
     ' lecimy przez wszystkie arkusza zawierajaca dane
     ' nie wrzucaj z gory!

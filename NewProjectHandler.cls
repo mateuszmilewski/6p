@@ -48,19 +48,26 @@ Private Sub Class_Initialize()
             End If
         End If
         
+        
+        
+        
         With NewProj
         
-            .TextBoxProj = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_project))
-            .TextBoxFaza = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_faza))
-            .TextBoxSelectedCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
-            .TextBoxCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
-            .TextBoxPlt = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_plt))
+            If ac.Row > 1 Then
+            
+                .TextBoxProj = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_project))
+                .TextBoxFaza = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_faza))
+                .TextBoxSelectedCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
+                .TextBoxCW = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_cw))
+                .TextBoxPlt = Trim(ac.Parent.Cells(ac.Row, SIXP.e_link_plt))
+                
+            End If
             
             
             prepare_comboboxes_and_dt_picker
             
             .CheckBoxWizardContent.Value = False
-            .CheckBoxWizardContent.Enabled = False
+            ' .CheckBoxWizardContent.Enabled = False
             
             
             .Show ' vbModeless

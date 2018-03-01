@@ -1,6 +1,6 @@
 Attribute VB_Name = "VersionModule"
 ' FORREST SOFTWARE
-' Copyright (c) 2016 Mateusz Forrest Milewski
+' Copyright (c) 2018 Mateusz Forrest Milewski
 '
 ' Permission is hereby granted, free of charge,
 ' to any person obtaining a copy of this software and associated documentation files (the "Software"),
@@ -370,3 +370,193 @@ Attribute VB_Name = "VersionModule"
 '-----------------------------------------------------------
 ' juz w wersji 0.32 rozpoczalem implementacje dla zaciagania danych na podstawie requestow marcina b
 ' plus anny k - dodalem narazie prosta logike w formularzu contracted pnoc zaciagania po respie
+
+
+' v 0.34 2017-02-21
+'-----------------------------------------------------------
+' ciagniemy dalej temat masowego zaciagania danych dla open issues
+' narazie idzie to jak po grudzie bo  w sumie musze zaimplementowac calego cruda...
+' w tej wersji (0.34) zrobiony delete 1 to 1
+
+
+' v 0.35 2017-02-21
+'-----------------------------------------------------------
+' fajnie fajnie - pora na wielki powrot do mass importu z konkretnego wizarda
+' jesli dobrze pamietam ustalenia klarownie okreslaly, ze zaciagamy komentarze z odowiedniej kolumny
+' i robimy rekord per duns, czyli mamy sytuacje wiele do jednego proponuje zatem aby komentarze z wielu pnow
+' wsadzac po dwoch enterach - potem pomyslimy jak to moze lepiej rozwiazac
+' ah no i najwazniejsze ... trzeba by okreslic ktore z elementow maja byc wyswietlane
+'
+' mass import for open issues to test!
+
+
+' v 0.36 2017-03-10
+'-----------------------------------------------------------
+' duzo zmian: moja logika nie byla wlasciwa...
+' 1. sprawdz czy filtr na arkuszu master ma wplyw na dzialanie (tak samo z resta dla arkusza PICKUPS)
+' 2. jest problem z iloscia pusow - cos kiepsko podliczyl to ostatnio w przykladzie Ewy
+' 3. zle licze totale (patrze na zbyt duza ilosc danych)
+' 4. open issues  ma byc zaciagane tylko z poszczegolnych rekordow - tj. dla wszystkich red, yellow (green juz nie)
+' 5. del conf musi byc bardziej ogarniety - nie patrzymy globalnie tylko na tematy ktore sa w zgodzie z fma resp.
+
+' potrzebna jest w ogole dokladniejsza logika zaciagania informacji - buffer zaciaga zbyt swobodnie
+
+
+' v 0.37 2017-03-13
+'-----------------------------------------------------------
+' potrzebne korekty po wizycie u FMA Coordow - podliczanie z importu nie jest dokladne
+' zawyzone wartosci w wielu przypadkach - w open issues nie ma byc zaciagane wszystko,
+' a tylko elementy czerwone oraz zolte
+' opis jest zawarty przede wszystkim na content wersji 0.36
+'
+'
+' funkcjonalnosc mass import dla open issues jest wlasciwie gotowa - odbiera commenty tylko dla yellow i red
+' dopracowanie usuwania danych z formularza open issues!
+'
+'-----------------------------------------------------------
+
+
+
+' v 0.37 2017-03-13
+'-----------------------------------------------------------
+'
+' platforma pod zamkniecie tematu bledow z poczatku 2017
+' - wyrafinowana funkcjonalnosc usuwania usuwania open issues
+' rozszerzenie open issues tak, aby pracowalo z danymi w zgodzie z CRUDEM
+' plus mass import ogranicza sie do do zaciagania comments tylko z czesci typu yellow,
+' badz red - do testow ta wersje chcemy :)
+'
+'-----------------------------------------------------------
+
+
+' v 0.38 2017-03-21
+'-----------------------------------------------------------
+''
+'
+' kolejna odslona zabezpieczajaca - open issues - prawie gotowe
+'
+'
+' still some issues: V0.39
+' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+'
+'' V 0.40 - NOWE DEL CONFY -  zgodnie ze zmianami w collectorze i wizardzie
+'-----------------------------------------------------------
+
+' --------------------------------------------------------------------------------------
+'
+'' V 0.41 - small graph changes
+'-----------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+'
+'' V 0.42 - fixy po kolejnym spotkaniu z coords
+
+' - zmiana globalna projektu - by auto dopasowac reszte arkuszy
+' - MY nie moze byc z przecinkiem - lepiej za wczasu blokowac takie rzeczy
+' - problem z przerzucaniem danych trojkolorwych - jest jakies dziwne przesuniecie danych
+' - TOTAL zle policzony
+' - open issues - brak formatowania dla wiekszej ilosci textu
+'-----------------------------------------------------------
+'
+
+' --------------------------------------------------------------------------------------
+'' V 0.43 -
+
+' - kolejna faza rozbudowy mass importu dla wszystkich arkusz w jednym strzale
+' --------------------------------------------------------------------------------------
+
+' --------------------------------------------------------------------------------------
+'' V 0.44
+
+' powersja prototypu rozszerzona o mozliwosc zaciagania info z starej wersji raportu (Q)
+' --------------------------------------------------------------------------------------
+
+' --------------------------------------------------------------------------------------
+
+' --------------------------------------------------------------------------------------
+' v 0.45
+' wersja z udanym elementem migracyjnym
+' --------------------------------------------------------------------------------------
+' v 0.46
+' fix na one pagerze - zle dane wstawia
+' - szczegolnie na czesci recent build plan changes
+' - i del confach
+' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+' v 0.47
+'
+' fix na del conf na one pager
+
+' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+' v 0.48
+'
+' - fix on checkbox for adding new and do mass import - sth wrong with shiet is...
+' - proba wygenerowana pustych danych generuje petle nieskonczona
+' - po importcie msgbox by sie przydal
+' - do testu mass import dla open issues - zmiany ukladu kolumn w wizardzie? - done?
+' - freeze panes added
+
+' --------------------------------------------------------------------------------------
+
+
+
+' --------------------------------------------------------------------------------------
+' v 0.49
+'
+' - mass import should work now
+' - fix na nieskonczonej petli
+
+' --------------------------------------------------------------------------------------
+
+' --------------------------------------------------------------------------------------
+' v 0.5
+'
+' - uproszczenie schematu mass import: open issues - brak agresji w doborze nazwy projektu
+
+' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+' v 0.51
+'
+' - dla roznych faz zle tworzy One Pagera...
+
+' --------------------------------------------------------------------------------------
+
+
+
+' --------------------------------------------------------------------------------------
+' v 0.52
+'
+' - dopasowanie mismatchy dla configa kasi
+' - wpisanie foo dla sortowania po phase list jednak jej ostateczne nie-uzycie - poniewaz
+' - najpierw dane trzeba w kolekcji poukladac chronologicznie
+
+' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+' v 0.53
+'
+' Po pierwszym fma review 2018-02-28:
+' - zle zlicza sie total
+' - poprawa logiki dla pus recv, it, future
+' - stestowac sorotwanie pierwszej tabeli (order release status)
+' - poprawic widocznosc komentarzy dla open issues - wiecej miejsca?
+' - zrobic open issues jako element opcjonalny
+' - przygotowac sie do zmiany sekcji del conf
+' - opisac nazwa po prostu del conf
+' - z tego co widze to logika osea nie jest do konca zrobiona
+' - dodtkowa funkcjonalnosc lean - ktora usuwa puste zaciagniecia z quartera
+' - kopiowanie danych pomiedzy 6p
+' - power point nie pobiera headera
+' --------------------------------------------------------------------------------------

@@ -1,4 +1,12 @@
-Attribute VB_Name = "GlobalCrossTriangleCircleModule"
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "OpenIssueItem"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
 ' FORREST SOFTWARE
 ' Copyright (c) 2018 Mateusz Forrest Milewski
 '
@@ -17,23 +25,20 @@ Attribute VB_Name = "GlobalCrossTriangleCircleModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Public Function putCross() As Range
-    Set putCross = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("cross")
-End Function
-Public Function putTriangle() As Range
-    Set putTriangle = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("triangle")
-End Function
-Public Function putCircle() As Range
-    Set putCircle = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("circle")
-End Function
+Public widoczny As Boolean
+Public cmnt As String
+Public duns As String
+
+' tutaj od razu bedziemy miec pns.count jako # of pns
+Public pns As Collection
 
 
-Public Sub setCross(ictrl As IRibbonControl)
-    ActiveCell = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("cross")
-End Sub
-Public Sub setTriangle(ictrl As IRibbonControl)
-    ActiveCell = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("triangle")
-End Sub
-Public Sub setCircle(ictrl As IRibbonControl)
-    ActiveCell = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("circle")
-End Sub
+Public delivery_date As String
+Public part_slash_supplier As String
+
+Public status As String
+
+
+' tu bedzie na poczatku customowy wymysl
+' z mojej strony ktory bedzie zlepkiem info
+Public name As String

@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormDelConfStatus 
    Caption         =   "FormDelConfStatus"
-   ClientHeight    =   7890
+   ClientHeight    =   10560
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   9465
@@ -30,6 +30,13 @@ Attribute VB_Exposed = False
 ' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+
+
+
+
 
 Private Sub BtnGoBack_Click()
     Hide
@@ -88,32 +95,7 @@ Private Sub inner_calc()
 
 
    ' Public Enum E_DEL_CONF_ORDER
-   '     e_del_conf_on_stock = 5
-   '     e_del_conf_edi
-   '     e_del_conf_ho
-   '     e_del_conf_na
-   '
-   '
-   '     e_del_conf_for_mrd
-   '     e_del_conf_after_mrd
-   '
-   '     e_del_conf_for_smrd
-   '     e_del_conf_after_smrd
-   '
-   '     e_del_conf_for_twomrd
-   '     e_del_conf_after_twomrd
-   '
-   '     e_del_conf_for_twosmrd
-   '     e_del_conf_after_twosmrd
-   '
-   '     e_del_conf_for_alt
-   '     e_del_conf_after_alt
-   '
-   '     e_del_conf_open
-   '     e_del_conf_too_late
-   '     e_del_conf_pot_itdc
-
-   ' End Enum
+   
 
 
     Dim r As Range
@@ -179,19 +161,34 @@ Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_edi) = CStr(Me.TextBoxEDI)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_for_alt) = CStr(Me.TextBoxForALTMRD)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_for_mrd) = CStr(Me.TextBoxForMRD)
-    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_smrd) = CStr(Me.TextBoxForSMRD)
-    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_twomrd) = CStr(Me.TextBoxForTMRD)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_smrd) = CStr(Me.TextBoxFORSMRD)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_twomrd) = CStr(Me.TextBoxFORTMRD)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_for_twosmrd) = CStr(Me.TextBoxForTSMRD)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_ho) = CStr(Me.TextBoxHO)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_na) = CStr(Me.TextBoxNA)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_on_stock) = CStr(Me.TextBoxOnStock)
-    r.Parent.Cells(r.Row, SIXP.e_del_conf_open) = CStr(Me.TextBoxOpen)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_open) = CStr(Me.TextBoxOPEN)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_too_late) = CStr(Me.TextBoxTooLate)
     r.Parent.Cells(r.Row, SIXP.e_del_conf_pot_itdc) = CStr(Me.TextBoxPotITDC)
     
+    ' new data - new del confs
+    ' ---------------------------------------------------------------------------------------
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_alttwomrd) = CStr(Me.TextBoxForALTTWOMRD)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_after_alttwomrd) = CStr(Me.TextBoxAfterALTTWOMRD)
+    
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_salttwomrd) = CStr(Me.TextBoxForSALTTWOMRD)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_after_salttwomrd) = CStr(Me.TextBoxAfterSALTTWOMRD)
+    
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_oncostmrd) = CStr(Me.TextBoxForONCOSTMRD)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_after_oncostmrd) = CStr(Me.TextBoxAfterONCOSTMRD)
+    
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_for_soncostmrd) = CStr(Me.TextBoxForSONCOSTMRD)
+    r.Parent.Cells(r.Row, SIXP.e_del_conf_after_soncostmrd) = CStr(Me.TextBoxAfterSONCOSTMRD)
+    ' ---------------------------------------------------------------------------------------
 End Sub
 
 ' textboxes with qtyies bedzie w sumie 22 procedury wiec bierz sie do roboty
+' w 2018 doszly kolejne 8 textboxow
 ' ------------------------------------------------------------------------------------------------------------------
 ' ------------------------------------------------------------------------------------------------------------------
 
@@ -212,6 +209,192 @@ End Sub
 '        Me.TextBoxNoOfVeh = CStr(tmp)
 '    End If
 'End Sub
+
+
+Private Sub AfterSONCOSTMRDLess_Click()
+    If IsNumeric(Me.TextBoxAfterSONCOSTMRD) Then
+        If CLng(Me.TextBoxAfterSONCOSTMRD) > 0 Then
+            tmp = CLng(Me.TextBoxAfterSONCOSTMRD)
+            tmp = tmp - 1
+            Me.TextBoxAfterSONCOSTMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub AfterSONCOSTMRDMore_Click()
+    If IsNumeric(Me.TextBoxAfterSONCOSTMRD) Then
+        tmp = CLng(Me.TextBoxAfterSONCOSTMRD)
+        tmp = tmp + 1
+        Me.TextBoxAfterSONCOSTMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+
+Private Sub ForSONCOSTMRDLess_Click()
+    If IsNumeric(Me.TextBoxForSONCOSTMRD) Then
+        If CLng(Me.TextBoxForSONCOSTMRD) > 0 Then
+            tmp = CLng(Me.TextBoxForSONCOSTMRD)
+            tmp = tmp - 1
+            Me.TextBoxForSONCOSTMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub ForSONCOSTMRDMore_Click()
+    If IsNumeric(Me.TextBoxForSONCOSTMRD) Then
+        tmp = CLng(Me.TextBoxForSONCOSTMRD)
+        tmp = tmp + 1
+        Me.TextBoxForSONCOSTMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub AfterONCOSTMRDLess_Click()
+    If IsNumeric(Me.TextBoxAfterONCOSTMRD) Then
+        If CLng(Me.TextBoxAfterONCOSTMRD) > 0 Then
+            tmp = CLng(Me.TextBoxAfterONCOSTMRD)
+            tmp = tmp - 1
+            Me.TextBoxAfterONCOSTMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub AfterONCOSTMRDMore_Click()
+    If IsNumeric(Me.TextBoxAfterONCOSTMRD) Then
+        tmp = CLng(Me.TextBoxAfterONCOSTMRD)
+        tmp = tmp + 1
+        Me.TextBoxAfterONCOSTMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub ForONCOSTMRDLess_Click()
+    If IsNumeric(Me.TextBoxForONCOSTMRD) Then
+        If CLng(Me.TextBoxForONCOSTMRD) > 0 Then
+            tmp = CLng(Me.TextBoxForONCOSTMRD)
+            tmp = tmp - 1
+            Me.TextBoxForONCOSTMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub ForONCOSTMRDMore_Click()
+    If IsNumeric(Me.TextBoxForONCOSTMRD) Then
+        tmp = CLng(Me.TextBoxForONCOSTMRD)
+        tmp = tmp + 1
+        Me.TextBoxForONCOSTMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+
+Private Sub AfterSALTTWOMRDLess_Click()
+    If IsNumeric(Me.TextBoxAfterSALTTWOMRD) Then
+        If CLng(Me.TextBoxAfterSALTTWOMRD) > 0 Then
+            tmp = CLng(Me.TextBoxAfterSALTTWOMRD)
+            tmp = tmp - 1
+            Me.TextBoxAfterSALTTWOMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub AfterSALTTWOMRDMore_Click()
+    If IsNumeric(Me.TextBoxAfterSALTTWOMRD) Then
+        tmp = CLng(Me.TextBoxAfterSALTTWOMRD)
+        tmp = tmp + 1
+        Me.TextBoxAfterSALTTWOMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+
+End Sub
+
+Private Sub ForSALTTWOMRDLess_Click()
+
+    If IsNumeric(Me.TextBoxForSALTTWOMRD) Then
+        If CLng(Me.TextBoxForSALTTWOMRD) > 0 Then
+            tmp = CLng(Me.TextBoxForSALTTWOMRD)
+            tmp = tmp - 1
+            Me.TextBoxForSALTTWOMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+
+End Sub
+
+Private Sub ForSALTTWOMRDMore_Click()
+    If IsNumeric(Me.TextBoxForSALTTWOMRD) Then
+        tmp = CLng(Me.TextBoxForSALTTWOMRD)
+        tmp = tmp + 1
+        Me.TextBoxForSALTTWOMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+
+Private Sub ForALTTWOMRDLess_Click()
+
+    If IsNumeric(Me.TextBoxForALTTWOMRD) Then
+        If CLng(Me.TextBoxForALTTWOMRD) > 0 Then
+            tmp = CLng(Me.TextBoxForALTTWOMRD)
+            tmp = tmp - 1
+            Me.TextBoxForALTTWOMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+
+End Sub
+
+Private Sub ForALTTWOMRDMore_Click()
+    If IsNumeric(Me.TextBoxForALTTWOMRD) Then
+        tmp = CLng(Me.TextBoxForALTTWOMRD)
+        tmp = tmp + 1
+        Me.TextBoxForALTTWOMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+
+Private Sub AfterALTTWOMRDLess_Click()
+    If IsNumeric(Me.TextBoxAfterALTTWOMRD) Then
+        If CLng(Me.TextBoxAfterALTTWOMRD) > 0 Then
+            tmp = CLng(Me.TextBoxAfterALTTWOMRD)
+            tmp = tmp - 1
+            Me.TextBoxAfterALTTWOMRD = CStr(tmp)
+        End If
+    End If
+    
+    zmiany_na_totalach
+End Sub
+
+Private Sub AfterALTTWOMRDMore_Click()
+    If IsNumeric(Me.TextBoxAfterALTTWOMRD) Then
+        tmp = CLng(Me.TextBoxAfterALTTWOMRD)
+        tmp = tmp + 1
+        Me.TextBoxAfterALTTWOMRD = CStr(tmp)
+    End If
+    
+    zmiany_na_totalach
+End Sub
 
 Private Sub AfterALTMRDLess_Click()
     If IsNumeric(Me.TextBoxAfterALTMRD) Then
@@ -325,7 +508,6 @@ End Sub
 
 Private Sub DelConfFromBuffBtn_Click()
     
-    ' MsgBox "not implemented yet!"
     
     
     
@@ -352,13 +534,32 @@ Private Sub DelConfFromBuffBtn_Click()
         Me.TextBoxForMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_MRD))
         
         Me.TextBoxAfterSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_Staggered_MRD))
-        Me.TextBoxForSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_Staggered_MRD))
+        Me.TextBoxFORSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_Staggered_MRD))
         
-        Me.TextBoxAfterTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_TWO_MRD))
-        Me.TextBoxForTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_TWO_MRD))
+        ' obsolete
+        'Me.TextBoxAfterTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_TWO_MRD))
+        'Me.TextBoxFORTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_TWO_MRD))
         
-        Me.TextBoxAfterTSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_TWO_Staggered_MRD))
-        Me.TextBoxForTSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_TWO_Staggered_MRD))
+        'Me.TextBoxAfterTSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_TWO_Staggered_MRD))
+        'Me.TextBoxForTSMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_TWO_Staggered_MRD))
+        
+        
+        ' new
+        ' ---------------------------------------------------------------------------------------------------------------------
+        
+        Me.TextBoxAfterALTTWOMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_ALT_TWO_MRD))
+        Me.TextBoxForALTTWOMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_ALT_TWO_MRD))
+        
+        Me.TextBoxAfterSALTTWOMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_Staggered_ALT_TWO_MRD))
+        Me.TextBoxForSALTTWOMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_Staggered_ALT_TWO_MRD))
+        
+        Me.TextBoxAfterONCOSTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_ONCOST_MRD))
+        Me.TextBoxForONCOSTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_ONCOST_MRD))
+        
+        Me.TextBoxAfterSONCOSTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("AFTER", rngl, E_DCS_Staggered_ONCOST_MRD))
+        Me.TextBoxForSONCOSTMRD = CStr(SIXP.GetDataFromWizardBufferModule.get_after_before_mrd("BEFORE", rngl, E_DCS_Staggered_ONCOST_MRD))
+        
+        ' ---------------------------------------------------------------------------------------------------------------------
     End With
         
         
@@ -385,7 +586,7 @@ Private Sub DelConfFromBuffBtn_Click()
         ' zatem ponizsza logika nie ma sensu zeby byla powielana w wykorzystaniu tak jak to mialo miejsce w greensach
         ' czy polach uzaleznionych od MRD
         ' me.TextBoxOpen = cstr(sixp.GetDataFromWizardBufferModule.get_del_conf_string_without_mrd(rngl...)
-        Me.TextBoxOpen = "0"
+        Me.TextBoxOPEN = "0"
         Me.TextBoxTooLate = "0"
         ' wyjatekiem jest pot itdc, poniewaz jako tako mozna wyrazic ten element za pomoca stringa zamieszcznego w wizardzie
         Me.TextBoxPotITDC = CStr(SIXP.GetDataFromWizardBufferModule.get_del_conf_string_without_mrd(rngl, E_DCS_POTITDC))
@@ -394,16 +595,24 @@ Private Sub DelConfFromBuffBtn_Click()
     sprawdz_czy_pola_przypadkiem_nie_sa_puste
     
     Dim suma_wszystkich_boxow As Long
+    
+    ' TWO & STWO removed
     suma_wszystkich_boxow = CLng(Me.TextBoxAfterALTMRD.Value) + _
         CLng(Me.TextBoxAfterMRD.Value) + CLng(Me.TextBoxAfterSMRD.Value) + _
-        CLng(Me.TextBoxAfterTMRD.Value) + CLng(Me.TextBoxAfterTSMRD.Value) + _
         CLng(Me.TextBoxEDI.Value) + CLng(Me.TextBoxForALTMRD.Value) + _
-        CLng(Me.TextBoxForMRD.Value) + CLng(Me.TextBoxForSMRD.Value) + _
-        CLng(Me.TextBoxForTMRD.Value) + CLng(Me.TextBoxForTSMRD.Value) + _
+        CLng(Me.TextBoxForMRD.Value) + CLng(Me.TextBoxFORSMRD.Value) + _
+        CLng(Me.TextBoxFORTMRD.Value) + CLng(Me.TextBoxForTSMRD.Value) + _
         CLng(Me.TextBoxHO.Value) + CLng(Me.TextBoxNA.Value) + CLng(Me.TextBoxOnStock.Value) + _
         CLng(Me.TextBoxPotITDC.Value) + CLng(Me.TextBoxTooLate.Value)
         
-    Me.TextBoxOpen = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1") - suma_wszystkich_boxow
+    ' now add new fields
+    suma_wszystkich_boxow = suma_wszystkich_boxow + _
+        CLng(Me.TextBoxAfterALTTWOMRD.Value) + CLng(Me.TextBoxForALTTWOMRD.Value) + _
+        CLng(Me.TextBoxAfterSALTTWOMRD.Value) + CLng(Me.TextBoxForALTTWOMRD.Value) + _
+        CLng(Me.TextBoxAfterONCOSTMRD.Value) + CLng(Me.TextBoxForONCOSTMRD.Value) + _
+        CLng(Me.TextBoxAfterSONCOSTMRD.Value) + CLng(Me.TextBoxForSONCOSTMRD.Value)
+        
+    Me.TextBoxOPEN = CLng(ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1").Value) - suma_wszystkich_boxow
     
     zmiany_na_totalach
 End Sub
@@ -452,6 +661,8 @@ Private Sub ForALTMRDMore_Click()
     zmiany_na_totalach
 End Sub
 
+
+
 Private Sub ForMRDLess_Click()
     If IsNumeric(Me.TextBoxForMRD) Then
         If CLng(Me.TextBoxForMRD) > 0 Then
@@ -474,12 +685,14 @@ Private Sub ForMRDMore_Click()
     zmiany_na_totalach
 End Sub
 
+
+
 Private Sub ForSMRDLess_Click()
-    If IsNumeric(Me.TextBoxForSMRD) Then
-        If CLng(Me.TextBoxForSMRD) > 0 Then
-            tmp = CLng(Me.TextBoxForSMRD)
+    If IsNumeric(Me.TextBoxFORSMRD) Then
+        If CLng(Me.TextBoxFORSMRD) > 0 Then
+            tmp = CLng(Me.TextBoxFORSMRD)
             tmp = tmp - 1
-            Me.TextBoxForSMRD = CStr(tmp)
+            Me.TextBoxFORSMRD = CStr(tmp)
         End If
     End If
     
@@ -487,21 +700,23 @@ Private Sub ForSMRDLess_Click()
 End Sub
 
 Private Sub ForSMRDMore_Click()
-    If IsNumeric(Me.TextBoxForSMRD) Then
-        tmp = CLng(Me.TextBoxForSMRD)
+    If IsNumeric(Me.TextBoxFORSMRD) Then
+        tmp = CLng(Me.TextBoxFORSMRD)
         tmp = tmp + 1
-        Me.TextBoxForSMRD = CStr(tmp)
+        Me.TextBoxFORSMRD = CStr(tmp)
     End If
     
     zmiany_na_totalach
 End Sub
 
+
+
 Private Sub ForTMRDLess_Click()
-    If IsNumeric(Me.TextBoxForTMRD) Then
-        If CLng(Me.TextBoxForTMRD) > 0 Then
-            tmp = CLng(Me.TextBoxForTMRD)
+    If IsNumeric(Me.TextBoxFORTMRD) Then
+        If CLng(Me.TextBoxFORTMRD) > 0 Then
+            tmp = CLng(Me.TextBoxFORTMRD)
             tmp = tmp - 1
-            Me.TextBoxForTMRD = CStr(tmp)
+            Me.TextBoxFORTMRD = CStr(tmp)
         End If
     End If
     
@@ -509,10 +724,10 @@ Private Sub ForTMRDLess_Click()
 End Sub
 
 Private Sub ForTMRDMore_Click()
-    If IsNumeric(Me.TextBoxForTMRD) Then
-        tmp = CLng(Me.TextBoxForTMRD)
+    If IsNumeric(Me.TextBoxFORTMRD) Then
+        tmp = CLng(Me.TextBoxFORTMRD)
         tmp = tmp + 1
-        Me.TextBoxForTMRD = CStr(tmp)
+        Me.TextBoxFORTMRD = CStr(tmp)
     End If
     
     zmiany_na_totalach
@@ -607,11 +822,11 @@ Private Sub OnStockMore_Click()
 End Sub
 
 Private Sub OpenLess_Click()
-    If IsNumeric(Me.TextBoxOpen) Then
-        If CLng(Me.TextBoxOpen) > 0 Then
-            tmp = CLng(Me.TextBoxOpen)
+    If IsNumeric(Me.TextBoxOPEN) Then
+        If CLng(Me.TextBoxOPEN) > 0 Then
+            tmp = CLng(Me.TextBoxOPEN)
             tmp = tmp - 1
-            Me.TextBoxOpen = CStr(tmp)
+            Me.TextBoxOPEN = CStr(tmp)
         End If
     End If
     
@@ -619,10 +834,10 @@ Private Sub OpenLess_Click()
 End Sub
 
 Private Sub OpenMore_Click()
-    If IsNumeric(Me.TextBoxOpen) Then
-        tmp = CLng(Me.TextBoxOpen)
+    If IsNumeric(Me.TextBoxOPEN) Then
+        tmp = CLng(Me.TextBoxOPEN)
         tmp = tmp + 1
-        Me.TextBoxOpen = CStr(tmp)
+        Me.TextBoxOPEN = CStr(tmp)
     End If
     
     zmiany_na_totalach
@@ -649,6 +864,8 @@ Private Sub PotITDCMore_Click()
     
     zmiany_na_totalach
 End Sub
+
+
 
 Private Sub TooLateLess_Click()
     If IsNumeric(Me.TextBoxTooLate) Then
@@ -680,8 +897,12 @@ Private Sub zmiany_na_totalach()
     ' inne uby ktore musza sie przeliczac na biezaco
     
     Me.TextBoxTotalFromBoxes.Value = suma_wszystkich_boxow()
-    Me.TextBoxTotalFromH1 = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1")
+    Me.TextBoxTotalFromH1 = CStr(ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1").Value)
     
+    
+    Dim diff As Long
+    diff = 0
+    On Error Resume Next
     diff = CLng(Me.TextBoxTotalFromH1) - CLng(Me.TextBoxTotalFromBoxes.Value)
     
     If CLng(diff) > 0 Then
@@ -711,10 +932,21 @@ Private Function suma_wszystkich_boxow() As Long
         CLng(Me.TextBoxAfterMRD) + CLng(Me.TextBoxAfterSMRD) + _
         CLng(Me.TextBoxAfterTMRD) + CLng(Me.TextBoxAfterTSMRD) + _
         CLng(Me.TextBoxEDI) + CLng(Me.TextBoxForALTMRD) + _
-        CLng(Me.TextBoxForMRD) + CLng(Me.TextBoxForSMRD) + _
-        CLng(Me.TextBoxForTMRD) + CLng(Me.TextBoxForTSMRD) + _
+        CLng(Me.TextBoxForMRD) + CLng(Me.TextBoxFORSMRD) + _
+        CLng(Me.TextBoxFORTMRD) + CLng(Me.TextBoxForTSMRD) + _
         CLng(Me.TextBoxHO) + CLng(Me.TextBoxNA) + CLng(Me.TextBoxOnStock) + _
-        CLng(Me.TextBoxOpen) + CLng(Me.TextBoxPotITDC) + CLng(Me.TextBoxTooLate)
+        CLng(Me.TextBoxOPEN) + CLng(Me.TextBoxPotITDC) + CLng(Me.TextBoxTooLate) + _
+        CLng(Me.TextBoxForALTTWOMRD) + CLng(Me.TextBoxAfterALTTWOMRD) + _
+        CLng(Me.TextBoxForSALTTWOMRD) + CLng(Me.TextBoxAfterSALTTWOMRD) + _
+        CLng(Me.TextBoxForONCOSTMRD) + CLng(Me.TextBoxAfterONCOSTMRD) + _
+        CLng(Me.TextBoxForSONCOSTMRD) + CLng(Me.TextBoxAfterSONCOSTMRD)
+        
+        ' new 4 (8) added
+        'CLng(Me.TextBoxForALTTWOMRD) + CLng(Me.TextBoxAfterALTTWOMRD) + _
+        'CLng(Me.TextBoxForSALTTWOMRD) + CLng(Me.TextBoxAfterSALTTWOMRD) + _
+        'CLng(Me.TextBoxForONCOSTMRD) + CLng(Me.TextBoxAfterONCOSTMRD) + _
+        'CLng(Me.TextBoxForSONCOSTMRD) + CLng(Me.TextBoxAfterSONCOSTMRD)
+        
         
     Me.TextBoxTotalFromBoxes = CLng(suma_wszystkich_boxow)
         

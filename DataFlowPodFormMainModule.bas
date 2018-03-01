@@ -118,6 +118,7 @@ Public Sub zrob_open_issues(edit_czy_add As String, txt_from_combo_box As String
     Set zoi = New OpenIssues8XHandler
     
     With SIXP.FormOpenIssues
+        zoi.label = txt_from_combo_box
         zoi.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormOpenIssues
         .Show
     End With

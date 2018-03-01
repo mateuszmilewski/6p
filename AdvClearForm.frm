@@ -14,10 +14,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub BtnAll_Click()
-        
+            
     ans = MsgBox("Are you sure?", vbYesNo)
     
+    
+    
     If ans = vbYes Then
+    
+        Hide
         
         SIXP.clear_all_items
         MsgBox "Done!"

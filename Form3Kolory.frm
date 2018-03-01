@@ -55,17 +55,17 @@ Private Sub ComboBoxLink_Change()
             Me.TextBoxForMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_mrd - 1).Value)
             Me.TextBoxAfterMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_mrd - 1).Value)
             
-            Me.TextBoxForSMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_smrd - 1).Value)
+            Me.TextBoxFORSMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_smrd - 1).Value)
             Me.TextBoxAfterSMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_smrd - 1).Value)
             
-            Me.TextBoxForTMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_twomrd - 1).Value)
+            Me.TextBoxFORTMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_twomrd - 1).Value)
             Me.TextBoxAfterTMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_twomrd - 1).Value)
             
             Me.TextBoxFORSTMRD = CStr(r.Offset(0, SIXP.e_del_conf_for_twosmrd - 1).Value)
             Me.TextBoxAfterSTMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_twosmrd - 1).Value)
             
             ' red
-            Me.TextBoxOpen = CStr(r.Offset(0, SIXP.e_del_conf_open - 1).Value)
+            Me.TextBoxOPEN = CStr(r.Offset(0, SIXP.e_del_conf_open - 1).Value)
             Me.TextBoxTooLate = CStr(r.Offset(0, SIXP.e_del_conf_too_late - 1).Value)
             Me.TextBoxPotITDC = CStr(r.Offset(0, SIXP.e_del_conf_pot_itdc - 1).Value)
             

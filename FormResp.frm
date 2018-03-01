@@ -143,7 +143,7 @@ End Sub
 
 Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_resp_fma) = CStr(Me.TextBoxFMA)
-    r.Parent.Cells(r.Row, SIXP.e_resp_osea) = CStr(Me.TextBoxOSEA)
+    r.Parent.Cells(r.Row, SIXP.e_resp_osea) = CStr(Me.TextBoxOSea)
     r.Parent.Cells(r.Row, SIXP.e_resp_pem) = CStr(Me.TextBoxPEM)
     r.Parent.Cells(r.Row, SIXP.e_resp_ppm) = CStr(Me.TextBoxPPM)
     r.Parent.Cells(r.Row, SIXP.e_resp_sqe) = CStr(Me.TextBoxSQE)
@@ -152,5 +152,9 @@ End Sub
 
 
 Private Sub Label1_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    Me.TextBoxFMA.Value = CStr(ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("J1"))
+End Sub
+
+Private Sub TextBoxFMA_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     Me.TextBoxFMA.Value = CStr(ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("J1"))
 End Sub

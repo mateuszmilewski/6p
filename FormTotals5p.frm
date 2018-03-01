@@ -354,7 +354,7 @@ End Sub
 
 
 Private Sub Label16_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
-    Me.TextBoxH1.Value = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1")
+    Me.TextBoxH1.Value = CStr(ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1").Value)
     
     ' jeszcze szybkie sprawdzenie sum:
     ' --------------------------------------------------------------------
@@ -582,12 +582,13 @@ Private Sub to_je_synchro()
             Set tb = c
             
             If tb.Enabled = True Then
-            
-                If tb.Name = pref & "NA" Or _
-                    tb.Name = pref & "ITDC" Or _
-                    tb.Name = pref & "PNOC" Or _
-                    tb.Name = pref & "FMAEUR" Or _
-                    tb.Name = pref & "FmaOsea" Then
+                
+                ' ???
+                If tb.name = pref & "NA" Or _
+                    tb.name = pref & "ITDC" Or _
+                    tb.name = pref & "PNOC" Or _
+                    tb.name = pref & "FMAEUR" Or _
+                    tb.name = pref & "FmaOsea" Then
                 
                 'If tb.Name = pref & "NA" Or _
                 '    tb.Name = pref & "FMAEUR" Or _
@@ -618,6 +619,8 @@ Private Sub to_je_synchro()
             Me.TextBoxPPAP.BackColor = RGB(255, 255, 0)
             Me.TextBoxNoPPAP.BackColor = RGB(255, 255, 0)
         Else
+        
+            ' na bialo bo wszystkoj est w porzadku
             Me.TextBoxPPAP.BackColor = RGB(255, 255, 255)
             Me.TextBoxNoPPAP.BackColor = RGB(255, 255, 255)
         End If
@@ -750,8 +753,8 @@ Private Sub TryWizardBtn_Click()
     '7: PPAP GATE
     
     total_num = 0
-    If IsNumeric(buff.Cells(3, 1)) Then
-        total_num = CLng(buff.Cells(3, 1))
+    If IsNumeric(buff.Cells(1, 8)) Then
+        total_num = CLng(buff.Cells(1, 8))
     End If
     
     With buff
@@ -769,11 +772,11 @@ Private Sub TryWizardBtn_Click()
         
         ' porcja total z perspektywy transportow
         ' ---------------------------------------------------------------
-        arrived = 0
+        ARRIVED = 0
         in_t = 0
         future = 0
         
-        If IsNumeric(.Cells(37, 1)) Then arrived = .Cells(37, 1)
+        If IsNumeric(.Cells(37, 1)) Then ARRIVED = .Cells(37, 1)
         If IsNumeric(.Cells(37, 2)) Then in_t = .Cells(37, 2)
         If IsNumeric(.Cells(37, 3)) Then future = .Cells(37, 3)
         ' ---------------------------------------------------------------
@@ -829,7 +832,7 @@ Private Sub TryWizardBtn_Click()
     End If
     
     
-    Me.TextBoxArrived = arrived
+    Me.TextBoxArrived = ARRIVED
     Me.TextBoxFMAEUR = eur_v
     Me.TextBoxFmaOsea = osea_v
     Me.TextBoxFuture = future
@@ -842,7 +845,7 @@ Private Sub TryWizardBtn_Click()
     Me.TextBoxPPAP = ppap_ok
     Me.TextBoxTotal = total_num
     
-    Me.TextBoxH1 = buff.Range("H1")
+    Me.TextBoxH1 = CStr(buff.Range("H1").Value)
     
     ' jeszcze szybkie sprawdzenie sum:
     ' --------------------------------------------------------------------
