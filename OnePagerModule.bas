@@ -26,7 +26,7 @@ Public Sub generate_one_pager(ictrl As IRibbonControl)
 End Sub
 
 
-Private Sub clear_one_pager()
+Public Sub clear_one_pager()
     
     With ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm)
     
@@ -56,8 +56,8 @@ Private Sub clear_one_pager()
         ' ------------------
         
         ' calci after & before
-        .Range("AA25:AA29") = 0
-        .Range("AC25:AC29") = 0
+        .Range("AA25:AA31") = 0
+        .Range("AC25:AC31") = 0
         
         
         ' green
@@ -69,23 +69,34 @@ Private Sub clear_one_pager()
         
         
         'sumy
-        .Range("U34") = 0
-        .Range("X34") = 0
-        .Range("AA34") = 0
+        ' sa fromuly na stale
+        '.Range("U34") = 0
+        '.Range("X34") = 0
+        '.Range("AA34") = 0
         ' ------------------
         
     End With
     
+    
+    
+    ' chart 1 == pnoc
     With ThisWorkbook.Sheets(SIXP.G_chart1_handler_sh_nm)
         ' buff na chartach
         ' ------------------
         
-        .Range("D6:F12").Clear
+        
+        ' dokladnie tyle ile trzeba
+        ' .Range("D6:F12").Clear
+        ' dam wiecej tak just in case
+        .Range("D6:F100").Clear
         
         ' ------------------
     End With
     
     
+    
+    
+    ' chart 2 == OSEA
     With ThisWorkbook.Sheets(SIXP.G_chart2_handler_sh_nm)
         ' buff na chartach
         ' ------------------
@@ -96,6 +107,8 @@ Private Sub clear_one_pager()
     End With
     
     
+    
+    ' chart 3 == total
     With ThisWorkbook.Sheets(SIXP.G_chart3_handler_sh_nm)
         ' buff na chartach
         ' ------------------
@@ -106,8 +119,11 @@ Private Sub clear_one_pager()
         
         .Range("I6") = 0
         
-        .Range("K6:K7") = 0
+        ' arrived ' in transit ' future
+        .Range("K6:K8") = 0
         
+        
+        ' ppap / no ppap
         .Range("M6:N6") = 0
         
         ' ------------------

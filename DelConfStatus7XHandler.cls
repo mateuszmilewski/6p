@@ -87,15 +87,25 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxEDI = "0"
             .TextBoxForALTMRD = "0"
             .TextBoxForMRD = "0"
-            .TextBoxForSMRD = "0"
-            .TextBoxForTMRD = "0"
+            .TextBoxFORSMRD = "0"
+            .TextBoxFORTMRD = "0"
             .TextBoxForTSMRD = "0"
             .TextBoxHO = "0"
             .TextBoxNA = "0"
             .TextBoxOnStock = "0"
-            .TextBoxOpen = "0"
+            .TextBoxOPEN = "0"
             .TextBoxPotITDC = "0"
             .TextBoxTooLate = "0"
+            
+            ' new
+            .TextBoxForALTTWOMRD = "0"
+            .TextBoxAfterALTTWOMRD = "0"
+            .TextBoxForSALTTWOMRD = "0"
+            .TextBoxAfterSALTTWOMRD = "0"
+            .TextBoxForONCOSTMRD = "0"
+            .TextBoxAfterONCOSTMRD = "0"
+            .TextBoxForSONCOSTMRD = "0"
+            .TextBoxAfterSONCOSTMRD = "0"
             
             ' ---------------------------------------------------------
         End With
@@ -135,9 +145,9 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_alt - 1)))
                         .TextBoxForMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_mrd - 1)))
-                        .TextBoxForSMRD = _
+                        .TextBoxFORSMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_smrd - 1)))
-                        .TextBoxForTMRD = _
+                        .TextBoxFORTMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_twomrd - 1)))
                         .TextBoxForTSMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_twosmrd - 1)))
@@ -147,13 +157,33 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_na - 1)))
                         .TextBoxOnStock = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_on_stock - 1)))
-                        .TextBoxOpen = _
+                        .TextBoxOPEN = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_open - 1)))
                         .TextBoxPotITDC = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_pot_itdc - 1)))
                         .TextBoxTooLate = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_too_late - 1)))
-                        
+                            
+                            
+                        ' new
+                        .TextBoxAfterALTTWOMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_alttwomrd - 1)))
+                        .TextBoxAfterSALTTWOMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_salttwomrd - 1)))
+                        .TextBoxAfterONCOSTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_oncostmrd - 1)))
+                        .TextBoxAfterSONCOSTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_soncostmrd - 1)))
+                            
+                        .TextBoxForALTTWOMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_alttwomrd - 1)))
+                        .TextBoxForSALTTWOMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_salttwomrd - 1)))
+                        .TextBoxForONCOSTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_oncostmrd - 1)))
+                        .TextBoxForSONCOSTMRD = _
+                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_soncostmrd - 1)))
+                            
                         ' ---------------------------------------------------------
                     
                 

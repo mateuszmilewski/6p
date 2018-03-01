@@ -1,6 +1,6 @@
 Attribute VB_Name = "MainShCheckerModule"
 ' FORREST SOFTWARE
-' Copyright (c) 2016 Mateusz Forrest Milewski
+' Copyright (c) 2017 Mateusz Forrest Milewski
 '
 ' Permission is hereby granted, free of charge,
 ' to any person obtaining a copy of this software and associated documentation files (the "Software"),

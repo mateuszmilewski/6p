@@ -38,7 +38,12 @@ Attribute VB_Name = "EnumModule"
 ' second page
 ' Set pcs(9) = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
 
-
+Public Enum E_OPEN_ISSUES_CRUD
+    E_OI_CREATE
+    E_OI_READ
+    E_OI_UPDATE
+    E_OI_DELETE
+End Enum
 
 Public Enum E_PPAP
     
@@ -57,6 +62,7 @@ End Enum
 Public Enum E_MATCH
     E_LIKE
     E_EQUAL
+    E_NOT_EQUAL
     E_BEFORE_OR_AFTER_MRD
 End Enum
 
@@ -175,14 +181,21 @@ Public Enum E_DEL_CONF_ORDER
     e_del_conf_for_alt
     e_del_conf_after_alt
     
+    e_del_conf_for_alttwomrd
+    e_del_conf_after_alttwomrd
+    
+    e_del_conf_for_salttwomrd
+    e_del_conf_after_salttwomrd
+    
+    e_del_conf_for_oncostmrd
+    e_del_conf_after_oncostmrd
+    
+    e_del_conf_for_soncostmrd
+    e_del_conf_after_soncostmrd
+    
     e_del_conf_open
     e_del_conf_too_late
     e_del_conf_pot_itdc
-    
-    
-    
-    
-    
 End Enum
 
 Public Enum E_OPEN_ISSUES_ORDER
@@ -191,6 +204,7 @@ Public Enum E_OPEN_ISSUES_ORDER
     e_open_issues_part_supplier
     e_open_issues_delivery
     e_open_issues_comment
+    e_open_issues_visible
 End Enum
 
 Public Enum E_RESP_ORDER
@@ -263,7 +277,7 @@ Public Enum E_NEW_PROJECT_ITEM
     BOM
     PICKUP_DATE
     PPAP_GATE
-    mrd
+    MRD
     BUILD_START
     BUILD_END
     KOORDYNATOR
@@ -304,14 +318,79 @@ Public Enum E_DEL_CONF_SPECIAL
     E_DCS_POTITDC
     E_DCS_MRD
     E_DCS_Staggered_MRD
-    E_DCS_TWO_Staggered_MRD
-    E_DCS_TWO_MRD
     E_DCS_HO
     E_DCS_EDI
     E_DCS_ON_STOCK
     E_DCS_NA
     E_DCS_ALT_MRD
+    E_DCS_ALT_TWO_MRD
+    E_DCS_Staggered_ALT_TWO_MRD
+    E_DCS_ONCOST_MRD
+    E_DCS_Staggered_ONCOST_MRD
     E_DCS_OPEN
     E_DCS_OPEN_TOO_LATE
 
 End Enum
+
+
+
+' quarter enum
+' ================================================================
+
+
+Public Enum E_QUARTER_MAIN_TABLE
+
+    e_qmt_project = 1
+    e_qmt_Plant
+    e_qmt_PHASE
+    e_qmt_cw
+    e_qmt_status
+    e_qmt_MRD
+    e_qmt_Build_ORS
+    e_qmt_TBW
+    e_qmt_BOM_freeze
+    e_qmt_NO_OF_VEHICLES_ORS
+    e_qmt_NO_OF_VEHICLES_RBPC
+    e_qmt_ordersDUE
+    e_qmt_RELEASED
+    e_qmt_WeeksDelay
+    e_qmt_OrderReleaseChange_RBPC
+    e_qmt_Comments_RBPC
+    e_qmt_status_open_done
+    e_qmt_PL
+    e_qmt_osea
+    e_qmt_pem
+    e_qmt_ppm
+    e_qmt_sqe
+    e_qmt_Contracted
+    e_qmt_PNOC_Chart
+    e_qmt_OpenBP_Chart
+    e_qmt_actionableFMA
+    e_qmt_NA
+    e_qmt_ITDC
+    e_qmt_PNOC_ChartTotal
+    e_qmt_FMAeur
+    e_qmt_FMAosea
+    e_qmt_ORDERED
+    e_qmt_CONFIRMEDforMRD
+    e_qmt_ConfafterMRD
+    e_qmt_Open_Chart
+    e_qmt_Oncost
+    e_qmt_ARRIVED
+    e_qmt_Intransit
+    e_qmt_PPAP_status_forFMA_part_numbers
+    e_qmt_not_PPAP_status_for_FMA_part_numbers
+    e_qmt_Parent
+    e_qmt_xq_Comment
+    e_qmt_XQPPAPGate
+    e_qmt_XQProjectType
+    e_qmt_osea_Total_osea
+    e_qmt_ON_STOCK_osea
+    e_qmt_ORDERED_osea
+    e_qmt_CONFIRMED_osea
+    e_qmt_FOR_MRD_osea
+    e_qmt_after_MRD_osea
+    e_qmt_OPEN_osea
+
+End Enum
+

@@ -19,9 +19,11 @@ Attribute VB_Name = "AddHeaderAndFooterModule"
 
 Public Sub addFooter(str As String)
 Attribute addFooter.VB_ProcData.VB_Invoke_Func = " \n14"
+    On Error Resume Next
     Sheets(SIXP.G_one_pager_sh_nm).PageSetup.CenterFooter = "&K02-024 " & CStr(str)
 End Sub
 
 Public Sub addHeader(str As String)
+    On Error Resume Next
     Sheets(SIXP.G_one_pager_sh_nm).PageSetup.CenterHeader = "&K02-024 " & CStr(str)
 End Sub

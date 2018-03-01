@@ -1,4 +1,4 @@
-Attribute VB_Name = "GlobalCrossTriangleCircleModule"
+Attribute VB_Name = "QuarterModule"
 ' FORREST SOFTWARE
 ' Copyright (c) 2018 Mateusz Forrest Milewski
 '
@@ -17,23 +17,27 @@ Attribute VB_Name = "GlobalCrossTriangleCircleModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Public Function putCross() As Range
-    Set putCross = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("cross")
-End Function
-Public Function putTriangle() As Range
-    Set putTriangle = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("triangle")
-End Function
-Public Function putCircle() As Range
-    Set putCircle = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("circle")
-End Function
+Public Sub uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera(sh As Worksheet, wrknm As String)
+
+    Dim qh As QuarterHandler
+    Set qh = New QuarterHandler
+    qh.setWrkNm wrknm
+    qh.fillDictionaryWithTLinks sh
+    qh.openFormWithDataFromQuarter
+    Set qh = Nothing
+    
+End Sub
+
+Public Sub import_from_quarter(ictrl As IRibbonControl)
 
 
-Public Sub setCross(ictrl As IRibbonControl)
-    ActiveCell = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("cross")
+    Dim w As Workbook
+    FormCatchQuarter.ListBoxFiles.Clear
+    For Each w In Workbooks
+        FormCatchQuarter.ListBoxFiles.AddItem w.name
+    Next w
+    
+    FormCatchQuarter.Show
 End Sub
-Public Sub setTriangle(ictrl As IRibbonControl)
-    ActiveCell = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("triangle")
-End Sub
-Public Sub setCircle(ictrl As IRibbonControl)
-    ActiveCell = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("circle")
-End Sub
+
+

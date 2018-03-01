@@ -71,7 +71,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             
             
             .TextBoxFMA = ""
-            .TextBoxOSEA = ""
+            .TextBoxOSea = ""
             .TextBoxPEM = ""
             .TextBoxPPM = ""
             .TextBoxSQE = ""
@@ -101,7 +101,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         ' example
                         ' .TextBoxAfterALTMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_alt - 1))
                         .TextBoxFMA = CStr(r.Offset(0, SIXP.e_resp_fma - 1))
-                        .TextBoxOSEA = CStr(r.Offset(0, SIXP.e_resp_osea - 1))
+                        .TextBoxOSea = CStr(r.Offset(0, SIXP.e_resp_osea - 1))
                         .TextBoxPEM = CStr(r.Offset(0, SIXP.e_resp_pem - 1))
                         .TextBoxPPM = CStr(r.Offset(0, SIXP.e_resp_ppm - 1))
                         .TextBoxSQE = CStr(r.Offset(0, SIXP.e_resp_sqe - 1))

@@ -50,7 +50,7 @@ Public Sub inner_6p_time(mm, md, mp)
     Set p = mp ' ThisWorkbook.Sheets(WizardMain.PICKUPS_SHEET_NAME)
     
     Dim m_r_d As Range, r_biw_ga As Range
-    Set m_r_d = d.Cells(SIXP.mrd, 2)
+    Set m_r_d = d.Cells(SIXP.MRD, 2)
     
     ' also it will be in buff on Q1
     Set r_biw_ga = d.Cells(SIXP.biw_ga, 2)
@@ -59,6 +59,7 @@ Public Sub inner_6p_time(mm, md, mp)
     fill_wiz_buff_with_all_details_but_transpose_from_o1 d, wrksh
     
     
+
 
             
     
@@ -84,7 +85,7 @@ Public Sub inner_6p_time(mm, md, mp)
     pierwszy_wiersz_pod_dane_ogolne = 1
     With wrksh
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 3)
-            .Value = CStr(d.Cells(SIXP.mrd, 2))
+            .Value = CStr(d.Cells(SIXP.MRD, 2))
             If .Comment Is Nothing Then
                 .AddComment "MRD"
             End If
@@ -142,29 +143,46 @@ Public Sub inner_6p_time(mm, md, mp)
     wrksh.Cells(1, 1) = "6P"
     ' total
     wrksh.Cells(2, 1) = "TOTAL FMA*"
+    
+    ' pierwszy filtr odpwiedzialny jest za resp, drugi za kolumne przegladana :)
     wrksh.Cells(3, 1) = _
-        iteruj_recur("", 0, _
-            przelicz_zasieg(m, SIXP.pn, _
-                SIXP.Responsibility), _
-            "FMA", _
-            E_LIKE)
+        iteruj_recur("*", 0, przelicz_zasieg(m, SIXP.pn, SIXP.Responsibility), "", E_NOT_EQUAL)
+    
+    
     
     
     Dim rng As Range
     Set rng = wrksh.Cells(2, 2)
     
     rng.Offset(-1, 0) = "RESP"
-    Set rng = zrob_recursy_dla("", m, rng, SIXP.Responsibility)
+    Set rng = zrob_recursy_dla("*", m, rng, SIXP.Responsibility)
     
     SIXP.RespAdjusterModule.resp_adjuster
     wrksh.Range("G1").Value = "IN SCOPE"
-    wrksh.Range("H1").Value = podlicz_w_zgodzie_z_ukladem_z_arkusza_register()
+    wrksh.Range("H1").Value = CStr(podlicz_w_zgodzie_z_ukladem_z_arkusza_register())
+    
+    
+    
+    ' PRZYGOTOWANIE FILTROWANIA
+    ' ========================================
+    ' ========================================
+    
+    Dim fltr As String
+    fltr = przygotuj_filtr()
+    
+    ' ========================================
+    ' ========================================
+    
+    
+    ' 4
+    wrksh.Cells(4, 1) = "TOTAL TOTAL"
+    wrksh.Cells(4, 2) = inner_sum(wrksh.Range(wrksh.Cells(3, 2), wrksh.Cells(3, 100)))
     
     
     ' 5
     Set rng = wrksh.Cells(6, 1)
     rng.Offset(-1, 0) = "PPAP STATUS"
-    Set rng = zrob_recursy_dla("FMA", m, rng, SIXP.ppap_status)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.ppap_status)
     
     
     
@@ -173,14 +191,14 @@ Public Sub inner_6p_time(mm, md, mp)
     wrksh.Cells(10, 1) = "6P"
     wrksh.Cells(11, 1) = "DEL CONF, WHICH IS NOT CONNECTED WITH MRD PARAM."
     Set rng = wrksh.Cells(12, 1)
-    Set rng = zrob_recursy_dla("FMA", m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_DO_NOT_TAKE_DEL_CONF_CONNECTED_WITH_MRD)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_DO_NOT_TAKE_DEL_CONF_CONNECTED_WITH_MRD)
     
     '15
     Set rng = wrksh.Cells(16, 1)
     rng.Offset(-1, 0) = "BEFORE OR ON/AFTER MRD"
     rng.Offset(-1, 2) = "MRD CW: "
     rng.Offset(-1, 3) = CStr(m_r_d)
-    Set rng = zrob_recursy_dla("FMA", m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD)
     
     ' 20
     Set rng = wrksh.Cells(21, 1)
@@ -191,18 +209,18 @@ Public Sub inner_6p_time(mm, md, mp)
     rng.Offset(-1, 3) = "MRD CW: "
     rng.Offset(-1, 4) = CStr(m_r_d)
     
-    Set rng = zrob_recursy_dla("FMA", m, rng, SIXP.Delivery_confirmation)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation)
     
     ' 25
     Set rng = wrksh.Cells(26, 1)
     rng.Offset(-1, 0) = "Country Code"
-    Set rng = zrob_recursy_dla("FMA", m, rng, SIXP.country_code)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.country_code)
     
     
     ' 30
     Set rng = wrksh.Cells(31, 1)
     rng.Offset(-1, 0) = "CC Osea"
-    Set rng = zrob_special_recursy_dla_cc_osea("FMA", m, rng, SIXP.country_code)
+    Set rng = zrob_special_recursy_dla_cc_osea(fltr, m, rng, SIXP.country_code)
     
     
     
@@ -214,14 +232,14 @@ Public Sub inner_6p_time(mm, md, mp)
     rng.Offset(-1, 3) = "Today: "
     rng.Offset(-1, 4) = Date
     ' dzielimy po today, a nie po mrd
-    Set rng = zrob_pus_recur(p, rng, True, Date)
+    Set rng = zrob_pus_recur(m, p, rng, True, Date)
     
     
     ' ordered - po statusach
     ' 40
     Set rng = wrksh.Cells(41, 1)
     rng.Offset(-1, 0) = "Ordered"
-    Set rng = zrob_recursy_dla("FMA", m, rng, SIXP.MRD1_Ordered_STATUS)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.MRD1_Ordered_STATUS)
         
     
     ' Set puses = zrob_arkusz_puses(p, puses)
@@ -240,11 +258,38 @@ Public Sub inner_6p_time(mm, md, mp)
     
     
     
-    ' MsgBox "ready!"
+    MsgBox "ready!"
     '
     ''
     ' ======================================================
 End Sub
+
+
+Private Function inner_sum(r As Range) As Long
+    inner_sum = 0
+    
+    For Each ir In r
+        If IsNumeric(ir) Then
+            inner_sum = inner_sum + CLng(ir)
+        End If
+    Next ir
+End Function
+
+Private Function przygotuj_filtr() As String
+    przygotuj_filtr = ";"
+    
+    Dim r As Range
+    Set r = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("G2")
+    
+    Do
+        If CStr(r.Offset(0, 1)) = "1" Then
+            przygotuj_filtr = przygotuj_filtr & CStr(r) & ";"
+        End If
+        Set r = r.Offset(1, 0)
+    Loop Until Trim(r) = ""
+End Function
+    
+
 
 Private Function zrob_arkusz_puses(mp As Worksheet, mpuses As Worksheet) As Worksheet
 
@@ -315,12 +360,12 @@ Private Function zrob_arkusz_puses(mp As Worksheet, mpuses As Worksheet) As Work
     Set zrob_arkusz_puses = mpuses
 End Function
 
-Private Function zrob_pus_recur(mp As Worksheet, r As Range, czy_brac_bool_pod_date As Boolean, Optional d1 As Date) As Range
+Private Function zrob_pus_recur(m As Worksheet, mp As Worksheet, r As Range, czy_brac_bool_pod_date As Boolean, Optional d1 As Date) As Range
     
     Dim dic As Dictionary
     Set dic = New Dictionary
     
-    Set dic = wypelnij_slownik_dla_pusow(dic, przelicz_zasieg_dla_pusow(mp))
+    Set dic = wypelnij_slownik_dla_pusow(m, dic, przelicz_zasieg_dla_pusow(mp))
     
     If czy_brac_bool_pod_date Then
         r = "RECV"
@@ -348,19 +393,25 @@ Private Function zrob_pus_recur(mp As Worksheet, r As Range, czy_brac_bool_pod_d
             ElseIf czy_brac_bool_pod_date Then
             
                 ' Debug.Print CDate(dic.item(ki).Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
-                If CDate(dic.item(ki).Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) <= CDate(d1) Then
+                If CDate(dic.item(ki).range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) <= CDate(d1) Then
                     
                     r.Offset(1, 0) = r.Offset(1, 0) + 1
                 Else
-                    If CDate(dic.item(ki).Offset(0, SIXP.O_Pick_up_date - SIXP.O_PN)) <= CDate(d1) Then
-                        r.Offset(1, 1) = r.Offset(1, 1) + 1
-                    Else
-                        r.Offset(1, 2) = r.Offset(1, 2) + 1
+                
+                
+                    If CDate(dic.item(ki).range1.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) <= CDate(d1) Then
+                        If CDate(dic.item(ki).range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) >= CDate(d1) Then
+                            r.Offset(1, 1) = r.Offset(1, 1) + 1
+                        End If
+                    End If
+                    
+                    If CDate(dic.item(ki).range1.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) >= CDate(d1) Then
+                        If CDate(dic.item(ki).range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) >= CDate(d1) Then
+                            r.Offset(1, 2) = r.Offset(1, 2) + 1
+                        End If
                     End If
                 End If
-            
             End If
-            
             
             ' ===================================
         End If
@@ -373,7 +424,7 @@ Private Function przelicz_zasieg_dla_pusow(mp As Worksheet) As Range
         mp.Range(mp.Cells(2, SIXP.O_PN), mp.Cells(SIXP.POLOWA_CAPACITY_ARKUSZA, SIXP.O_PN))
 End Function
 
-Public Function zrob_special_recursy_dla_cc_osea(fltr As String, m As Worksheet, rng As Range, resp_col) As Range
+Public Function zrob_special_recursy_dla_cc_osea(fltr As String, m As Worksheet, rng As Range, cc_column) As Range
 
 
     Dim eur_cc As Long
@@ -384,7 +435,7 @@ Public Function zrob_special_recursy_dla_cc_osea(fltr As String, m As Worksheet,
     
 
     
-    podlicz_osea eur_cc, osea_cc, fltr, przelicz_zasieg(m, SIXP.pn, resp_col)
+    podlicz_osea eur_cc, osea_cc, fltr, przelicz_zasieg(m, SIXP.pn, cc_column)
 
     rng.Offset(0, 0) = "OSEA"
     rng.Offset(0, 1) = "EUR"
@@ -396,7 +447,7 @@ Public Function zrob_special_recursy_dla_cc_osea(fltr As String, m As Worksheet,
 
 End Function
 
-Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, resp_col, Optional e As E_SPECIAL_CASE_FOR_DEL_CONF) As Range
+Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, m_col, Optional e As E_SPECIAL_CASE_FOR_DEL_CONF) As Range
     
     Dim dic As Dictionary
     Set dic = New Dictionary
@@ -406,10 +457,10 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, r
     
     If e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
         Set dic = wypelnij_slownik(fltr, dic, _
-            przelicz_zasieg(m, SIXP.pn, resp_col), _
+            przelicz_zasieg(m, SIXP.pn, m_col), _
             E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD)
     Else
-        Set dic = wypelnij_slownik(fltr, dic, przelicz_zasieg(m, SIXP.pn, resp_col))
+        Set dic = wypelnij_slownik(fltr, dic, przelicz_zasieg(m, SIXP.pn, m_col))
     End If
     
     For Each ki In dic.Keys
@@ -420,7 +471,7 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, r
             
             If CStr(ki) <> "" And Not (CStr(ki) Like "*Y*CW*") Then
                 rng = ki
-                rng.Offset(1, 0) = iteruj_recur(fltr, 0, przelicz_zasieg(m, SIXP.pn, resp_col), ki, E_EQUAL)
+                rng.Offset(1, 0) = iteruj_recur(fltr, 0, przelicz_zasieg(m, SIXP.pn, m_col), ki, E_EQUAL)
                 
                 Set rng = rng.Offset(0, 1)
             End If
@@ -438,7 +489,7 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, r
                 '
                 rng = "BEFORE " & CStr(ki)
                 rng.Offset(1, 0) = iteruj_recur(fltr, 0, _
-                    przelicz_zasieg(m, SIXP.pn, resp_col), _
+                    przelicz_zasieg(m, SIXP.pn, m_col), _
                     przygotuj_my_pattern("BEFORE " & CStr(ki)), _
                     E_BEFORE_OR_AFTER_MRD, d)
                 
@@ -446,7 +497,7 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, r
                 
                 rng = "AFTER " & CStr(ki)
                 rng.Offset(1, 0) = iteruj_recur(fltr, 0, _
-                    przelicz_zasieg(m, SIXP.pn, resp_col), _
+                    przelicz_zasieg(m, SIXP.pn, m_col), _
                     przygotuj_my_pattern("AFTER " & CStr(ki)), _
                     E_BEFORE_OR_AFTER_MRD, d)
                 
@@ -462,7 +513,7 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, r
         
             If CStr(ki) <> "" Then
                 rng = ki
-                rng.Offset(1, 0) = iteruj_recur(fltr, 0, przelicz_zasieg(m, SIXP.pn, resp_col), ki, E_EQUAL, d)
+                rng.Offset(1, 0) = iteruj_recur(fltr, 0, przelicz_zasieg(m, SIXP.pn, m_col), ki, E_EQUAL, d)
                 
                 Set rng = rng.Offset(0, 1)
             End If
@@ -478,41 +529,70 @@ Private Function przygotuj_my_pattern(s As String) As String
     przygotuj_my_pattern = CStr(s)
 End Function
 
-Private Function wypelnij_slownik_dla_pusow(ByRef d As Dictionary, r As Range) As Dictionary
+Private Function wypelnij_slownik_dla_pusow(ByRef m As Worksheet, ByRef d As Dictionary, r As Range) As Dictionary
     
-    Dim fst As Range
+    Dim tr As TwoRanges
     
     Do
     
-        Set fst = r.item(1)
     
-        If CStr(fst) <> "" Then
-            If Not d.Exists(CStr(fst)) Then
-                ' d.item(CStr(fst)) = CDate(fst.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
-                Set d.item(CStr(fst)) = fst
-            Else
-                If CDate(d.item(CStr(fst)).Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) < CDate(fst.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) Then
-                        
-                    Set d.item(CStr(fst)) = fst
+        If pn_on_master_and_is_still_under_resp(m, r.item(1)) Then
+        
+        
+        
+            Set tr = Nothing
+            Set tr = New TwoRanges
+        
+            Set tr.range1 = r.item(1)
+            Set tr.range2 = r.item(1)
+        
+            If CStr(tr.range1) <> "" Then
+                If Not d.Exists(CStr(tr.range1)) Then
+                    ' d.item(CStr(fst)) = CDate(fst.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
+                    
+                    ' to tutaj ponizej jest dziwne...
+                    ' ----------------------------------
+                    'Set d.item(CStr(tr.range1)) = tr
+                    ' ----------------------------------
+                    
+                    
+                    
+                    d.Add CStr(tr.range1), tr
+                Else
+                    
+                    'Debug.Print "d fro dic rng2: " & CDate(d.item(CStr(tr.range1)).range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
+                    'Debug.Print "tr.rng2: " & CDate(tr.range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
+                    
+                    If CDate(d.item(CStr(tr.range1)).range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) < CDate(tr.range2.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) Then
+                        Set d.item(CStr(tr.range1)).range2 = tr.range2
+                    End If
+                    
+                    'Debug.Print CDate(d.item(CStr(tr.range1)).range1.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
+                    'Debug.Print CDate(tr.range1.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN))
+                    
+                    If CDate(d.item(CStr(tr.range1)).range1.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) > CDate(tr.range1.Offset(0, SIXP.O_Delivery_Date - SIXP.O_PN)) Then
+                        Set d.item(CStr(tr.range1)).range1 = tr.range1
+                    End If
                 End If
             End If
+                
         End If
-            
-            
-
+    
         Dim tmp As Range
         Set tmp = r.item(2)
         If Trim(tmp) = "" Then
-            Set tmp = fst.End(xlDown)
+            Set tmp = tmp.End(xlDown)
             
             If tmp.Row > r.item(r.Count).Row Then
                 Set tmp = r.item(r.Count)
             End If
         End If
-        Set r = r.Parent.Range(tmp, r.item(r.Count))
+        
         ' Set d = wypelnij_slownik_dla_pusow(d, tail)
         
         
+        
+        Set r = r.Parent.Range(tmp, r.item(r.Count))
     Loop While r.Count > 1
     
     Set wypelnij_slownik_dla_pusow = d
@@ -520,12 +600,79 @@ Private Function wypelnij_slownik_dla_pusow(ByRef d As Dictionary, r As Range) A
 End Function
 
 
+
+
+Private Function pn_on_master_and_is_still_under_resp(ByRef m As Worksheet, ir As Range) As Boolean
+
+    pn_on_master_and_is_still_under_resp = False
+    
+    
+    Dim zasieg As Range
+    Set zasieg = m.Range(m.Cells(2, SIXP.pn), m.Cells(SIXP.POLOWA_CAPACITY_ARKUSZA, SIXP.pn))
+    
+    Dim tmp As Range
+    Set tmp = Nothing
+    
+    Set tmp = zasieg.Find(CStr(ir), LookIn:=xlValues, lookat:=xlWhole)
+    
+    If Not tmp Is Nothing Then
+    
+        If CStr(tmp) = CStr(ir) Then
+        
+            If sprawdz_resp_teraz(tmp) Then
+                pn_on_master_and_is_still_under_resp = True
+            Else
+                pn_on_master_and_is_still_under_resp = False
+            End If
+        End If
+    Else
+        pn_on_master_and_is_still_under_resp = False
+    End If
+    
+    
+End Function
+
+Private Function sprawdz_resp_teraz(ByRef r As Range) As Boolean
+    sprawdz_resp_teraz = False
+    
+    Dim ir As Range
+    Set ir = r.Parent.Cells(r.Row, SIXP.Responsibility)
+    
+    Dim resp As Range
+    Set resp = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("G2")
+    Set resp = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range(resp, resp.End(xlDown))
+    
+    Dim tmp As Range
+    Set tmp = resp.Find(CStr(ir), LookIn:=xlValues, lookat:=xlWhole)
+    
+    
+    If Not tmp Is Nothing Then
+        
+        If CStr(tmp.Offset(0, 1)) = "1" Then
+            sprawdz_resp_teraz = True
+            Exit Function
+        Else
+            sprawdz_resp_teraz = False
+        End If
+    Else
+        sprawdz_resp_teraz = False
+    End If
+    
+    
+    
+End Function
+
+
 Private Sub podlicz_osea(ByRef eur As Long, ByRef osea As Long, fltr As String, r As Range)
+
+
+    ' r ===> from cc column
     
     Dim fst As Range
     Do
         Set fst = r.item(1)
-        If fst.Parent.Cells(fst.Row, SIXP.Responsibility) Like "*" & fltr & "*" Then
+        ' If fst.Parent.Cells(fst.Row, SIXP.Responsibility) Like "*" & fltr & "*" Then
+        If sprawdz_resp_teraz(fst) Then
         
         
             If sprawdz_czy_osea(fst) Then
@@ -578,8 +725,12 @@ Private Function wypelnij_slownik(fltr As String, ByRef d As Dictionary, r As Ra
     
         Set fst = r.item(1)
         'Debug.Print fst.Parent.Cells(fst.Row, SIXP.Responsibility)
-        
-        If fst.Parent.Cells(fst.Row, SIXP.Responsibility) Like "*" & fltr & "*" Then
+        ' to jest juz troche nieaktualne poniewaz nie bierze pod uwage danych ktore sami wczesniej zdefiniowalismy
+        ' If fst.Parent.Cells(fst.Row, SIXP.Responsibility) Like "*" & fltr & "*" Then
+        ' If (fltr = "*") Or (sprawdz_resp_teraz(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) And fltr = "") Then
+        ' If CStr(fltr) Like "*" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & "*" Then
+        ' Debug.Print CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility))
+        If CStr(fltr) = "*" Or CStr(fltr) Like "*;" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & ";*" Then
             
             If e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
             
@@ -621,7 +772,12 @@ End Function
 Public Function przelicz_zasieg(m As Worksheet, col1, docelowa_kolumna) As Range
 
     If Trim(m.Cells(2, col1)) <> "" Then
-        Set przelicz_zasieg = m.Range(m.Cells(2, docelowa_kolumna), m.Cells(m.Cells(1, col1).End(xlDown).Row, docelowa_kolumna))
+    
+    
+        ostatni_wiersz = m.Cells(SIXP.POLOWA_CAPACITY_ARKUSZA, docelowa_kolumna).End(xlUp).Row
+    
+        Set przelicz_zasieg = _
+            m.Range(m.Cells(2, docelowa_kolumna), m.Cells(ostatni_wiersz, docelowa_kolumna))
     Else
         Set przelicz_zasieg = m.Cells(2, docelowa_kolumna)
     End If
@@ -633,6 +789,9 @@ Public Function iteruj_recur(fltr As String, start, r As Range, filter, e As E_M
     
     ' robimy rekurencje - pobierz pierwszy element zasiegu
     ' i zostaw reszte dla kolejnej rekurencji
+    
+    ' Optional d As Worksheet for DETAILS
+    
     Dim fst As Range
     
     
@@ -640,7 +799,12 @@ Public Function iteruj_recur(fltr As String, start, r As Range, filter, e As E_M
     
         Set fst = r.item(1)
         
-        If fst.Parent.Cells(fst.Row, SIXP.Responsibility) Like "*" & fltr & "*" Then
+        ' If CStr(fltr) Like "*" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & "*" Then
+        'If (fltr = "*") Or (sprawdz_resp_teraz(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) And fltr = "") Then
+        ' po krotce pierwszy filtr jest pod respa
+        ' drugi filtr jest pod dedykowana kolumne
+        ' Debug.Print CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility))
+        If CStr(fltr) = "*" Or CStr(fltr) Like "*;" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & ";*" Then
             
             If e = E_LIKE Then
                 If fst Like "*" & CStr(filter) & "*" Then
@@ -648,6 +812,10 @@ Public Function iteruj_recur(fltr As String, start, r As Range, filter, e As E_M
                 End If
             ElseIf e = E_EQUAL Then
                 If CStr(fst) = CStr(filter) Then
+                    start = start + 1
+                End If
+            ElseIf e = E_NOT_EQUAL Then
+                If CStr(fst) <> CStr(filter) Then
                     start = start + 1
                 End If
             ElseIf e = E_BEFORE_OR_AFTER_MRD Then
@@ -754,7 +922,7 @@ Private Function wez_date_mrd_z_details(details_sh As Worksheet, directly_date_o
     If directly_date_or_parse_from_str_mrd Then
         wez_date_mrd_z_details = CDate(Format(details_sh.Cells(SIXP.E_MRD_DATE, 2), "yyyy-mm-dd"))
     Else
-        wez_date_mrd_z_details = CDate(parsuj_y_cw_do_daty_poniedzialkowej(details_sh.Cells(SIXP.mrd, 2)))
+        wez_date_mrd_z_details = CDate(parsuj_y_cw_do_daty_poniedzialkowej(details_sh.Cells(SIXP.MRD, 2)))
     End If
     
     
