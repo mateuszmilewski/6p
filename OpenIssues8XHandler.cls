@@ -40,7 +40,7 @@ Private r As Range
 Private dunses As Dictionary
 
 ' klucz powrotu do arkuszy main oraz open issues (konkatenacja proj, plt, faza, cw chyba w innym orderze)
-Public label As String
+Public Label As String
 
 
 Private link_zapamietaj As T_Link
@@ -134,7 +134,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .ListBox1.Clear
             .ListBox1.MultiSelect = fmMultiSelectSingle
             
-            X = 1
+            x = 1
             
             Set r = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm).Cells(1, 1)
             
@@ -154,7 +154,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
 
                         ' example
                         ' .TextBoxAfterALTMRD = CStr(r.Offset(0, SIXP.e_del_conf_after_alt - 1))
-                        If X = 1 Then
+                        If x = 1 Then
                             .TextBoxComment = CStr(r.Offset(0, SIXP.e_open_issues_comment - 1))
                             .TextBoxDelivery = CStr(r.Offset(0, SIXP.e_open_issues_delivery - 1))
                             .TextBoxNoOfPNs = CStr(r.Offset(0, SIXP.e_open_issues_no_of_pn - 1))
@@ -178,11 +178,11 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         ' Exit Do
                         ' .ListBox1.AddItem "Open issue #" & CStr(X) & ", " & r.Address
                         
-                        .ListBox1.AddItem "Open issue #" & CStr(X) & ", " & _
+                        .ListBox1.AddItem "Open issue #" & CStr(x) & ", " & _
                         CStr(Trim(r.Offset(0, SIXP.e_open_issues_part_supplier - 1))) & ", " & _
                         r.Address
                         
-                        X = X + 1
+                        x = x + 1
                 End If
                 Set r = r.Offset(1, 0)
             Loop Until Trim(r) = ""

@@ -20,9 +20,9 @@ Attribute VB_Name = "OnePagerModule"
 Public Sub generate_one_pager(ictrl As IRibbonControl)
     clear_one_pager
     skonfiguruj_form_generowania_one_pagera
-    FormOnePager.Show
     
-    MsgBox "ready"
+    FormOnePager.Show vbModeless
+    
 End Sub
 
 
@@ -201,8 +201,13 @@ Public Sub skonfiguruj_form_generowania_one_pagera()
     
     
     ' cfg na radio buttonach
-    FormOnePager.RadioPowerPoint.Value = False
-    FormOnePager.RadioExcels.Value = True
+    'FormOnePager.RadioPowerPoint.Value = False
+    'FormOnePager.RadioExcels.Value = True
+    
+    With FormOnePager
+        .RadioExcels.Value = False
+        .RadioPowerPoint.Value = True
+    End With
     
     FormOnePager.czy_uruchamiamy_eventy = True
     

@@ -46,7 +46,7 @@ Private Sub Class_Initialize()
     Set m = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
     
     ' arkusz order release status handler
-    Set osea = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
+    Set osea = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
     ' ====================================================================
     
     
@@ -104,6 +104,11 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             Do
                 If CStr(.LabelTitle.Caption) = _
                     CStr(Trim(r) & ", " & Trim(r.Offset(0, 1)) & ", " & Trim(r.Offset(0, 2)) & ", " & Trim(r.Offset(0, 3))) Then
+                    
+                    
+                    
+                        'Debug.Print r
+                        'Debug.Print r.Parent.Cells(r.Row, 9).Value
                 
                 
 
@@ -114,9 +119,9 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         '.TextBoxNoOfVeh = "0"
                         '.TextBoxWeeksDelay = "0"
                         ' EDIT
-                        .TextBoxAfterMRD = _
+                        .TextBoxAfterMRD.Value = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_after_mrd - 1)))
-                        .TextBoxConfirmed = _
+                        .TextBoxConfirmed.Value = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_confirmed - 1)))
                         .TextBoxForMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_osea_order_for_mrd - 1)))

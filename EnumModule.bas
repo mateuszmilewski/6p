@@ -238,9 +238,9 @@ Public Enum E_MASTER_MANDATORY_COLUMNS
     SQ_Comments
     MRD1_QTY
     MRD2_QTY
-    Total_QTY
+    total_qty
     ADD_to_T_slash_D
-    MRD1_Ordered_date
+    MRD1_Ordered_Date
     MRD1_Ordered_QTY
     MRD1_Ordered_STATUS
     MRD1_confirmed_qty
@@ -256,7 +256,7 @@ Public Enum E_MASTER_MANDATORY_COLUMNS
     First_Confirmed_PUS_Date
     Delivery_reconfirmation
     Total_PUS_QTY
-    Total_PUS_STATUS
+    TOTAL_PUS_STATUS
     Comments
     Bottleneck
     Future_Osea
@@ -272,15 +272,15 @@ Public Enum E_NEW_PROJECT_ITEM
     plt = 1
     project
     biw_ga ' BIW or GA
-    MY
+    my
     PHAZE
     BOM
     PICKUP_DATE
-    PPAP_GATE
-    MRD
-    BUILD_START
-    BUILD_END
-    KOORDYNATOR
+    ppap_gate
+    mrd
+    build_start
+    build_end
+    koordynator
     E_ACTIVE
     CAPACITY_CHECK
     E_MRD_DATE

@@ -25,10 +25,31 @@ Private Sub BtnGoBack_Click()
 End Sub
 
 Private Sub BtnImport_Click()
-    MsgBox "not implemented yet!"
+    ' MsgBox "not implemented yet!"
+    Hide
+    
+    FormCatchWizard.ListBox1.Clear
+    FormCatchWizard.ListBox1.MultiSelect = fmMultiSelectSingle
+    
+    Dim w As Workbook
+    For Each w In Workbooks
+        With FormCatchWizard.ListBox1
+            .AddItem w.name
+        End With
+    Next w
+    FormCatchWizard.czy_start_pochodzi_z_open_issues = False
+    FormCatchWizard.BtnImportOpenIssues.Enabled = False
+    FormCatchWizard.BtnJustImport.Enabled = False
+    FormCatchWizard.BtnSubmit.Enabled = False
+    FormCatchWizard.BtnOsea.Enabled = True
+    FormCatchWizard.Show vbModeless
+
 End Sub
 
 Private Sub BtnSubmit_Click()
+
+
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
 
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
@@ -103,9 +124,9 @@ Private Sub inner_calc()
         
         Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For X = 0 To 3
-            r.Offset(0, X) = Trim(arr(X))
-        Next X
+        For x = 0 To 3
+            r.Offset(0, x) = Trim(arr(x))
+        Next x
         
         recalc_total_textbox
         give_data_to_ranges r
@@ -463,7 +484,7 @@ Private Sub TextBoxOnStock_Change()
     recalc_total_textbox
 End Sub
 
-Private Sub TextBoxOPEN_Change()
+Private Sub TextBoxOpen_Change()
     recalc_total_textbox
 End Sub
 

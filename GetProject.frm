@@ -23,6 +23,10 @@ Private cw As String
 
 
 Private Sub BtnSubmit_Click()
+    
+    
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    
     Dim linkedStr As String
     mproj = Trim(CStr(proj))
     mplt = Trim(CStr(plt))
@@ -47,26 +51,26 @@ End Sub
 Private Sub innerChangeStates()
 
 
-    For X = 0 To Me.ListBoxProjects.ListCount - 1
+    For x = 0 To Me.ListBoxProjects.ListCount - 1
     
-        If Me.ListBoxProjects.Selected(X) Then
-            Me.ListBoxPLT.Selected(X) = True
-            Me.ListBoxFaza.Selected(X) = True
-            Me.ListBoxCW.Selected(X) = True
+        If Me.ListBoxProjects.Selected(x) Then
+            Me.ListBoxPLT.Selected(x) = True
+            Me.ListBoxFaza.Selected(x) = True
+            Me.ListBoxCW.Selected(x) = True
             
             
-            proj = CStr(Me.ListBoxProjects.List(X))
-            plt = CStr(Me.ListBoxPLT.List(X))
-            faza = CStr(Me.ListBoxFaza.List(X))
-            cw = CStr(Me.ListBoxCW.List(X))
+            proj = CStr(Me.ListBoxProjects.List(x))
+            plt = CStr(Me.ListBoxPLT.List(x))
+            faza = CStr(Me.ListBoxFaza.List(x))
+            cw = CStr(Me.ListBoxCW.List(x))
             
             
         Else
-            Me.ListBoxPLT.Selected(X) = False
-            Me.ListBoxFaza.Selected(X) = False
-            Me.ListBoxCW.Selected(X) = False
+            Me.ListBoxPLT.Selected(x) = False
+            Me.ListBoxFaza.Selected(x) = False
+            Me.ListBoxCW.Selected(x) = False
         End If
-    Next X
+    Next x
 End Sub
 
 Private Sub ListBoxProjects_DblClick(ByVal Cancel As MSForms.ReturnBoolean)

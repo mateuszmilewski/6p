@@ -100,22 +100,28 @@ End Sub
 
 Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
 
-    Dim sh As Worksheet, r As Range, rf As Range, pD As Range
+
+
+    ' SIXP.LoadingFormModule -> show zrobiony juz w poprzednim lejerze
+
+    Dim Sh As Worksheet, r As Range, rf As Range, pD As Range
     
     inicjuj_power_pointa_jesli_taka_jest_konfiguracja e
 
     Dim iter As Long
     iter = 1
     For Each link_raportu In kolekcja_linkow
+    
+        
         
         Set r = Nothing
         
         ' cialo generowania iterowanego one pagera
         ' =============================================
-        For X = LBound(pcs) To UBound(pcs)
-            Set sh = pcs(X)
-            sh.Activate
-            
+        For x = LBound(pcs) To UBound(pcs)
+            Set Sh = pcs(x)
+            Sh.Activate
+            SIXP.LoadingFormModule.incLoadingForm
             
             ' to jest najprostsza logika dzialania jednak to nie jest tak chocby
             ' dla pcs(2) to jest dla danych order release status trzeba sprawdzic nawet wszystkie fazy dla wybranego projektu
@@ -124,7 +130,7 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
             
             
             ' patrzymy tylko w main == x == 1
-            If X = 1 Then Set r = link_raportu.znajdz_siebie_w_arkuszu(sh)
+            If x = 1 Then Set r = link_raportu.znajdz_siebie_w_arkuszu(Sh)
             
             If Not r Is Nothing Then
                 ' r.Select
@@ -134,22 +140,22 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
                 ' --------------------------------------------------------------------------
                 ' --------------------------------------------------------------------------
                 
-                If X = SIXP.e_pcs_order_release_status Then
-                    wypelnienie_pcs_order_release_status rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_pnoc Then
-                    wypelnienie_pcs_pnoc rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_osea Then
-                    wypelnienie_pcs_osea rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_recent_build_plan_changes Then
-                    wypelnienie_pcs_recent_build_plan_changes rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_totals Then
-                    wypelnienie_pcs_totals rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_delivery_confirmation Then
-                    wypelnienie_pcs_del_conf rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_resp Then
-                    wypelnienie_pcs_resp rf, pD, sh, link_raportu
-                ElseIf X = SIXP.e_pcs_open_issues Then
-                    wypelnienie_pcs_open_issues rf, pD, sh, link_raportu
+                If x = SIXP.e_pcs_order_release_status Then
+                    wypelnienie_pcs_order_release_status rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_pnoc Then
+                    wypelnienie_pcs_pnoc rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_osea Then
+                    wypelnienie_pcs_osea rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_recent_build_plan_changes Then
+                    wypelnienie_pcs_recent_build_plan_changes rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_totals Then
+                    wypelnienie_pcs_totals rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_delivery_confirmation Then
+                    wypelnienie_pcs_del_conf rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_resp Then
+                    wypelnienie_pcs_resp rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_open_issues Then
+                    wypelnienie_pcs_open_issues rf, pD, Sh, link_raportu
                 End If
                 
                 
@@ -162,7 +168,7 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
             End If
             
             
-        Next X
+        Next x
         ' =============================================
         
         ' wczesniej ta funkcjonalnosc wykonywana byla przed zmiana danych zatem od samego poczatku zle pokazywalo
@@ -210,13 +216,13 @@ Private Sub przesortuj_raz_jeszcze_order_release_status_w_zgodzie_z_phase_list()
                 orderFromPhaseListR1 = getOrderFromPhaseList(r1)
                 orderFromPhaseListR2 = getOrderFromPhaseList(r2)
                 
-                If orderFromPhaseListR1 > orderFromPhaseListR2 Then
+                If orderFromPhaseListR1 < orderFromPhaseListR2 Then
                 
-                    For X = 1 To 8
-                        tmp = CStr(ir.Offset(0, X - 1).Value)
-                        r1.Offset(0, X - 1).Value = CStr(r2.Offset(0, X - 1).Value)
-                        r2.Offset(0, X - 1).Value = CStr(tmp)
-                    Next X
+                    For x = 1 To 8
+                        tmp = CStr(ir.Offset(0, x - 1).Value)
+                        r1.Offset(0, x - 1).Value = CStr(r2.Offset(0, x - 1).Value)
+                        r2.Offset(0, x - 1).Value = CStr(tmp)
+                    Next x
                     
                     
                     Set ir = ThisWorkbook.Sheets("ONE PAGER").Range("A3")
@@ -458,11 +464,14 @@ End Function
 Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGERS_INTO, iter As Long, ByRef l As T_Link)
     
     ' jestesmy w subie, ktory wyrzuca gotowe dane albo do excela niezaleznego albo do power pointa
-    
+    Dim myOwnIter As Long
     If e = E_ONE_PAGERS_INTO_POWER_POINT Then
     
+        
+        myOwnIter = iter * 2 - 1
+    
         DoEvents
-        makeSlide CLng(iter), ppApp, pp, myCustomLayout
+        makeSlide CLng(myOwnIter), ppApp, pp, myCustomLayout, l
 
     ElseIf e = E_ONE_PAGERS_INTO_SEPERATE_EXCELS Then
     
@@ -536,7 +545,7 @@ Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGER
         
         Application.DisplayAlerts = False
         w.SaveAs ThisWorkbook.Path & Application.PathSeparator & _
-            CStr("Project_Report_" & CStr(l.plt) & "_" & CStr(l.project) & "_" & CStr(l.faza) & "_" & CStr(l.cw)), _
+            CStr(SIXP.G_EXCEL_REPORT_PREFIX & CStr(l.plt) & "_" & CStr(l.project) & "_" & CStr(l.faza) & "_" & CStr(l.cw)), _
             51, , , , , , xlLocalSessionChanges
         Application.DisplayAlerts = True
         
@@ -556,55 +565,79 @@ End Sub
 
 
 Private Sub makeSlide(ktorySlide As Long, ppApp As PowerPoint.Application, _
-    pp As PowerPoint.Presentation, myCustomLayout As PowerPoint.CustomLayout)
+    pp As PowerPoint.Presentation, myCustomLayout As PowerPoint.CustomLayout, _
+    Optional l As T_Link)
 
+    
+
+    ' pp.PageSetup.SlideSize = ppSlideSizeA4Paper
+    ' pp.PageSetup.SlideOrientation = msoOrientationVertical
+    pp.PageSetup.SlideHeight = 297 * 2.88
+    pp.PageSetup.slideWidth = 210 * 2.88
+    copyPasteDataFromOnePager 1, CLng(ktorySlide), ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("A1:AC42"), l
+    copyPasteDataFromOnePager 2, CLng(ktorySlide + 1), ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("AF1:BH42"), l
+
+    
+End Sub
+
+
+Private Sub copyPasteDataFromOnePager(page As Integer, _
+    slideCounter As Long, _
+    copiedRange As Range, _
+    Optional l As T_Link)
+    
     Dim toCopy As Range, shToCopy As Worksheet
-
-    Set ppSlide = pp.Slides.AddSlide(ktorySlide, myCustomLayout)
-    
-    ' this toCopy was really smart at the beginning but it need to be changed into static range from summary worksheet
-    ' problem is more complicated because this subroutine working for main table and open issues
-    
-    
-    ' tutaj trzeba dopisac logike
-    'If arg = OPENISSUES Then
-    '    Set toCopy = determinePrintPages(arg)
-    'Else
-    '    Set toCopy = ThisWorkbook.Sheets("summary").Range("a1:o32")
-    'End If
+    Set ppSlide = pp.Slides.AddSlide(slideCounter, myCustomLayout)
     
     Set shToCopy = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm)
     shToCopy.DisplayPageBreaks = False
     
-    Set toCopy = shToCopy.Range("A1:BH42")
+    ' copiedRange
+    Set toCopy = copiedRange
+    
     toCopy.CopyPicture
-    
-    
-    ' toCopy.CopyPicture
     ppSlide.Shapes.Paste
     
     Dim myShape As PowerPoint.Shape
     Set myShape = ppSlide.Shapes(1)
         
-        Do
-            With myShape
-                
-                If .Height > pp.PageSetup.SlideHeight Then
-                    .Height = pp.PageSetup.SlideHeight
-                ElseIf .Width > pp.PageSetup.slideWidth Then
-                    .Width = pp.PageSetup.slideWidth
-                End If
-                
-                .LockAspectRatio = msoTrue
-                .Left = przelicz(pp.PageSetup.slideWidth, .Width)
-                .Top = 0
-            End With
+    Do
+        With myShape
+        
+            .LockAspectRatio = msoTrue
             
-            If Not ((myShape.Height > pp.PageSetup.SlideHeight) Or (myShape.Width > pp.PageSetup.slideWidth)) Then
-                Exit Do
+            ' in march 2018
+            ' G_OFFSET_FROM_TOP_IN_POWERPOINT_SLIDE: 50
+            
+            If .Height > (pp.PageSetup.SlideHeight - SIXP.G_OFFSET_FROM_TOP_IN_POWERPOINT_SLIDE) Then
+                .Height = pp.PageSetup.SlideHeight - SIXP.G_OFFSET_FROM_TOP_IN_POWERPOINT_SLIDE
+            ElseIf .Width > pp.PageSetup.slideWidth Then
+                .Width = pp.PageSetup.slideWidth - SIXP.G_OFFSET_IN_POWERPOINT_SLIDE - SIXP.G_OFFSET_IN_POWERPOINT_SLIDE
             End If
-        Loop While True
+            
+            .LockAspectRatio = msoTrue
+            .Left = przelicz(pp.PageSetup.slideWidth, .Width) + SIXP.G_OFFSET_IN_POWERPOINT_SLIDE
+            .Top = SIXP.G_OFFSET_FROM_TOP_IN_POWERPOINT_SLIDE
+        End With
+        
+        If Not ((myShape.Height > pp.PageSetup.SlideHeight) Or (myShape.Width > pp.PageSetup.slideWidth)) Then
+            Exit Do
+        End If
+    Loop While True
     
+    
+    ' l as T_Link
+    
+    Dim lr As Linker
+    Set lr = New Linker
+    
+    If Not l Is Nothing Then
+        ppSlide.Shapes.AddTextbox(msoTextOrientationHorizontal, 10, 10, _
+            pp.PageSetup.slideWidth - SIXP.G_OFFSET_IN_POWERPOINT_SLIDE, 30).TextFrame.TextRange.Text = _
+                CStr(lr.return_full_concated_r_string_comma_seperated(l))
+    End If
+    
+
 End Sub
 
 
@@ -622,7 +655,7 @@ Private Function przelicz(slideWidth, imgWidth) As Integer
     przelicz = Int((slideWidth - imgWidth) / 2)
 End Function
 
-Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' specjalne zachowanie dla order release status
     ' tworzymy tabele nie tylko dla wybranego linku ale rowniez dla innych elementow
     ' dla innych faz tego samego projektu - co nieco komplikuje sprawe - jednak nie jest
@@ -639,7 +672,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As
     
     Dim orders_coll(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     xx = 0
     Do
@@ -748,7 +781,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' te dane sa pod wykres wraz z danymi historycznymi
     ' - zatem patrzymy na ten sam projekt z perspektywy
     ' roznych CW
@@ -760,7 +793,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl A
     
     Dim fst_chart(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -862,7 +895,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -871,7 +904,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl A
     
     Dim sec_chart(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -962,7 +995,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     
@@ -972,7 +1005,7 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, 
     
     Dim recent_bp_changes(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     
     ' 1.
@@ -1101,7 +1134,7 @@ Private Function isThereAnyContent(rf As Range) As Boolean
     
 End Function
 
-Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -1110,7 +1143,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl
     
     Dim third_chart(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -1169,7 +1202,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl
         
         If Not rf Is Nothing Then
         
-            Debug.Print rf.Offset(0, 3)
+            ' Debug.Print rf.Offset(0, 3)
         
         
             If pD.Value = "" Then
@@ -1223,7 +1256,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     'Dim pd As Range, sh As Worksheet
@@ -1342,7 +1375,7 @@ Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, sh As Worksheet, 
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     Dim ssh As Worksheet
@@ -1404,14 +1437,14 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     
     common_find_resp = ""
     
-    Dim sh As Worksheet, r As Range
-    Set sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
+    Dim Sh As Worksheet, r As Range
+    Set Sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
     
     
-    If sh.Range("A2") <> "" Then
-        Set r = sh.Range("A1").End(xlDown)
+    If Sh.Range("A2") <> "" Then
+        Set r = Sh.Range("A1").End(xlDown)
     Else
-        Set r = sh.Range("A2")
+        Set r = Sh.Range("A2")
     End If
     
     Do
@@ -1438,7 +1471,7 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     Loop Until r.Row = 1
 End Function
 
-Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
 
     ' ------------------------------------------------------------------------------------------------
     
@@ -1449,7 +1482,7 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Workshee
     
     Dim open_issues_arr(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     
     ' 1.
@@ -1536,7 +1569,7 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Workshee
                 ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("AP" & CStr(3 + i)) = _
                     rf.Offset(0, SIXP.e_open_issues_comment - 1)
                 
-                i = i + 1
+                i = i + 2
     
             Else
                 Exit For

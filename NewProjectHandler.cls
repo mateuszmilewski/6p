@@ -70,7 +70,7 @@ Private Sub Class_Initialize()
             ' .CheckBoxWizardContent.Enabled = False
             
             
-            .Show ' vbModeless
+            .Show vbModeless
         End With
     Else
         MsgBox "Aktywny arkussz nie jest dozwolony - przejdz do arkusza zawierajacego dane raportu."
@@ -83,15 +83,15 @@ Private Sub prepare_comboboxes_and_dt_picker()
     With NewProj
         .ComboBoxStatus.Clear
         
-        For X = 2 To 4
+        For x = 2 To 4
         
-            .ComboBoxStatus.AddItem CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(X, 1))
+            .ComboBoxStatus.AddItem CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
             
-            If X = 2 Then
+            If x = 2 Then
                 .ComboBoxStatus.Value = _
-                    CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(X, 1))
+                    CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
             End If
-        Next X
+        Next x
         
         
         .ComboBoxFAZA.Clear

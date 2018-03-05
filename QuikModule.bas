@@ -43,16 +43,16 @@ Private Function podziel(typ_quika As TypQuika, ByRef r As Range, p, k)
     gold = r.item(k)
     b = p
     
-    For X = p To k
-        If gold >= r.item(X) Then
+    For x = p To k
+        If gold >= r.item(x) Then
             If typ_quika = STD Then
-                zamien_ze_soba r.item(b), r.item(X)
+                zamien_ze_soba r.item(b), r.item(x)
             ElseIf typ_quika = arr Then
-                zamien_ze_soba_arr r.item(b), r.item(X)
+                zamien_ze_soba_arr r.item(b), r.item(x)
             End If
             b = b + 1
         End If
-    Next X
+    Next x
     
     podziel = b - 1
 End Function
@@ -73,11 +73,11 @@ End Sub
 Private Sub zamien_ze_soba(ByRef a As Range, ByRef b As Range)
     Dim tmp As Variant
     
-    For X = 1 To a.Count
-        tmp = a.item(X).Value
-        a.item(X).Value = b.item(X).Value
-        b.item(X).Value = tmp
-    Next X
+    For x = 1 To a.Count
+        tmp = a.item(x).Value
+        a.item(x).Value = b.item(x).Value
+        b.item(x).Value = tmp
+    Next x
 End Sub
 
 Public Sub main_szybki_sort()

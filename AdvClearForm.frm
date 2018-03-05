@@ -14,6 +14,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub BtnAll_Click()
+
+
+    gotoThisWorkbookMainA1
             
     ans = MsgBox("Are you sure?", vbYesNo)
     
@@ -55,6 +58,6 @@ Private Sub BtnClearByWildcard_Click()
     End If
 End Sub
 
-Private Sub BtnCLose_Click()
+Private Sub BtnClose_Click()
     Hide
 End Sub

@@ -60,6 +60,10 @@ Private Sub BtnGoBack_Click()
 End Sub
 
 Private Sub BtnSubmit_Click()
+    
+        
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
@@ -131,9 +135,9 @@ Private Sub inner_calc()
         
         Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For X = 0 To 3
-            r.Offset(0, X) = Trim(arr(X))
-        Next X
+        For x = 0 To 3
+            r.Offset(0, x) = Trim(arr(x))
+        Next x
         
         
         give_data_to_ranges r

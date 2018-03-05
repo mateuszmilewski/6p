@@ -108,6 +108,8 @@ End Sub
 
 Private Sub BtnSubmit_Click()
 
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
@@ -181,9 +183,9 @@ Private Sub inner_calc()
         
         Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For X = 0 To 3
-            r.Offset(0, X) = Trim(arr(X))
-        Next X
+        For x = 0 To 3
+            r.Offset(0, x) = Trim(arr(x))
+        Next x
         
         
         give_data_to_ranges r
@@ -435,7 +437,7 @@ Private Sub PnocMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     jaka_kolwiek_zmiana_nastapila
 End Sub
 
-Private Sub TextBox1_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+Private Sub TextBox1_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Single, ByVal Y As Single)
     jaka_kolwiek_zmiana_nastapila
 End Sub
 

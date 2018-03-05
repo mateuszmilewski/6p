@@ -30,13 +30,13 @@ Private d As Dictionary
 Private tl As T_Link
 Private l As Linker
 Private r As Range
-Private sh As Worksheet
+Private Sh As Worksheet
 
 Private nazwaPliku As String
 
 
 Public Function getQuarterMainTable() As Worksheet
-    Set getQuarterMainTable = sh
+    Set getQuarterMainTable = Sh
 End Function
 
 Public Function zrobKlucz(strProj, strPlt, strFaza, strCW)
@@ -48,15 +48,15 @@ End Function
 Public Sub fillDictionaryWithTLinks(ByRef msh As Worksheet)
 
 
-    Set sh = msh
+    Set Sh = msh
 
-    Set r = sh.Cells(2, SIXP.e_qmt_project)
+    Set r = Sh.Cells(2, SIXP.e_qmt_project)
     
     If Trim(r) <> "" Then
     
     Do
         
-        klucz = zrobKlucz(r.Value, sh.Cells(r.Row, SIXP.e_qmt_Plant).Value, sh.Cells(r.Row, SIXP.e_qmt_PHASE).Value, sh.Cells(r.Row, SIXP.e_qmt_cw).Value)
+        klucz = zrobKlucz(r.Value, Sh.Cells(r.Row, SIXP.e_qmt_Plant).Value, Sh.Cells(r.Row, SIXP.e_qmt_PHASE).Value, Sh.Cells(r.Row, SIXP.e_qmt_cw).Value)
         
         If Not d.Exists(klucz) Then
             d.Add klucz, tl
@@ -86,7 +86,7 @@ Public Sub openFormWithDataFromQuarter()
     
     
     FormQuarterContentChooser.passData d, Me, nazwaPliku
-    FormQuarterContentChooser.Show
+    FormQuarterContentChooser.Show vbModeless
     
     
     
@@ -96,11 +96,11 @@ Public Sub noSelectionOnListBoxes()
 
     With FormQuarterContentChooser
     
-        For X = 0 To .ListBoxProj.ListCount - 1
+        For x = 0 To .ListBoxProj.ListCount - 1
             
-            .ListBoxProj.Selected(X) = False
+            .ListBoxProj.Selected(x) = False
             
-        Next X
+        Next x
     End With
 End Sub
 
@@ -200,12 +200,17 @@ Private Sub Class_Initialize()
     
     Set d = New Dictionary
     Set l = New Linker
-    Set sh = Nothing
+    Set Sh = Nothing
     
     nazwaPliku = ""
+    
+    
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 50
 End Sub
 
 Public Sub setWrkNm(wrknm)
+
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 50
     
     nazwaPliku = CStr(wrknm)
 End Sub
@@ -217,7 +222,10 @@ End Function
 Private Sub Class_Terminate()
     Set d = Nothing
     Set l = Nothing
-    Set sh = Nothing
+    Set Sh = Nothing
+    
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 50
+    
 End Sub
 
 
@@ -233,13 +241,17 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
         
         For Each w In c
         
-            
+            SIXP.LoadingFormModule.incLoadingForm
         
             Set r = mt.Cells(w, SIXP.e_qmt_project)
             Set r = mt.Range(r, mt.Cells(w, SIXP.e_qmt_after_MRD_osea))
             
             ' Debug.Print mt.Cells(w, SIXP.e_qmt_project).Value & " " & mt.Cells(w, SIXP.e_qmt_MRD).Value
             
+            
+            
+            
+            SIXP.LoadingFormModule.incLoadingForm
             sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_main_sh_nm))
             ' dodatkowa zmienna, by moc do niej wrocic na koniec logiki, gdy pozostale arkusze zostana juz uzupelnione
             main_w = sixp_w
@@ -272,6 +284,8 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                     '    e_order_release_weeks_delay
                     'End Enum
                     
+                    
+                    
                     .Cells(sixp_w, SIXP.e_order_release_mrd).Value = mt.Cells(w, SIXP.e_qmt_MRD).Value
                     .Cells(sixp_w, SIXP.e_order_release_build).Value = mt.Cells(w, SIXP.e_qmt_Build_ORS).Value
                     .Cells(sixp_w, SIXP.e_order_release_bom_freeze).Value = mt.Cells(w, SIXP.e_qmt_BOM_freeze).Value
@@ -282,6 +296,8 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
 
                 End With
                 
+                
+                SIXP.LoadingFormModule.incLoadingForm
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm))
                 With .Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
                     
@@ -302,7 +318,7 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                     
                 End With
                 
-                
+                SIXP.LoadingFormModule.incLoadingForm
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm))
                 With .Sheets(SIXP.G_cont_pnoc_sh_nm)
                     
@@ -324,7 +340,7 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                 End With
                 
                 
-                
+                SIXP.LoadingFormModule.incLoadingForm
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_osea_sh_nm))
                 With .Sheets(SIXP.G_osea_sh_nm)
                     
@@ -352,6 +368,8 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                     
                 End With
                 
+                
+                SIXP.LoadingFormModule.incLoadingForm
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_totals_sh_nm))
                 With .Sheets(SIXP.G_totals_sh_nm)
                     
@@ -379,11 +397,11 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                     ' suma sklada sie:
                     ' NA, ITDC, PNOC, FMA EUR, FMA OSEA
                     .Cells(sixp_w, SIXP.e_5p_total).Value = _
-                        mt.Cells(w, SIXP.e_qmt_NA).Value + _
-                        mt.Cells(w, SIXP.e_qmt_ITDC).Value + _
-                        mt.Cells(w, SIXP.e_qmt_PNOC_ChartTotal).Value + _
-                        mt.Cells(w, SIXP.e_qmt_FMAeur).Value + _
-                        mt.Cells(w, SIXP.e_qmt_FMAosea).Value
+                        CLng(mt.Cells(w, SIXP.e_qmt_NA).Value) + _
+                        CLng(mt.Cells(w, SIXP.e_qmt_ITDC).Value) + _
+                        CLng(mt.Cells(w, SIXP.e_qmt_PNOC_ChartTotal).Value) + _
+                        CLng(mt.Cells(w, SIXP.e_qmt_FMAeur).Value) + _
+                        CLng(mt.Cells(w, SIXP.e_qmt_FMAosea).Value)
 
                     .Cells(sixp_w, SIXP.e_5p_na).Value = mt.Cells(w, SIXP.e_qmt_NA).Value
                     .Cells(sixp_w, SIXP.e_5p_itdc).Value = mt.Cells(w, SIXP.e_qmt_ITDC).Value
@@ -399,6 +417,9 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                     
                 End With
                 
+                
+                SIXP.LoadingFormModule.incLoadingForm
+                SIXP.LoadingFormModule.incLoadingForm
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_resp_sh_nm))
                 With .Sheets(SIXP.G_resp_sh_nm)
                     
@@ -418,6 +439,9 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                     .Cells(sixp_w, SIXP.e_resp_sqe).Value = mt.Cells(w, SIXP.e_qmt_sqe).Value
                 End With
                 
+                
+                SIXP.LoadingFormModule.incLoadingForm
+                SIXP.LoadingFormModule.incLoadingForm
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm))
                 With .Sheets(SIXP.G_del_conf_sh_nm)
                     
@@ -480,6 +504,9 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                 End With
                 
                 
+                SIXP.LoadingFormModule.incLoadingForm
+                SIXP.LoadingFormModule.incLoadingForm
+                SIXP.LoadingFormModule.incLoadingForm
                 
                 sixp_w = znajdzPierwszyPustyWiersz(ThisWorkbook.Sheets(SIXP.G_xq_sh_nm))
                 With .Sheets(SIXP.G_xq_sh_nm)
@@ -501,19 +528,19 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
                 End With
                 
                 
-                
+                SIXP.LoadingFormModule.incLoadingForm
                 ' back to main
                 With .Sheets(SIXP.G_main_sh_nm)
 
                     ' ----------------------------------------------------------------------------------------
                     
-                    For X = SIXP.e_main_last_update_on_order_release_status To SIXP.e_main_last_update_on_resp
+                    For x = SIXP.e_main_last_update_on_order_release_status To SIXP.e_main_last_update_on_resp
                     
                     
-                        If X <> SIXP.e_main_last_update_on_open_issues Then
-                            .Cells(sixp_w, X).Value = .Cells(sixp_w, SIXP.e_link_cw).Value
+                        If x <> SIXP.e_main_last_update_on_open_issues Then
+                            .Cells(sixp_w, x).Value = .Cells(sixp_w, SIXP.e_link_cw).Value
                         End If
-                    Next X
+                    Next x
                     ' ----------------------------------------------------------------------------------------
                     
                     ' reszta danych zostanie uzupelniona potem, gdy dane na innych arkuszach sie juz pojawia
@@ -529,9 +556,10 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
     End If
 End Sub
 
-Private Sub cellsWithLinkProjPltPhaseCW(main_w, w, sh As Worksheet, mt As Worksheet)
+Private Sub cellsWithLinkProjPltPhaseCW(main_w, w, Sh As Worksheet, mt As Worksheet)
 
-    With sh
+    SIXP.LoadingFormModule.incLoadingForm
+    With Sh
         .Cells(main_w, SIXP.e_link_project).Value = mt.Cells(w, SIXP.e_qmt_project).Value
         .Cells(main_w, SIXP.e_link_plt).Value = mt.Cells(w, SIXP.e_qmt_Plant).Value
         .Cells(main_w, SIXP.e_link_faza).Value = mt.Cells(w, SIXP.e_qmt_PHASE).Value
@@ -544,7 +572,7 @@ Private Function znajdzPierwszyPustyWiersz(arkusz As Worksheet) As Long
 
     znajdzPierwszyPustyWiersz = -1
     
-    
+    SIXP.LoadingFormModule.incLoadingForm
     Dim r As Range
     Set r = arkusz.Cells(1, 1)
     Do

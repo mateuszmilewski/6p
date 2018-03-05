@@ -1,4 +1,4 @@
-Attribute VB_Name = "QuarterModule"
+Attribute VB_Name = "FindAll6PModule"
 ' FORREST SOFTWARE
 ' Copyright (c) 2018 Mateusz Forrest Milewski
 '
@@ -17,42 +17,45 @@ Attribute VB_Name = "QuarterModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Public Sub uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera(Sh As Worksheet, wrknm As String)
 
 
-    Application.ScreenUpdating = False
-
-    SIXP.LoadingFormModule.showLoadingForm
-    
-
-    Dim qh As QuarterHandler
-    Set qh = New QuarterHandler
-    qh.setWrkNm wrknm
-    qh.fillDictionaryWithTLinks Sh
-    qh.openFormWithDataFromQuarter
-    Set qh = Nothing
+Public Sub find_all_6p(ictrl As IRibbonControl)
     
     
-    SIXP.LoadingFormModule.hideLoadingForm
+    ' main start to look for all files with 6p postfix in fma folder
+    ' same logic in collector file
+    ' --------------------------------------------------------------------------
+    ' --------------------------------------------------------------------------
+    Dim c As Collection
+    Dim creator As SixPCollectionCreator
+    Set creator = New SixPCollectionCreator
     
-    Application.ScreenUpdating = True
+    With creator
+        '.stworz_kolekcje SIXP.G_PATH_FOR_SEARCHING
+        .stworz_kolekcje "C:\WORKSPACE\macros\LESS\6p\"
+        Set c = .getCollection()
+    End With
     
-    MsgBox "import Quarter: ready!"
+    Set creator = Nothing
     
+    
+    'For Each el In c
+    '    Debug.Print el
+    'Next el
+    
+    With SIXP.Form6pList
+        .ListBoxIn.Clear
+        .ListBoxOut.Clear
+        
+        For Each el In c
+            .ListBoxIn.AddItem CStr(el)
+        Next el
+        
+        .Show vbModeless
+    End With
+    
+    
+    
+    ' --------------------------------------------------------------------------
+    ' --------------------------------------------------------------------------
 End Sub
-
-Public Sub import_from_quarter(ictrl As IRibbonControl)
-
-
-    Dim w As Workbook
-    FormCatchQuarter.ListBoxFiles.Clear
-    For Each w In Workbooks
-        FormCatchQuarter.ListBoxFiles.AddItem w.name
-    Next w
-    
-    FormCatchQuarter.Show vbModeless
-    
-    
-End Sub
-
-

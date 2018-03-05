@@ -75,7 +75,12 @@ Global Const G_SEPARATOR = "qwertyuiopasdfghjkl"
 Global Const G_MAIN_TB_FROM_Q = "main_table"
 
 
+Global Const G_EXCEL_REPORT_PREFIX = "Project_Report_"
+
+Global Const G_PATH_FOR_SEARCHING = "X:\PLGLI-3-Exchange\SoE\FMA\"
+Global Const G_6P_POSTFIX = "6P.xlsm"
 
 
 
-
+Global Const G_OFFSET_FROM_TOP_IN_POWERPOINT_SLIDE = 50
+Global Const G_OFFSET_IN_POWERPOINT_SLIDE = 20

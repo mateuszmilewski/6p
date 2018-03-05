@@ -25,7 +25,7 @@ Attribute VB_Exposed = False
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Private sh As Worksheet
+Private Sh As Worksheet
 Private r As Range
 
 Public Function sprawdz_czy_aktywny_arkusz_jest_w_stanie_otworzyc_formularz_form_main() As Boolean
@@ -34,8 +34,8 @@ Public Function sprawdz_czy_aktywny_arkusz_jest_w_stanie_otworzyc_formularz_form
     
     If Me.sprawdz_czy_arkusz_aktywny_to_ten_arkusz() Then
 
-        Set sh = ActiveSheet
-        Set r = sh.Range("A1")
+        Set Sh = ActiveSheet
+        Set r = Sh.Range("A1")
         
         If sprawdz_pierwsze_cztery_kolumny_proj_plt_faza_cw_z_danymi_w_rejestrze(r) Then
             sprawdz_czy_aktywny_arkusz_jest_w_stanie_otworzyc_formularz_form_main = True

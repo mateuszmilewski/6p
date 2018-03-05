@@ -23,7 +23,7 @@ End Sub
 
 Public Sub advanced_clearing(ictrl As IRibbonControl)
     
-    AdvClearForm.Show
+    AdvClearForm.Show vbModeless
 End Sub
 
 
@@ -53,14 +53,48 @@ End Sub
 Public Sub clear_all_items()
     Dim dm As DeletionManager
     Set dm = New DeletionManager
+    SIXP.LoadingFormModule.showLoadingForm
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
     dm.usun_wszystko
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+    SIXP.LoadingFormModule.hideLoadingForm
     Set dm = Nothing
 End Sub
 
 Public Sub clear_by_wildcard(pattern As String)
     Dim dm As DeletionManager
     Set dm = New DeletionManager
+    SIXP.LoadingFormModule.showLoadingForm
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
     dm.usun_po_gwiazdce pattern
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+    SIXP.LoadingFormModule.hideLoadingForm
     Set dm = Nothing
+End Sub
+
+
+Public Sub close_excel_project_reports(ictrl As IRibbonControl)
+
+
+    Application.ScreenUpdating = False
+
+    SIXP.LoadingFormModule.showLoadingForm
+
+    Dim w As Workbook
+    For Each w In Workbooks
+        If w.name Like "*" & CStr(SIXP.G_EXCEL_REPORT_PREFIX) & "*" Then
+            SIXP.LoadingFormModule.incLoadingForm
+            w.Close False
+            
+        End If
+    Next w
+    
+    SIXP.LoadingFormModule.hideLoadingForm
+    
+    
+    Application.ScreenUpdating = True
+    
+    
+    MsgBox "ready!"
 End Sub
     

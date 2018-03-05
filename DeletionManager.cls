@@ -33,14 +33,14 @@ Public Sub usun_wszystko()
     
     
     
-    Dim sh As Worksheet, rng As Range
-    For Each sh In ThisWorkbook.Sheets
+    Dim Sh As Worksheet, rng As Range
+    For Each Sh In ThisWorkbook.Sheets
     
         On Error Resume Next
-        sh.ShowAllData
+        Sh.ShowAllData
         
     
-        Set rng = sh.Cells(1, 1)
+        Set rng = Sh.Cells(1, 1)
         
         If rng.Value = "Projekt" Then
             If rng.Offset(0, 1) = "Plant Code" Then
@@ -50,14 +50,14 @@ Public Sub usun_wszystko()
                         
                         
                     
-                        sh.Range(stale_wygodne_odniesienie).ClearComments
-                        sh.Range(stale_wygodne_odniesienie).Value = ""
-                        sh.Rows(strrows).Delete xlUp
+                        Sh.Range(stale_wygodne_odniesienie).ClearComments
+                        Sh.Range(stale_wygodne_odniesienie).Value = ""
+                        Sh.Rows(strrows).Delete xlUp
                     End If
                 End If
             End If
         End If
-    Next sh
+    Next Sh
 End Sub
 
 
@@ -159,14 +159,14 @@ Private Sub iteracja_po_kolejnych_wierszach_dla(shnm As String, strlink As Strin
     ' : wykorzystanie znaku =
     ' oraz niedokoladnym, przyblizonym : wykorzystanie slowa kluczowego Like
     
-    Dim sh As Worksheet
-    Set sh = ThisWorkbook.Sheets(shnm)
+    Dim Sh As Worksheet
+    Set Sh = ThisWorkbook.Sheets(shnm)
     
     On Error Resume Next
-    sh.ShowAllData
+    Sh.ShowAllData
     
     Dim r As Range
-    Set r = sh.Range("A2")
+    Set r = Sh.Range("A2")
     
     Do
         tmp = Trim(CStr(r.Parent.Cells(r.Row, 1))) & _
@@ -180,14 +180,14 @@ Private Sub iteracja_po_kolejnych_wierszach_dla(shnm As String, strlink As Strin
             
                 r.EntireRow.Delete
             
-                Set r = sh.Range("A1")
+                Set r = Sh.Range("A1")
             End If
         ElseIf like_comparison = True Then
             If Trim(tmp) Like "*" & Trim(strlink) & "*" Then
             
                 r.EntireRow.Delete
             
-                Set r = sh.Range("A1")
+                Set r = Sh.Range("A1")
             End If
         End If
         Set r = r.Offset(1, 0)

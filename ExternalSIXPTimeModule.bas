@@ -50,7 +50,7 @@ Public Sub inner_6p_time(mm, md, mp)
     Set p = mp ' ThisWorkbook.Sheets(WizardMain.PICKUPS_SHEET_NAME)
     
     Dim m_r_d As Range, r_biw_ga As Range
-    Set m_r_d = d.Cells(SIXP.MRD, 2)
+    Set m_r_d = d.Cells(SIXP.mrd, 2)
     
     ' also it will be in buff on Q1
     Set r_biw_ga = d.Cells(SIXP.biw_ga, 2)
@@ -85,37 +85,37 @@ Public Sub inner_6p_time(mm, md, mp)
     pierwszy_wiersz_pod_dane_ogolne = 1
     With wrksh
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 3)
-            .Value = CStr(d.Cells(SIXP.MRD, 2))
+            .Value = CStr(d.Cells(SIXP.mrd, 2))
             If .Comment Is Nothing Then
-                .AddComment "MRD"
+                .addComment "MRD"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 4)
-            .Value = CStr(d.Cells(SIXP.BUILD_START, 2))
+            .Value = CStr(d.Cells(SIXP.build_start, 2))
             If .Comment Is Nothing Then
-                .AddComment "BUILD START"
+                .addComment "BUILD START"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 5)
-            .Value = CStr(d.Cells(SIXP.BUILD_END, 2))
+            .Value = CStr(d.Cells(SIXP.build_end, 2))
             If .Comment Is Nothing Then
-                .AddComment "BUILD END"
+                .addComment "BUILD END"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 6)
             .Value = CStr(d.Cells(SIXP.BOM, 2))
             If .Comment Is Nothing Then
-                .AddComment "BOM"
+                .addComment "BOM"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 7)
-            .Value = CStr(d.Cells(SIXP.PPAP_GATE, 2))
+            .Value = CStr(d.Cells(SIXP.ppap_gate, 2))
             If .Comment Is Nothing Then
-                .AddComment "PPAP GATE"
+                .addComment "PPAP GATE"
             End If
         End With
         
@@ -123,16 +123,16 @@ Public Sub inner_6p_time(mm, md, mp)
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 9)
             .Value = CStr(Date)
             If .Comment Is Nothing Then
-                .AddComment "Today"
+                .addComment "Today"
             End If
         End With
         
         
         ' resp
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 10)
-            .Value = CStr(d.Cells(SIXP.KOORDYNATOR, 2))
+            .Value = CStr(d.Cells(SIXP.koordynator, 2))
             If .Comment Is Nothing Then
-                .AddComment "FMA COORD"
+                .addComment "FMA COORD"
             End If
         End With
         
@@ -329,15 +329,15 @@ Private Function zrob_arkusz_puses(mp As Worksheet, mpuses As Worksheet) As Work
         
         If CStr(Trim(fst)) <> "" Then
             
-            For X = SIXP.O_PN To SIXP.O_PUS_Number
+            For x = SIXP.O_PN To SIXP.O_PUS_Number
             
-                If X = SIXP.O_Delivery_Date Or X = SIXP.O_Pick_up_date Then
-                    f.Offset(0, X - SIXP.O_PN) = CDate(fst.Parent.Cells(fst.Row, X))
+                If x = SIXP.O_Delivery_Date Or x = SIXP.O_Pick_up_date Then
+                    f.Offset(0, x - SIXP.O_PN) = CDate(fst.Parent.Cells(fst.Row, x))
                 Else
-                    f.Offset(0, X - SIXP.O_PN) = CStr(fst.Parent.Cells(fst.Row, X))
+                    f.Offset(0, x - SIXP.O_PN) = CStr(fst.Parent.Cells(fst.Row, x))
                 End If
                 
-            Next X
+            Next x
             
             Set f = f.Offset(1, 0)
         End If
@@ -922,7 +922,7 @@ Private Function wez_date_mrd_z_details(details_sh As Worksheet, directly_date_o
     If directly_date_or_parse_from_str_mrd Then
         wez_date_mrd_z_details = CDate(Format(details_sh.Cells(SIXP.E_MRD_DATE, 2), "yyyy-mm-dd"))
     Else
-        wez_date_mrd_z_details = CDate(parsuj_y_cw_do_daty_poniedzialkowej(details_sh.Cells(SIXP.MRD, 2)))
+        wez_date_mrd_z_details = CDate(parsuj_y_cw_do_daty_poniedzialkowej(details_sh.Cells(SIXP.mrd, 2)))
     End If
     
     
@@ -994,9 +994,9 @@ Private Sub fill_wiz_buff_with_all_details_but_transpose_from_o1(details_sh As W
     
     
     ' transposed data from details
-    For X = SIXP.plt To E_UNIQUE_ID
-        rw.Offset(0, X - 1) = details_sh.Cells(X, 2)
-    Next X
+    For x = SIXP.plt To E_UNIQUE_ID
+        rw.Offset(0, x - 1) = details_sh.Cells(x, 2)
+    Next x
     
 
 End Sub

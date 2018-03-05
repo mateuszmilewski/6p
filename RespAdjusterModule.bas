@@ -32,7 +32,7 @@ Public Sub resp_adjuster()
     Set d = complete_data_from_register(d, ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("G2"))
     go_to_register_and_prepare_form d, ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("G2")
     
-    SIXP.FormRespAdjuster.Show
+    SIXP.FormRespAdjuster.Show vbModeless
 End Sub
 
 Private Sub go_to_register_and_prepare_form(ByRef dd As Dictionary, rf As Range)
@@ -91,11 +91,11 @@ End Sub
 
 
 Private Function verify_with_wizard_buff()
-    Dim sh As Worksheet
-    Set sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
+    Dim Sh As Worksheet
+    Set Sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
     
     Dim r As Range
-    Set r = sh.Range("B2")
+    Set r = Sh.Range("B2")
     
     
     Dim d As Dictionary
@@ -137,11 +137,11 @@ Private Function complete_data_from_register(dd As Dictionary, rr As Range) As D
     ' dd to slownik z juz czesciowo skomplemtowanymi danymi z wizard buff
     ' rr poczatek zasiegu skomplemtowanych danych w rejestrze
     
-    Dim sh As Worksheet
-    Set sh = ThisWorkbook.Sheets(SIXP.G_register_sh_nm)
+    Dim Sh As Worksheet
+    Set Sh = ThisWorkbook.Sheets(SIXP.G_register_sh_nm)
     
     Dim r As Range
-    Set r = sh.Range("G2")
+    Set r = Sh.Range("G2")
     
     
     Dim d As Dictionary

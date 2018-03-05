@@ -35,11 +35,14 @@ Attribute VB_Exposed = False
 Public czy_uruchamiamy_eventy As Boolean
 
 Private Sub BtnReset_Click()
+    
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    
     Hide
     
     ' clear_one_pager
     skonfiguruj_form_generowania_one_pagera
-    FormOnePager.Show
+    FormOnePager.Show vbModeless
 End Sub
 
 Private Sub BtnSubmit_Click()
@@ -60,6 +63,11 @@ Private Sub BtnSubmit_Click()
 End Sub
 
 Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAGERS_INTO)
+
+
+    Application.ScreenUpdating = False
+    
+    SIXP.LoadingFormModule.showLoadingForm
     
     Dim kolekcja_linkow As Collection
     Set kolekcja_linkow = New Collection
@@ -106,6 +114,13 @@ Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAG
     End If
     
     Set kolekcja_linkow = Nothing
+    
+    SIXP.LoadingFormModule.hideLoadingForm
+    
+    Application.ScreenUpdating = True
+    
+    
+    MsgBox "ready!"
 End Sub
 
 Private Function czy_ten_wiersz_jest_dopasowany_do_selekcji(r As Range) As Boolean
@@ -117,41 +132,41 @@ Private Function czy_ten_wiersz_jest_dopasowany_do_selekcji(r As Range) As Boole
     dopasowanie_cw = False
     
 
-    For X = 0 To Me.ListBoxProjects.ListCount - 1
+    For x = 0 To Me.ListBoxProjects.ListCount - 1
 
         
-        If Me.ListBoxProjects.List(X) = Trim(r) Then
+        If Me.ListBoxProjects.List(x) = Trim(r) Then
             dopasowanie_projektu = True
         End If
 
-    Next X
+    Next x
     
 
-    For X = 0 To Me.ListBoxPlants.ListCount - 1
+    For x = 0 To Me.ListBoxPlants.ListCount - 1
         
-        If Me.ListBoxPlants.List(X) = Trim(r.Offset(0, 1)) Then
+        If Me.ListBoxPlants.List(x) = Trim(r.Offset(0, 1)) Then
             dopasowanie_plantu = True
         End If
 
-    Next X
+    Next x
     
-    For X = 0 To Me.ListBoxPhases.ListCount - 1
+    For x = 0 To Me.ListBoxPhases.ListCount - 1
 
     
-        If Me.ListBoxPhases.List(X) = Trim(r.Offset(0, 2)) Then
+        If Me.ListBoxPhases.List(x) = Trim(r.Offset(0, 2)) Then
             dopasowanie_fazy = True
         End If
 
-    Next X
+    Next x
 
-    For X = 0 To Me.ListBoxCWs.ListCount - 1
+    For x = 0 To Me.ListBoxCWs.ListCount - 1
 
         
-        If Me.ListBoxCWs.List(X) = Trim(r.Offset(0, 3)) Then
+        If Me.ListBoxCWs.List(x) = Trim(r.Offset(0, 3)) Then
             dopasowanie_cw = True
         End If
 
-    Next X
+    Next x
     
     
     czy_ten_wiersz_jest_dopasowany_do_selekcji = _
@@ -230,7 +245,7 @@ Private Sub przeorganizuj_listboxy( _
     End With
     
     
-    X = 0
+    x = 0
     For Each Key In proj_dic.Keys
         
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_project) Then
@@ -238,14 +253,14 @@ Private Sub przeorganizuj_listboxy( _
             
             If proj_dic(Key) = 1 Then
                 czy_uruchamiamy_eventy = False
-                Me.ListBoxProjects.Selected(X) = True
+                Me.ListBoxProjects.Selected(x) = True
                 czy_uruchamiamy_eventy = True
             End If
-            X = X + 1
+            x = x + 1
         End If
     Next
     
-    X = 0
+    x = 0
     For Each Key In plt_dic.Keys
         
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_plt) Then
@@ -254,29 +269,29 @@ Private Sub przeorganizuj_listboxy( _
             If plt_dic(Key) = 1 Then
                 Application.EnableEvents = False
                 czy_uruchamiamy_eventy = False
-                Me.ListBoxPlants.Selected(X) = True
+                Me.ListBoxPlants.Selected(x) = True
                 czy_uruchamiamy_eventy = True
                 Application.EnableEvents = True
             End If
-            X = X + 1
+            x = x + 1
         End If
     Next
     
-    X = 0
+    x = 0
     For Each Key In faza_dic.Keys
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_faza) Then
             Me.ListBoxPhases.AddItem CStr(Key)
             
             If faza_dic(Key) = 1 Then
                 czy_uruchamiamy_eventy = False
-                Me.ListBoxPhases.Selected(X) = True
+                Me.ListBoxPhases.Selected(x) = True
                 czy_uruchamiamy_eventy = True
             End If
-            X = X + 1
+            x = x + 1
         End If
     Next
     
-    X = 0
+    x = 0
     For Each Key In cw_dic.Keys
         
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_cw) Then
@@ -284,10 +299,10 @@ Private Sub przeorganizuj_listboxy( _
             
             If cw_dic(Key) = 1 Then
                 czy_uruchamiamy_eventy = False
-                Me.ListBoxCWs.Selected(X) = True
+                Me.ListBoxCWs.Selected(x) = True
                 czy_uruchamiamy_eventy = True
             End If
-            X = X + 1
+            x = x + 1
         End If
     Next
 
@@ -300,39 +315,39 @@ Private Function czy_key_nie_byl_jeszcze_wsadzony(k As String, e As E_LINK_ORDER
     
     
     If e = e_link_project Then
-        For X = 0 To Me.ListBoxProjects.ListCount - 1
-            If CStr(Me.ListBoxProjects.List(X)) = CStr(k) Then
+        For x = 0 To Me.ListBoxProjects.ListCount - 1
+            If CStr(Me.ListBoxProjects.List(x)) = CStr(k) Then
                 czy_key_nie_byl_jeszcze_wsadzony = False
                 Exit Function
             End If
-        Next X
+        Next x
         
         
     ElseIf e = e_link_plt Then
-        For X = 0 To Me.ListBoxPlants.ListCount - 1
-            If CStr(Me.ListBoxPlants.List(X)) = CStr(k) Then
+        For x = 0 To Me.ListBoxPlants.ListCount - 1
+            If CStr(Me.ListBoxPlants.List(x)) = CStr(k) Then
                 czy_key_nie_byl_jeszcze_wsadzony = False
                 Exit Function
             End If
-        Next X
+        Next x
         
         
     ElseIf e = e_link_faza Then
-        For X = 0 To Me.ListBoxPhases.ListCount - 1
-            If CStr(Me.ListBoxPhases.List(X)) = CStr(k) Then
+        For x = 0 To Me.ListBoxPhases.ListCount - 1
+            If CStr(Me.ListBoxPhases.List(x)) = CStr(k) Then
                 czy_key_nie_byl_jeszcze_wsadzony = False
                 Exit Function
             End If
-        Next X
+        Next x
         
         
     ElseIf e = e_link_cw Then
-        For X = 0 To Me.ListBoxCWs.ListCount - 1
-            If CStr(Me.ListBoxCWs.List(X)) = CStr(k) Then
+        For x = 0 To Me.ListBoxCWs.ListCount - 1
+            If CStr(Me.ListBoxCWs.List(x)) = CStr(k) Then
                 czy_key_nie_byl_jeszcze_wsadzony = False
                 Exit Function
             End If
-        Next X
+        Next x
 
 
     End If
@@ -352,37 +367,37 @@ Private Sub pobierz_wszystkie_selekcje( _
     ' rozwiazanie musi byc klarowne i zawierac krzyzowe dopasowanie danych - niestety w najgorszym razie jest to
     ' poczworna petla ...
     
-    For X = 0 To Me.ListBoxProjects.ListCount - 1
-        If Me.ListBoxProjects.Selected(X) Then
-            If Not proj_dic.Exists(Me.ListBoxProjects.List(X)) Then
-                proj_dic.Add CStr(Me.ListBoxProjects.List(X)), 1
+    For x = 0 To Me.ListBoxProjects.ListCount - 1
+        If Me.ListBoxProjects.Selected(x) Then
+            If Not proj_dic.Exists(Me.ListBoxProjects.List(x)) Then
+                proj_dic.Add CStr(Me.ListBoxProjects.List(x)), 1
             End If
         End If
-    Next X
+    Next x
     
-    For X = 0 To Me.ListBoxPlants.ListCount - 1
-        If Me.ListBoxPlants.Selected(X) Then
-            If Not plt_dic.Exists(Me.ListBoxPlants.List(X)) Then
-                plt_dic.Add CStr(Me.ListBoxPlants.List(X)), 1
+    For x = 0 To Me.ListBoxPlants.ListCount - 1
+        If Me.ListBoxPlants.Selected(x) Then
+            If Not plt_dic.Exists(Me.ListBoxPlants.List(x)) Then
+                plt_dic.Add CStr(Me.ListBoxPlants.List(x)), 1
             End If
         End If
-    Next X
+    Next x
     
-    For X = 0 To Me.ListBoxPhases.ListCount - 1
-        If Me.ListBoxPhases.Selected(X) Then
-            If Not faza_dic.Exists(Me.ListBoxPhases.List(X)) Then
-                faza_dic.Add CStr(Me.ListBoxPhases.List(X)), 1
+    For x = 0 To Me.ListBoxPhases.ListCount - 1
+        If Me.ListBoxPhases.Selected(x) Then
+            If Not faza_dic.Exists(Me.ListBoxPhases.List(x)) Then
+                faza_dic.Add CStr(Me.ListBoxPhases.List(x)), 1
             End If
         End If
-    Next X
+    Next x
     
-    For X = 0 To Me.ListBoxCWs.ListCount - 1
-        If Me.ListBoxCWs.Selected(X) Then
-            If Not cw_dic.Exists(Me.ListBoxCWs.List(X)) Then
-                cw_dic.Add CStr(Me.ListBoxCWs.List(X)), 1
+    For x = 0 To Me.ListBoxCWs.ListCount - 1
+        If Me.ListBoxCWs.Selected(x) Then
+            If Not cw_dic.Exists(Me.ListBoxCWs.List(x)) Then
+                cw_dic.Add CStr(Me.ListBoxCWs.List(x)), 1
             End If
         End If
-    Next X
+    Next x
 End Sub
 
 Private Sub przejrzyj_na_podstawie_selekcji_jeszcze_raz_zbior_danych( _
@@ -587,14 +602,14 @@ Private Function sprawdz_czy_jest_zaznaczona_wartosc(e As E_LINK_ORDER) As Boole
     
     If Not lb Is Nothing Then
     
-        For X = 0 To lb.ListCount - 1
-            If lb.Selected(X) = True Then
+        For x = 0 To lb.ListCount - 1
+            If lb.Selected(x) = True Then
                 
                 sprawdz_czy_jest_zaznaczona_wartosc = True
                 Exit Function
             End If
         
-        Next X
+        Next x
         
     End If
 End Function

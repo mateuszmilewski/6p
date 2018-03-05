@@ -33,7 +33,7 @@ Public Sub zrob_order_release_status(edit_czy_add As String, txt_from_combo_box 
     
     With FormOrderReleaseStatus
         o.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), FormOrderReleaseStatus
-        .Show
+        .Show vbModeless
     End With
     
     Set o = Nothing
@@ -47,7 +47,7 @@ Public Sub zrob_recent_build_plan_changes(edit_czy_add As String, txt_from_combo
     
     With SIXP.FormRecentBuildPlanChanges
         rc.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormRecentBuildPlanChanges
-        .Show
+        .Show vbModeless
     End With
 End Sub
 
@@ -58,7 +58,7 @@ Public Sub zrob_contracted_pnoc(edit_czy_add As String, txt_from_combo_box As St
     
     With SIXP.FormContractedPNOC
         cp.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormContractedPNOC
-        .Show
+        .Show vbModeless
     End With
     
 End Sub
@@ -70,7 +70,7 @@ Public Sub zrob_osea_scope(edit_czy_add As String, txt_from_combo_box As String)
     
     With SIXP.FormOseaScope
         osea.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormOseaScope
-        .Show
+        .Show vbModeless
     End With
 End Sub
 
@@ -83,7 +83,7 @@ Public Sub zrob_total(edit_czy_add As String, txt_from_combo_box As String)
     With SIXP.FormTotals5p
         'Application.EnableEvents = False
         tot.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormTotals5p
-        .Show
+        .Show vbModeless
         'Application.EnableEvents = True
     End With
 End Sub
@@ -95,7 +95,7 @@ Public Sub zrob_xq(edit_czy_add As String, txt_from_combo_box As String)
     
     With SIXP.FormX6P
         xq.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormX6P
-        .Show
+        .Show vbModeless
     End With
     
 
@@ -108,7 +108,7 @@ Public Sub zrob_del_conf(edit_czy_add As String, txt_from_combo_box As String)
     
     With SIXP.FormDelConfStatus
         dc.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormDelConfStatus
-        .Show
+        .Show vbModeless
     End With
 End Sub
 
@@ -118,9 +118,9 @@ Public Sub zrob_open_issues(edit_czy_add As String, txt_from_combo_box As String
     Set zoi = New OpenIssues8XHandler
     
     With SIXP.FormOpenIssues
-        zoi.label = txt_from_combo_box
+        zoi.Label = txt_from_combo_box
         zoi.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormOpenIssues
-        .Show
+        .Show vbModeless
     End With
 End Sub
 
@@ -131,7 +131,7 @@ Public Sub zrob_resp(edit_czy_add As String, txt_from_combo_box As String)
     
     With SIXP.FormResp
         resp.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormResp
-        .Show
+        .Show vbModeless
     End With
 
 End Sub
