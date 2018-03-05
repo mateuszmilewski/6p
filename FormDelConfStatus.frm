@@ -45,6 +45,8 @@ End Sub
 
 Private Sub BtnSubmit_Click()
 
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
@@ -112,9 +114,9 @@ Private Sub inner_calc()
         
         Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For X = 0 To 3
-            r.Offset(0, X) = Trim(arr(X))
-        Next X
+        For x = 0 To 3
+            r.Offset(0, x) = Trim(arr(x))
+        Next x
         
         
         give_data_to_ranges r
@@ -866,6 +868,90 @@ Private Sub PotITDCMore_Click()
 End Sub
 
 
+
+Private Sub TextBoxAfterALTMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxAfterALTTWOMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxAfterMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxAfterONCOSTMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxAfterSALTTWOMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxAfterSMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxAfterSONCOSTMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxEDI_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForALTMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForALTTWOMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForONCOSTMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForSALTTWOMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForSMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxForSONCOSTMRD_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxHO_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxNA_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxOnStock_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxOpen_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxPotITDC_Change()
+    zmiany_na_totalach
+End Sub
+
+Private Sub TextBoxTooLate_Change()
+    zmiany_na_totalach
+End Sub
 
 Private Sub TooLateLess_Click()
     If IsNumeric(Me.TextBoxTooLate) Then

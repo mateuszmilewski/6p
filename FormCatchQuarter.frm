@@ -14,31 +14,34 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub ListBoxFiles_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
-        
+            
+            
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+            
     Hide
     
     Dim w As Workbook
-    Dim sh As Worksheet
-    Set sh = Nothing
+    Dim Sh As Worksheet
+    Set Sh = Nothing
     
     
     For Each w In Workbooks
         
         If w.name = Me.ListBoxFiles.Value Then
             On Error Resume Next
-            Set sh = w.Sheets(SIXP.G_MAIN_TB_FROM_Q)
+            Set Sh = w.Sheets(SIXP.G_MAIN_TB_FROM_Q)
             Exit For
         End If
     Next w
     
     
-    If Not sh Is Nothing Then
+    If Not Sh Is Nothing Then
     
     
-        If checkFields(sh) Then
+        If checkFields(Sh) Then
 
             ' sub znajduje sie w modle Quarter
-            uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera sh, w.name
+            uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera Sh, w.name
         Else
             MsgBox "arkusz: " & SIXP.G_MAIN_TB_FROM_Q & " nie posiada prawidlowo ustawionych kolumn!"
             End
@@ -49,10 +52,12 @@ Private Sub ListBoxFiles_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
         MsgBox "ten plik nie posiada arkusza: " & SIXP.G_MAIN_TB_FROM_Q & "!"
         End
     End If
+    
+    
 End Sub
 
 
-Private Function checkFields(ByRef sh As Worksheet) As Boolean
+Private Function checkFields(ByRef Sh As Worksheet) As Boolean
 
     checkFields = False
     
@@ -62,12 +67,12 @@ Private Function checkFields(ByRef sh As Worksheet) As Boolean
     ' czynienia z plikiem typu quarter - gdyby omylkowo ktos wybral inny plik prawdopodobienstwo, ze akurat wybierze
     ' plik inny ktory ma taki sam uklad danych jest raczej male
     
-    If sh.Cells(1, 1).Value = "Project" Then
-        If sh.Cells(1, 2).vlaue = "Plant" Then
-            If sh.Cells(1, 3).Value = "PHASE" Then
-                If sh.Cells(1, 4).Value = "CW" Then
-                    If sh.Cells(1, 5).Value = "STATUS" Then
-                        If sh.Cells(1, 6).Value = "MRD" Then
+    If Sh.Cells(1, 1).Value = "Project" Then
+        If Sh.Cells(1, 2).vlaue = "Plant" Then
+            If Sh.Cells(1, 3).Value = "PHASE" Then
+                If Sh.Cells(1, 4).Value = "CW" Then
+                    If Sh.Cells(1, 5).Value = "STATUS" Then
+                        If Sh.Cells(1, 6).Value = "MRD" Then
                         
                             checkFields = True
                             

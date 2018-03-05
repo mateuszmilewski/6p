@@ -170,3 +170,11 @@ End Function
 Public Function global_cpz(s As String) As String
     global_cpz = CStr(global_check_if_empty_and_put_zero(CStr(s)))
 End Function
+
+
+
+Public Sub gotoThisWorkbookMainA1()
+    
+    ThisWorkbook.Sheets(SIXP.G_main_sh_nm).Activate
+    ThisWorkbook.Sheets(SIXP.G_main_sh_nm).Cells(1, 1).Select
+End Sub

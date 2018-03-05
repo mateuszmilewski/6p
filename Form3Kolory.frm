@@ -18,6 +18,9 @@ Private Sub BtnReset_Click()
 End Sub
 
 Private Sub BtnSubmit_Click()
+
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+
     MsgBox "not implemented yet!"
     Hide
 End Sub

@@ -49,6 +49,11 @@ Private Sub BtnFMALeft_Click()
 End Sub
 
 Private Sub BtnSubmit_Click()
+    
+    
+    
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+        
     Hide
     
     Dim rr As Range
@@ -56,10 +61,10 @@ Private Sub BtnSubmit_Click()
     Set rr = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("G2")
 
     Do
-        For X = 0 To Me.ListBoxInScope.ListCount - 1
+        For x = 0 To Me.ListBoxInScope.ListCount - 1
         
     
-                If Me.ListBoxInScope.List(X) = Trim(rr) Then
+                If Me.ListBoxInScope.List(x) = Trim(rr) Then
                     rr.Offset(0, 1) = 1
                     Exit For
                 Else
@@ -68,10 +73,12 @@ Private Sub BtnSubmit_Click()
                 End If
                 
 
-        Next X
+        Next x
         
         Set rr = rr.Offset(1, 0)
     Loop Until Trim(rr) = ""
+    
+    SIXP.LoadingFormModule.hideLoadingForm
     
 End Sub
 
@@ -87,14 +94,14 @@ Private Sub ListBoxInScope_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     
     
 
-    For X = 0 To Me.ListBoxInScope.ListCount - 1
+    For x = 0 To Me.ListBoxInScope.ListCount - 1
         
-        If Me.ListBoxInScope.Selected(X) Then
-            item = CStr(Me.ListBoxInScope.List(X))
+        If Me.ListBoxInScope.Selected(x) Then
+            item = CStr(Me.ListBoxInScope.List(x))
         Else
-            c1.Add CStr(Me.ListBoxInScope.List(X))
+            c1.Add CStr(Me.ListBoxInScope.List(x))
         End If
-    Next X
+    Next x
     
     Me.ListBoxInScope.Clear
     
@@ -118,14 +125,14 @@ Private Sub ListBoxOutOfScope_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     
     
 
-    For X = 0 To Me.ListBoxOutOfScope.ListCount - 1
+    For x = 0 To Me.ListBoxOutOfScope.ListCount - 1
         
-        If Me.ListBoxOutOfScope.Selected(X) Then
-            item = CStr(Me.ListBoxOutOfScope.List(X))
+        If Me.ListBoxOutOfScope.Selected(x) Then
+            item = CStr(Me.ListBoxOutOfScope.List(x))
         Else
-            c1.Add CStr(Me.ListBoxOutOfScope.List(X))
+            c1.Add CStr(Me.ListBoxOutOfScope.List(x))
         End If
-    Next X
+    Next x
     
     Me.ListBoxOutOfScope.Clear
     

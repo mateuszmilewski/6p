@@ -86,9 +86,9 @@ Private Sub orderReleaseStatusMassImportFromWizardBuffer(ByRef r As Range)
         Set orsRng = orsRng.Offset(1, 0)
     Loop Until Trim(orsRng) = ""
         
-    For X = 0 To 3
-        orsRng.Offset(0, X) = Trim(r.Offset(0, X))
-    Next X
+    For x = 0 To 3
+        orsRng.Offset(0, x) = Trim(r.Offset(0, x))
+    Next x
         
         
     ' logic need to be similar to give data to ranges
@@ -153,9 +153,9 @@ Private Sub chartContractedPnocMassImportFromWizardBuffer(ByRef r As Range)
         Set ccp = ccp.Offset(1, 0)
     Loop Until Trim(ccp) = ""
     
-    For X = 0 To 3
-        ccp.Offset(0, X) = Trim(r.Offset(0, X))
-    Next X
+    For x = 0 To 3
+        ccp.Offset(0, x) = Trim(r.Offset(0, x))
+    Next x
     
     
     ' assign to ranges
@@ -288,9 +288,9 @@ Private Sub totalsChartMassImportFromWizardBuffer(ByRef r As Range)
         Set tot = tot.Offset(1, 0)
     Loop Until Trim(tot) = ""
     
-    For X = 0 To 3
-        tot.Offset(0, X) = Trim(r.Offset(0, X))
-    Next X
+    For x = 0 To 3
+        tot.Offset(0, x) = Trim(r.Offset(0, x))
+    Next x
     
     
     ' assign to ranges
@@ -518,9 +518,9 @@ Private Sub delConfStatusMassImportFromWizardBuffer(ByRef r As Range)
     
 
     
-    For X = 0 To 3
-        dcRng.Offset(0, X) = Trim(r.Offset(0, X))
-    Next X
+    For x = 0 To 3
+        dcRng.Offset(0, x) = Trim(r.Offset(0, x))
+    Next x
     
     
     ' give_data_to_ranges r - adapt
@@ -621,9 +621,9 @@ Private Sub respMassImportFromWizardBuffer(ByRef r As Range)
     
 
     
-    For X = 0 To 3
-        respRng.Offset(0, X) = Trim(r.Offset(0, X))
-    Next X
+    For x = 0 To 3
+        respRng.Offset(0, x) = Trim(r.Offset(0, x))
+    Next x
     
     ' ===================================================
     

@@ -82,9 +82,9 @@ Private Function convert_all_word_into_no(slowo As String) As String
     liczba = ""
 
     If Len(slowo) > 0 Then
-        For X = 1 To Len(slowo)
-            liczba = liczba & CStr(Asc(Mid(slowo, X, 1)))
-        Next X
+        For x = 1 To Len(slowo)
+            liczba = liczba & CStr(Asc(Mid(slowo, x, 1)))
+        Next x
     End If
     
     convert_all_word_into_no = liczba

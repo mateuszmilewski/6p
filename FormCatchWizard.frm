@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormCatchWizard 
    Caption         =   "Catch Wizard"
-   ClientHeight    =   5565
+   ClientHeight    =   6645
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4710
@@ -36,13 +36,16 @@ Public czy_start_pochodzi_z_open_issues As Boolean
 Public wez_text_z_open_issues_form As String
 
 Private Sub BtnGetFrom6P_Click()
+    
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    
     Hide
 
     ' in import from 6p module
     ' -------------------------------------
     innerRunLogicFor6P Me
     ' -------------------------------------
-
+    MsgBox "import from 6P ready!"
 End Sub
 
 Private Sub BtnImportOpenIssues_Click()
@@ -51,6 +54,13 @@ End Sub
 
 Private Sub BtnJustImport_Click()
     inner_ False
+End Sub
+
+Private Sub BtnOsea_Click()
+    
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+
+    MsgBox "to be implemented!"
 End Sub
 
 Private Sub BtnSubmit_Click()
@@ -66,7 +76,14 @@ End Sub
 Private Sub inner_(go_back As Boolean)
 
 
+
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+
     Hide
+    
+    SIXP.LoadingFormModule.showLoadingForm
+    
+    Application.ScreenUpdating = False
 
     Dim wizard_workbook As Workbook
     
@@ -75,7 +92,7 @@ Private Sub inner_(go_back As Boolean)
     On Error Resume Next
     Set wizard_workbook = Workbooks(Me.ListBox1.Value)
     
-    
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 20
     
     Dim wh As WizardHandler
     Set wh = New WizardHandler
@@ -110,6 +127,8 @@ Private Sub inner_(go_back As Boolean)
             Set details_sh = wizard_workbook.Sheets("DETAILS")
             Set r = m_sh.Range("A2")
             
+            SIXP.LoadingFormModule.incLoadingForm
+            
             
             ' ale nawet jesli mamy juz tekst z open issues fajnie by bylo sprawdzic czy to jest ten sam td
             ' If sprawdz_zgodnosc_danych_miedzy_arkuszem_master_a_labelka(wh) Then
@@ -122,6 +141,9 @@ Private Sub inner_(go_back As Boolean)
                 ' przygotujemy najpierw slownik dla kazdego dunsu kolejne open issues
                 Dim oih As OpenIssues8XHandler
                 Set oih = New OpenIssues8XHandler
+                
+                SIXP.LoadingFormModule.incLoadingForm
+                SIXP.LoadingFormModule.hideLoadingForm
                 
                 oih.currProj = CStr(wez_text_z_open_issues_form)
                 
@@ -149,6 +171,8 @@ Private Sub inner_(go_back As Boolean)
     
         wh.go_with_6p_time
         
+        SIXP.LoadingFormModule.incLoadingForm
+        
         Me.BtnImportOpenIssues.Enabled = False
         Me.BtnJustImport.Enabled = True
         Me.BtnSubmit.Enabled = True
@@ -174,7 +198,9 @@ Private Sub inner_(go_back As Boolean)
                 ' .CheckBoxWizardContent.Enabled = True
                 .CheckBoxWizardContent.Value = False
                 
-                .Show
+                SIXP.LoadingFormModule.hideLoadingForm
+                
+                .Show vbModeless
             End With
             
         End If

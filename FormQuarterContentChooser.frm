@@ -28,17 +28,31 @@ Public Sub passData(ByRef d As Dictionary, mqh As QuarterHandler, m_nazwaPliku)
 End Sub
 
 
+Private Sub BtnAll_Click()
+
+
+    For x = 0 To Me.ListBoxProj.ListCount - 1
+
+        Me.ListBoxProj.Selected(x) = True
+        Me.ListBoxCW.Selected(x) = True
+        Me.ListBoxFaza.Selected(x) = True
+        Me.ListBoxPLT.Selected(x) = True
+        
+    Next x
+
+End Sub
+
 Private Sub BtnClear_Click()
 
 
-    For X = 0 To Me.ListBoxProj.ListCount - 1
+    For x = 0 To Me.ListBoxProj.ListCount - 1
 
-        Me.ListBoxProj.Selected(X) = False
-        Me.ListBoxCW.Selected(X) = False
-        Me.ListBoxFaza.Selected(X) = False
-        Me.ListBoxPLT.Selected(X) = False
+        Me.ListBoxProj.Selected(x) = False
+        Me.ListBoxCW.Selected(x) = False
+        Me.ListBoxFaza.Selected(x) = False
+        Me.ListBoxPLT.Selected(x) = False
         
-    Next X
+    Next x
 End Sub
 
 
@@ -47,6 +61,9 @@ End Sub
 ' --------------------------------------------------------------------------------------------
 ' --------------------------------------------------------------------------------------------
 Private Sub BtnImport_Click()
+    
+    
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
     
     Hide
 
@@ -68,9 +85,9 @@ Private Sub BtnImport_Click()
             ' bier tylko selekcje - co sie stalo juz w "stejtmancie" - ot taka oszczednosc!
         Else
             ' bier wszystko
-            For X = 0 To Me.ListBoxRow.ListCount - 1
-                c.Add Me.ListBoxRow.List(X)
-            Next X
+            For x = 0 To Me.ListBoxRow.ListCount - 1
+                c.Add Me.ListBoxRow.List(x)
+            Next x
         End If
     
         If Not qh Is Nothing Then
@@ -93,14 +110,14 @@ Public Function checkIfThereIsAnySelection(c As Collection) As Boolean
 
     checkIfThereIsAnySelection = False
     
-    For X = 0 To Me.ListBoxRow.ListCount - 1
-        If Me.ListBoxRow.Selected(X) Then
+    For x = 0 To Me.ListBoxRow.ListCount - 1
+        If Me.ListBoxRow.Selected(x) Then
         
             checkIfThereIsAnySelection = True
         
-            c.Add Me.ListBoxRow.List(X)
+            c.Add Me.ListBoxRow.List(x)
         End If
-    Next X
+    Next x
 
 End Function
 
@@ -157,26 +174,26 @@ End Sub
 
 Private Sub inner_listbox_action()
     
-    For X = 0 To Me.ListBoxProj.ListCount - 1
-        If Me.ListBoxProj.Selected(X) Then
+    For x = 0 To Me.ListBoxProj.ListCount - 1
+        If Me.ListBoxProj.Selected(x) Then
             
             
-            Me.ListBoxCW.Selected(X) = True
-            Me.ListBoxFaza.Selected(X) = True
-            Me.ListBoxPLT.Selected(X) = True
+            Me.ListBoxCW.Selected(x) = True
+            Me.ListBoxFaza.Selected(x) = True
+            Me.ListBoxPLT.Selected(x) = True
             
-            Me.ListBoxRow.Selected(X) = True
+            Me.ListBoxRow.Selected(x) = True
             
         Else
             
-            Me.ListBoxCW.Selected(X) = False
-            Me.ListBoxFaza.Selected(X) = False
-            Me.ListBoxPLT.Selected(X) = False
+            Me.ListBoxCW.Selected(x) = False
+            Me.ListBoxFaza.Selected(x) = False
+            Me.ListBoxPLT.Selected(x) = False
             
-            Me.ListBoxRow.Selected(X) = False
+            Me.ListBoxRow.Selected(x) = False
             
         End If
-    Next X
+    Next x
 End Sub
 
 Private Sub TextBox1_Change()
@@ -202,25 +219,25 @@ Private Sub innerWildcardLogic()
     ifaza = ""
     icw = ""
     
-    For X = LBound(iarr) To UBound(iarr)
-        If X = LBound(iarr) Then
+    For x = LBound(iarr) To UBound(iarr)
+        If x = LBound(iarr) Then
             
             ' PROJECT section
-            iproj = iarr(X)
+            iproj = iarr(x)
         End If
         
-        If X = LBound(iarr) + 1 Then
-            iplt = iarr(X)
+        If x = LBound(iarr) + 1 Then
+            iplt = iarr(x)
         End If
         
-        If X = LBound(iarr) + 2 Then
-            ifaza = iarr(X)
+        If x = LBound(iarr) + 2 Then
+            ifaza = iarr(x)
         End If
         
-        If X = LBound(iarr) + 3 Then
-            icw = iarr(X)
+        If x = LBound(iarr) + 3 Then
+            icw = iarr(x)
         End If
-    Next X
+    Next x
     
     
     

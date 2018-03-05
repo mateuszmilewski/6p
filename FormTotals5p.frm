@@ -39,6 +39,9 @@ End Sub
 
 Private Sub BtnSubmit_Click()
 
+
+    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+
     ' text na guziki
     ' Global Const G_BTN_TEXT_ADD = "Dodaj"
     ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
@@ -101,9 +104,9 @@ Private Sub inner_calc()
         
         Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For X = 0 To 3
-            r.Offset(0, X) = Trim(arr(X))
-        Next X
+        For x = 0 To 3
+            r.Offset(0, x) = Trim(arr(x))
+        Next x
         
         
         give_data_to_ranges r
@@ -594,8 +597,8 @@ Private Sub to_je_synchro()
                 '    tb.Name = pref & "FMAEUR" Or _
                 '    tb.Name = pref & "FmaOsea" Then
                     
-                        
-                        suma = suma + CLng(tb.Value)
+                        On Error Resume Next
+                        suma = CLng(suma) + CLng(tb.Value)
                 End If
             End If
         End If

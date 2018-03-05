@@ -560,3 +560,21 @@ Attribute VB_Name = "VersionModule"
 ' - kopiowanie danych pomiedzy 6p
 ' - power point nie pobiera headera
 ' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+' v 0.54
+'
+' Po pierwszym fma review 2018-03-05
+' - zle zlicza sie total - OK
+' - poprawa logiki dla pus recv, it, future - NOK
+' - stestowac sorotwanie pierwszej tabeli (order release status) - OK
+' - poprawic widocznosc komentarzy dla open issues - wiecej miejsca? - OK
+' - zrobic open issues jako element opcjonalny - NOK
+' - przygotowac sie do zmiany sekcji del conf - NOK
+' - opisac nazwa po prostu del conf - OK
+' - z tego co widze to logika osea nie jest do konca zrobiona - OK
+' - dodtkowa funkcjonalnosc lean - ktora usuwa puste zaciagniecia z quartera - OK
+' - kopiowanie danych pomiedzy 6p - OK
+' - power point nie pobiera headera - OK
+' --------------------------------------------------------------------------------------

@@ -73,7 +73,7 @@ Private Sub import_this_project()
     Set VBProj = ThisWorkbook.VBProject
     Set VBComps = VBProj.VBComponents
     
-    For Each objFile In objFSO.GetFolder(XWiz.REPO_PATH).Files
+    For Each objFile In objFSO.GetFolder(XWIZ.REPO_PATH).Files
         ' body
         ' ==============================================================
         
@@ -121,6 +121,6 @@ Private Sub remove_current_implementation()
          
     Next VBComp
     
-    ' MsgBox "ready!"
+    MsgBox "ready!"
 
 End Sub

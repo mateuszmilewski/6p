@@ -37,6 +37,6 @@ Public Sub import_wizard_content(ictrl As IRibbonControl)
         End With
     Next w
     
-    FormCatchWizard.Show
+    FormCatchWizard.Show vbModeless
 
 End Sub

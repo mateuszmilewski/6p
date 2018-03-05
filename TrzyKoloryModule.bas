@@ -57,7 +57,7 @@ Public Sub fill_it()
         
         fill_combobox
         
-        .Show
+        .Show vbModeless
     End With
     
     

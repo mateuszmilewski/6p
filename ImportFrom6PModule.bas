@@ -20,6 +20,10 @@ Attribute VB_Name = "ImportFrom6PModule"
 
 Public Sub import_from_another_6p(ictrl As IRibbonControl)
 
+
+
+    
+
     
     With FormCatchWizard
     
@@ -43,12 +47,19 @@ Public Sub import_from_another_6p(ictrl As IRibbonControl)
         End With
     Next w
     
-    FormCatchWizard.Show
+    FormCatchWizard.Show vbModeless
 
 End Sub
 
+Public Sub innerRunLogicFor6P2(filename As String)
 
-Public Sub innerRunLogicFor6P(frm As FormCatchWizard)
+
+
+    SIXP.LoadingFormModule.showLoadingForm
+
+
+
+    Application.ScreenUpdating = False
 
     Dim wrk As Workbook
     ' Set wrk = Workbooks(CStr(frm.ListBox1.Value)) ' when mutli available you can not just simple take value
@@ -57,14 +68,66 @@ Public Sub innerRunLogicFor6P(frm As FormCatchWizard)
     Dim wrkCollection As Collection
     Set wrkCollection = New Collection
     
-    For X = 0 To frm.ListBox1.ListCount - 1
-        If frm.ListBox1.Selected(X) Then
-            Set wrk = Nothing
-            Set wrk = Workbooks(CStr(frm.ListBox1.List(X)))
-            wrkCollection.Add wrk
-    Next X
+    
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+    
+
+    Set wrk = Nothing
+    Set wrk = Workbooks(CStr(filename))
+    wrkCollection.Add wrk
+    SIXP.LoadingFormModule.incLoadingForm
+
     
     For Each wrk In wrkCollection
+        
+        SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+        If checkIfYouCanMigrateData(wrk) Then
+            migrateDataBetween wrk, ThisWorkbook ' private subs from leanData already in...
+        Else
+            'MsgBox "wybrany plik: " & CStr(wrk.FullName) & " nie spelnia standardow!", vbCritical
+            'End
+        End If
+    Next wrk
+    
+    
+    Application.ScreenUpdating = True
+    
+    SIXP.LoadingFormModule.hideLoadingForm
+End Sub
+
+
+Public Sub innerRunLogicFor6P(frm As FormCatchWizard)
+
+
+
+    SIXP.LoadingFormModule.showLoadingForm
+
+
+
+    Application.ScreenUpdating = False
+
+    Dim wrk As Workbook
+    ' Set wrk = Workbooks(CStr(frm.ListBox1.Value)) ' when mutli available you can not just simple take value
+    
+    
+    Dim wrkCollection As Collection
+    Set wrkCollection = New Collection
+    
+    
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+    
+    For x = 0 To frm.ListBox1.ListCount - 1
+        If frm.ListBox1.Selected(x) Then
+            Set wrk = Nothing
+            Set wrk = Workbooks(CStr(frm.ListBox1.List(x)))
+            wrkCollection.Add wrk
+            SIXP.LoadingFormModule.incLoadingForm
+        End If
+    Next x
+    
+    For Each wrk In wrkCollection
+        
+        SIXP.LoadingFormModule.increaseLoadingFormStatus 100
         If checkIfYouCanMigrateData(wrk) Then
             migrateDataBetween wrk, ThisWorkbook ' private subs from leanData already in...
         Else
@@ -72,6 +135,11 @@ Public Sub innerRunLogicFor6P(frm As FormCatchWizard)
             End
         End If
     Next wrk
+    
+    
+    Application.ScreenUpdating = True
+    
+    SIXP.LoadingFormModule.hideLoadingForm
 End Sub
 
 
@@ -88,6 +156,9 @@ Private Sub leanData()
     ' =====================================================================================================
     ' =====================================================================================================
     
+    SIXP.LoadingFormModule.showLoadingForm
+    
+    Application.ScreenUpdating = False
     
     Dim c As Collection
     Set c = New Collection
@@ -105,24 +176,38 @@ Private Sub leanData()
     c.Add SIXP.G_open_issues_sh_nm
     c.Add SIXP.G_xq_sh_nm
     
+    SIXP.LoadingFormModule.incLoadingForm
+    
     
     
     Dim destSh As Worksheet
     For Each shnm In c
     
         Set destSh = ThisWorkbook.Sheets(shnm)
+        
+        
+        SIXP.LoadingFormModule.increaseLoadingFormStatus 100
     
         removeDuplicatesInDest destSh
+        SIXP.LoadingFormModule.incLoadingForm
         removeEmptyBetween destSh
+        SIXP.LoadingFormModule.incLoadingForm
         doSomeLeanFor destSh
+        SIXP.LoadingFormModule.incLoadingForm
         entireRowsRemovalIfEmpty destSh
+        SIXP.LoadingFormModule.incLoadingForm
     Next shnm
     
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' =====================================================================================================
     ' =====================================================================================================
     
+    Application.ScreenUpdating = False
     
+    SIXP.LoadingFormModule.hideLoadingForm
+    
+    MsgBox "ready!"
     
     
 End Sub
@@ -131,20 +216,20 @@ End Sub
 Private Function checkIfYouCanMigrateData(wrk As Workbook) As Boolean
     checkIfYouCanMigrateData = False
     
-    Dim sh As Worksheet
-    Set sh = Nothing
+    Dim Sh As Worksheet
+    Set Sh = Nothing
     
     checkIfYouCanMigrateData = CBool( _
-        checkOneSheet(wrk, SIXP.G_main_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_order_release_status_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_recent_build_plan_changes_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_cont_pnoc_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_osea_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_totals_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_resp_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_del_conf_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_open_issues_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_xq_sh_nm, sh) _
+        checkOneSheet(wrk, SIXP.G_main_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_order_release_status_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_recent_build_plan_changes_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_cont_pnoc_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_osea_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_totals_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_resp_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_del_conf_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_open_issues_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_xq_sh_nm, Sh) _
         )
     
 End Function
@@ -188,33 +273,44 @@ Private Sub migrateDataBetween(sourceWorkbook As Workbook, destinationWorkbook A
     
     ' main
     skopiujDane CStr(SIXP.G_main_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' ors
     skopiujDane CStr(SIXP.G_order_release_status_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' rbpc
     skopiujDane CStr(SIXP.G_recent_build_plan_changes_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' cont . pnoc
     skopiujDane CStr(SIXP.G_cont_pnoc_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' osea
     skopiujDane CStr(SIXP.G_osea_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' totals
-    skopiujDane CStr(SIXP.G_osea_sh_nm), sourceWorkbook, destinationWorkbook
+    skopiujDane CStr(SIXP.G_totals_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' resp
     skopiujDane CStr(SIXP.G_resp_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' del conf
     skopiujDane CStr(SIXP.G_del_conf_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' open issues
     skopiujDane CStr(SIXP.G_open_issues_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' xq
     skopiujDane CStr(SIXP.G_xq_sh_nm), sourceWorkbook, destinationWorkbook
+    SIXP.LoadingFormModule.incLoadingForm
+    SIXP.LoadingFormModule.incLoadingForm
     
     
     ' -------------------------------------------------------------------
@@ -409,9 +505,9 @@ Private Function onlyFirstFourPotentialyFilled(r As Range) As Boolean
     tmp = ""
     
     ' te 50 heurystycznie - tyle kolumn wydaje sie wystarczajace do sprawdzenia ilosci pustosci
-    For X = 4 To 50
-        tmp = tmp & Trim(r.Offset(0, X))
-    Next X
+    For x = 4 To 50
+        tmp = tmp & Trim(r.Offset(0, x))
+    Next x
     
     If Trim(tmp) = "" Then
         onlyFirstFourPotentialyFilled = True
@@ -476,11 +572,13 @@ Private Sub removeDuplicatesInDest(dsh As Worksheet)
     dsh.Cells(1, 1).Select
     dsh.Cells(1, 1).Activate
     
+    SIXP.LoadingFormModule.incLoadingForm
+    
     
     Application.DisplayAlerts = True
 End Sub
 
-Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(sh As Worksheet, topLeft As Range, topRight As Range) As Range
+Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(Sh As Worksheet, topLeft As Range, topRight As Range) As Range
 
     Set zdefiniujKwadraciakaDoSkopiowaniaXD = Nothing
     
@@ -488,13 +586,15 @@ Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(sh As Worksheet, topLeft As
     
     Dim bottomRight As Range
     If topLeft.Offset(1, 0) <> "" Then
-        Set bottomRight = sh.Cells(topLeft.End(xlDown).Row, topRight.Column)
+        Set bottomRight = Sh.Cells(topLeft.End(xlDown).Row, topRight.Column)
     Else
-        Set bottomRight = sh.Cells(topLeft.Row, topRight.Column)
+        Set bottomRight = Sh.Cells(topLeft.Row, topRight.Column)
     End If
     
     
-    Set zdefiniujKwadraciakaDoSkopiowaniaXD = sh.Range(topLeft, bottomRight)
+    Set zdefiniujKwadraciakaDoSkopiowaniaXD = Sh.Range(topLeft, bottomRight)
+    
+    SIXP.LoadingFormModule.incLoadingForm
     
 End Function
     

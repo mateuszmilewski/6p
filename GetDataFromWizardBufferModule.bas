@@ -98,7 +98,7 @@ Public Function get_del_conf_string_without_mrd(rl As Range, e As E_DEL_CONF_SPE
     Set tmp_r = rl
     
     Do
-        If Trim(CStr(tmp_r)) = Trim(CStr(lbl_str)) Then
+        If UCase(Trim(CStr(tmp_r))) = UCase(Trim(CStr(lbl_str))) Then
             get_del_conf_string_without_mrd = CStr(tmp_r.Offset(1, 0))
             Exit Do
         End If

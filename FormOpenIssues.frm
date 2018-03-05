@@ -85,13 +85,13 @@ Private Function sth_is_selected() As Boolean
     
     sth_is_selected = False
     
-    For X = 0 To Me.ListBox1.ListCount - 1
+    For x = 0 To Me.ListBox1.ListCount - 1
         
-        If Me.ListBox1.Selected(X) Then
+        If Me.ListBox1.Selected(x) Then
             sth_is_selected = True
             Exit Function
         End If
-    Next X
+    Next x
 End Function
 
 Private Sub trzeba_jeszcze_usunac_wpis_w_arkuszu_main_jesli_nie_ma_wiecej_wpisow(lbl_title As String)
@@ -170,7 +170,8 @@ Private Sub BtnImport_Click()
         FormCatchWizard.BtnImportOpenIssues.Enabled = True
         FormCatchWizard.BtnJustImport.Enabled = False
         FormCatchWizard.BtnSubmit.Enabled = False
-        FormCatchWizard.Show
+        FormCatchWizard.BtnOsea.Enabled = False
+        FormCatchWizard.Show vbModeless
     Else
         MsgBox "logika zatrzymana"
     End If
@@ -203,7 +204,7 @@ Private Sub inner_submit(e As E_OPEN_ISSUES_CRUD)
     ' run_FormMain Me.LabelTitle
     Me.ListBox1.Clear
     Me.ListBox1.MultiSelect = fmMultiSelectSingle
-    X = 1
+    x = 1
     Dim r As Range
     Set r = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm).Cells(1, 1)
     
@@ -217,10 +218,10 @@ Private Sub inner_submit(e As E_OPEN_ISSUES_CRUD)
 
         
                 ' Exit Do
-                Me.ListBox1.AddItem "Open issue #" & CStr(X) & ", " & _
+                Me.ListBox1.AddItem "Open issue #" & CStr(x) & ", " & _
                     CStr(Trim(r.Offset(0, SIXP.e_open_issues_part_supplier - 1))) & ", " & _
                     r.Address
-                X = X + 1
+                x = x + 1
         End If
         Set r = r.Offset(1, 0)
     Loop Until Trim(r) = ""
@@ -292,9 +293,9 @@ Private Sub inner_calc(e As E_OPEN_ISSUES_CRUD)
         
         Dim arr As Variant
         arr = Split(CStr(Me.LabelTitle), ",")
-        For X = 0 To 3
-            r.Offset(0, X) = Trim(arr(X))
-        Next X
+        For x = 0 To 3
+            r.Offset(0, x) = Trim(arr(x))
+        Next x
         
         
         give_data_to_ranges r
