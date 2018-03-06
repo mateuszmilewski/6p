@@ -80,10 +80,10 @@ Private Sub skopiuj_dane_z_innego_projektu(proj, plt, faza, cw, status)
     myNewLink.zrob_mnie_z_argsow proj, plt, faza, cw
     
     
-    Dim Sh As Worksheet
-    Set Sh = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
+    Dim sh As Worksheet
+    Set sh = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
     Dim r As Range
-    Set r = Sh.Range("A2")
+    Set r = sh.Range("A2")
     
     GetProject.ListBoxProjects.Clear
     GetProject.ListBoxPLT.Clear
@@ -241,11 +241,22 @@ Private Sub BtnImport_Click()
                 .AddItem w.name
             End With
         Next w
-        FormCatchWizard.czy_start_pochodzi_z_open_issues = False
-        FormCatchWizard.BtnImportOpenIssues.Enabled = False
-        FormCatchWizard.BtnJustImport.Enabled = True
-        FormCatchWizard.BtnSubmit.Enabled = True
-        FormCatchWizard.Show vbModeless
+        
+        With FormCatchWizard
+            .czy_start_pochodzi_z_open_issues = False
+            .BtnImportOpenIssues.Enabled = False
+            .BtnJustImport.Enabled = True
+            .BtnSubmit.Enabled = True
+            
+            .BtnGetFrom6P.Enabled = True
+            .BtnOsea.Enabled = True
+            
+            
+            .Show vbModeless
+        End With
+        
+        
+        
     Else
         MsgBox "logika zatrzymana"
     End If
@@ -336,29 +347,29 @@ Private Function checkWizardBufferCells() As Boolean
     checkWizardBufferCells = False
     tmp = False
     
-    Dim Sh As Worksheet
-    Set Sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
+    Dim sh As Worksheet
+    Set sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
     
     Dim r As Range
-    Set r = Sh.Range("A1")
+    Set r = sh.Range("A1")
     
     If r.Value = "6P" Then
         tmp = True
     End If
     
-    If Sh.Cells(2, 1).Value Like "*TOTAL FMA*" Then
+    If sh.Cells(2, 1).Value Like "*TOTAL FMA*" Then
         tmp = tmp And True
     End If
     
-    If Sh.Range("C1").Value Like "*Y*CW*" Then
+    If sh.Range("C1").Value Like "*Y*CW*" Then
         tmp = tmp And True
     End If
     
-    If Sh.Range("G1").Value = "IN SCOPE" Then
+    If sh.Range("G1").Value = "IN SCOPE" Then
         tmp = tmp And True
     End If
     
-    If Sh.Range("O1").Value <> "" Then
+    If sh.Range("O1").Value <> "" Then
         tmp = tmp And True
     End If
     
@@ -499,17 +510,17 @@ End Sub
 
 Private Sub work_on_(str_sh_nm As String, old_tl As T_Link, new_tl As T_Link, m As Worksheet, offset_w_sh_main As Long)
     
-    Dim Sh As Worksheet
+    Dim sh As Worksheet
     Dim l As Linker
     Set l = New Linker
     Dim old_r As Range, new_r As Range
     
     Dim ostatnia_kolumna_arkusza As Long
     
-    Set Sh = ThisWorkbook.Sheets(str_sh_nm)
-    Set new_r = pierwszy_pusty_wiersz(Sh)
-    ostatnia_kolumna_arkusza = okresl_ostatnia_kolumne(Sh)
-    Set old_r = old_tl.znajdz_siebie_w_arkuszu(Sh)
+    Set sh = ThisWorkbook.Sheets(str_sh_nm)
+    Set new_r = pierwszy_pusty_wiersz(sh)
+    ostatnia_kolumna_arkusza = okresl_ostatnia_kolumne(sh)
+    Set old_r = old_tl.znajdz_siebie_w_arkuszu(sh)
     
     If Not old_r Is Nothing Then
     

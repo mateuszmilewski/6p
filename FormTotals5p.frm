@@ -835,19 +835,30 @@ Private Sub TryWizardBtn_Click()
     End If
     
     
-    Me.TextBoxArrived = ARRIVED
-    Me.TextBoxFMAEUR = eur_v
-    Me.TextBoxFmaOsea = osea_v
     Me.TextBoxFuture = future
     Me.TextBoxInTransit = in_t
-    Me.TextBoxITDC = itdc_v
-    Me.TextBoxNA = na_v
-    Me.TextBoxNoPPAP = ppap_nok
-    Me.TextBoxOrdered = ordered_v
-    Me.TextBoxPNOC = pnoc_v
-    Me.TextBoxPPAP = ppap_ok
-    Me.TextBoxTotal = total_num
+    Me.TextBoxArrived = ARRIVED
     
+    
+    Me.TextBoxFMAEUR = eur_v
+    Me.TextBoxFmaOsea = osea_v
+    
+    Me.TextBoxOrdered = ordered_v
+    
+    Me.TextBoxNA = na_v
+    Me.TextBoxITDC = itdc_v
+    Me.TextBoxPNOC = pnoc_v
+    
+    Me.TextBoxNoPPAP = ppap_nok
+    Me.TextBoxPPAP = ppap_ok
+    
+    
+    
+    
+    
+    Me.TextBoxTotal = CLng(eur_v) + CLng(osea_v) + CLng(na_v) + CLng(pnoc_v) + CLng(itdc_v)
+    
+    ' tutaj zawsze bedzie jakis "no deal"
     Me.TextBoxH1 = CStr(buff.Range("H1").Value)
     
     ' jeszcze szybkie sprawdzenie sum:

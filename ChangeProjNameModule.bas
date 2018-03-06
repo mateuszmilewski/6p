@@ -1,4 +1,4 @@
-Attribute VB_Name = "ImportFromWizardModule"
+Attribute VB_Name = "ChangeProjNameModule"
 ' FORREST SOFTWARE
 ' Copyright (c) 2018 Mateusz Forrest Milewski
 '
@@ -17,28 +17,47 @@ Attribute VB_Name = "ImportFromWizardModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Public Sub import_wizard_content(ictrl As IRibbonControl)
 
-    ' usuniecie danych z wizard buff
-    ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("a1:zz1000").Clear
+
+Public Sub change_project_name(ictrl As IRibbonControl)
+
+
+    If SIXP.GlobalFooModule.checkIfFirstFourFieldsProjektPlantCodeFazaCW(ActiveSheet) Then
+        If ActiveCell.Row > 1 Then
+            If ActiveCell.Parent.Cells(ActiveCell.Row, 1).Value <> "" Then
+                openModelessFormAccordinglyTo ActiveCell
+            Else
+                MsgBox "Puste dane!"
+            End If
+        Else
+            MsgBox "nie mozesz wybrac pierwszego wiersza!"
+        End If
+    End If
     
-    FormCatchWizard.ListBox1.Clear
-    FormCatchWizard.ListBox1.MultiSelect = fmMultiSelectSingle
+End Sub
+
+
+Private Sub openModelessFormAccordinglyTo(r As Range)
+
+
+    Dim l As T_Link
+    Set l = New T_Link
     
-    With FormCatchWizard
-        .BtnImportOpenIssues.Enabled = False
-        .BtnJustImport.Enabled = True
-        .BtnSubmit.Enabled = True
-        .BtnGetFrom6P.Enabled = False
-        .BtnOsea.Enabled = False
-    End With
+    l.zrob_mnie_z_range r.Parent.Cells(r.Row, 1)
+    
+    przygotujFormularzZmianyNazwyProjektu r.Parent.Cells(r.Row, 1), l
+
+End Sub
+
+Private Sub przygotujFormularzZmianyNazwyProjektu(r As Range, l As T_Link)
+    
+    
+    With SIXP.FormChangeProjectName
+        .TextBoxCurrProj.Value = l.project
+        .TextBoxCurrPltCode.Value = l.plt
+        .TextBoxCurrFaza.Value = l.faza
+        .TextBoxCurrCw.Value = l.cw
         
-    For Each w In Workbooks
-        With FormCatchWizard.ListBox1
-            .AddItem w.name
-        End With
-    Next w
-    
-    FormCatchWizard.Show vbModeless
-
+        .Show vbModeless
+    End With
 End Sub
