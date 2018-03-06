@@ -30,6 +30,7 @@ Global Const G_config_sh_nm = "config"
 Global Const G_totals_sh_nm = "TOTALS"
 Global Const G_del_conf_sh_nm = "DELIVERY CONFIRMATION STATUS"
 Global Const G_one_pager_sh_nm = "ONE PAGER"
+Global Const G_NEW_ONE_PAGER_SH_NM = "NEW ONE PAGER"
 ' ----------------------------------------------------------
 ' ----------------------------------------------------------
 Global Const G_chart1_handler_sh_nm = "CHART1_Handler"
@@ -84,3 +85,5 @@ Global Const G_6P_POSTFIX = "6P.xlsm"
 
 Global Const G_OFFSET_FROM_TOP_IN_POWERPOINT_SLIDE = 50
 Global Const G_OFFSET_IN_POWERPOINT_SLIDE = 20
+
+Global Const G_NEW_ONE_PAGER_FLAG = True

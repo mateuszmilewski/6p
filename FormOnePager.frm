@@ -33,6 +33,7 @@ Attribute VB_Exposed = False
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Public czy_uruchamiamy_eventy As Boolean
+Public newOnePager As Boolean
 
 Private Sub BtnReset_Click()
     
@@ -51,10 +52,10 @@ Private Sub BtnSubmit_Click()
     
     If Me.RadioExcels Then
     
-        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS, Me.newOnePager
     ElseIf Me.RadioPowerPoint Then
     
-        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT, Me.newOnePager
     Else
     
         MsgBox "nie ma innej mozliwosci! blad krytyczny, makro zatrzymalo sie!"
@@ -62,7 +63,7 @@ Private Sub BtnSubmit_Click()
     End If
 End Sub
 
-Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAGERS_INTO)
+Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAGERS_INTO, isNewOnePager As Boolean)
 
 
     Application.ScreenUpdating = False
@@ -99,13 +100,31 @@ Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAG
         
         
         If ans = vbYes Then
-            Dim oph As OnePagerHandler
-            Set oph = New OnePagerHandler
+        
+        
+            If isNewOnePager Then
+                
+                ' zupelnie nowa logika
+                ' ---------------------------------------------------------------------------
+                Dim noph As NewOnePagerHandler
+                
+                ' ---------------------------------------------------------------------------
+            Else
             
-            oph.przypisz_kolekcje_linkow kolekcja_linkow
-            oph.generuj_raporty e
+                ' old layout
+                '' ---------------------------------------------------------------------------
+                
+                Dim oph As OnePagerHandler
+                Set oph = New OnePagerHandler
+                
+                oph.przypisz_kolekcje_linkow kolekcja_linkow
+                oph.generuj_raporty e
+                
+                Set oph = Nothing
+                
+                '' ---------------------------------------------------------------------------
+            End If
             
-            Set oph = Nothing
         Else
             MsgBox "Nic nie zostanie wygenerowane... Dobranoc :D!"
         End If

@@ -40,6 +40,8 @@ Private Sub BtnGetFrom6P_Click()
     SIXP.GlobalFooModule.gotoThisWorkbookMainA1
     
     Hide
+    
+    Me.czy_start_pochodzi_z_open_issues = False
 
     ' in import from 6p module
     ' -------------------------------------
@@ -49,26 +51,33 @@ Private Sub BtnGetFrom6P_Click()
 End Sub
 
 Private Sub BtnImportOpenIssues_Click()
+
+    Me.czy_start_pochodzi_z_open_issues = True
+
     inner_ False
 End Sub
 
 Private Sub BtnJustImport_Click()
+
+    Me.czy_start_pochodzi_z_open_issues = False
     inner_ False
 End Sub
 
 Private Sub BtnOsea_Click()
-    
+    Me.czy_start_pochodzi_z_open_issues = False
     SIXP.GlobalFooModule.gotoThisWorkbookMainA1
 
     MsgBox "to be implemented!"
 End Sub
 
 Private Sub BtnSubmit_Click()
+    Me.czy_start_pochodzi_z_open_issues = False
     inner_ True
 End Sub
 
 Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     ' inner_ False
+    Me.czy_start_pochodzi_z_open_issues = False
     MsgBox "no action under this click event!"
 End Sub
 

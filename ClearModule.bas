@@ -97,4 +97,39 @@ Public Sub close_excel_project_reports(ictrl As IRibbonControl)
     
     MsgBox "ready!"
 End Sub
+
+
+
+Public Sub remove_one_item_from_one_sheet(ictrl As IRibbonControl)
+
+
+
+    Dim l As T_Link
+    Dim lr As Linker
+    
+    
+    If SIXP.GlobalFooModule.checkIfFirstFourFieldsProjektPlantCodeFazaCW(ActiveSheet) Then
+        
+        If CStr(ActiveSheet.name) = CStr(SIXP.G_main_sh_nm) Then
+        
+            
+        
+            If ActiveCell.Column > 1 And ActiveCell.Row > 4 And ActiveCell.Value <> "" Then
+            
+                MsgBox "not imeplemented yet"
+            Else
+                MsgBox "nie mozesz dla tej selekcji nic usunac!"
+            End If
+        Else
+        
+            If ActiveCell.Column > 1 And ActiveCell.Value <> "" Then
+            
+                MsgBox "not imeplemented yet"
+            Else
+                MsgBox "nie mozesz dla tej selekcji nic usunac!"
+            End If
+        
+        End If
+    End If
+End Sub
     

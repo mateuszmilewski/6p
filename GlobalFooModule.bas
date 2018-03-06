@@ -178,3 +178,21 @@ Public Sub gotoThisWorkbookMainA1()
     ThisWorkbook.Sheets(SIXP.G_main_sh_nm).Activate
     ThisWorkbook.Sheets(SIXP.G_main_sh_nm).Cells(1, 1).Select
 End Sub
+
+
+Public Function checkIfFirstFourFieldsProjektPlantCodeFazaCW(ByRef sh As Worksheet) As Boolean
+
+    checkIfFirstFourFieldsProjektPlantCodeFazaCW = False
+    
+    If sh.Cells(1, 1).Value = "Projekt" Then
+        If sh.Cells(1, 2).Value = "Plant Code" Then
+            If sh.Cells(1, 3).Value = "Faza" Then
+                If sh.Cells(1, 4).Value = "CW" Then
+                        
+                        checkIfFirstFourFieldsProjektPlantCodeFazaCW = True
+                            
+                End If
+            End If
+        End If
+    End If
+End Function

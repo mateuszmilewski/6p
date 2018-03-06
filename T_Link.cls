@@ -49,11 +49,11 @@ Public Function porownaj_z_drugim_linkiem(obj As T_Link) As Boolean
 End Function
 
 
-Public Function znajdz_siebie_w_arkuszu(Sh As Worksheet) As Range
+Public Function znajdz_siebie_w_arkuszu(sh As Worksheet) As Range
     Set znajdz_siebie_w_arkuszu = Nothing
     
     Dim r As Range
-    Set r = Sh.Range("A2")
+    Set r = sh.Range("A2")
     
     Do
         If Trim(CStr(r)) = Trim(CStr(project)) Then
@@ -98,12 +98,12 @@ End Sub
 ' super wazna czesc tej implementacji!
 ' ================================================================================================
 ' ================================================================================================
-Public Function znajdz_moje_najwczesniejsze_pod_wzdledem_cw_wystapienie(Sh As Worksheet) As Range
+Public Function znajdz_moje_najwczesniejsze_pod_wzdledem_cw_wystapienie(sh As Worksheet) As Range
     Set znajdz_moje_najwczesniejsze_pod_wzdledem_cw_wystapienie = Nothing
     
     
     Dim r As Range
-    Set r = Sh.Range("A2")
+    Set r = sh.Range("A2")
     
     Do
         If CStr(r) = CStr(project) Then
@@ -120,11 +120,11 @@ Public Function znajdz_moje_najwczesniejsze_pod_wzdledem_cw_wystapienie(Sh As Wo
     Loop Until Trim(r) = ""
 End Function
 
-Public Function znajdz_moje_najpozniejsze_pod_wzdledem_cw_wystapienie(Sh As Worksheet) As Range
+Public Function znajdz_moje_najpozniejsze_pod_wzdledem_cw_wystapienie(sh As Worksheet) As Range
     Set znajdz_moje_najpozniejsze_pod_wzgledem_cw_wystapienie = Nothing
     
     Dim r As Range
-    Set r = Sh.Range("A1048576").End(xlUp)
+    Set r = sh.Range("A1048576").End(xlUp)
     
     Do
         If CStr(r) = CStr(project) Then

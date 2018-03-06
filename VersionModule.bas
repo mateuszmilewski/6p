@@ -578,3 +578,46 @@ Attribute VB_Name = "VersionModule"
 ' - kopiowanie danych pomiedzy 6p - OK
 ' - power point nie pobiera headera - OK
 ' --------------------------------------------------------------------------------------
+
+
+' --------------------------------------------------------------------------------------
+' v 0.55
+'
+' Po pierwszym fma review 2018-03-05
+' - zle zlicza sie total - OK
+' - poprawa logiki dla pus recv, it, future - NOK
+' - stestowac sorotwanie pierwszej tabeli (order release status) - OK
+' - poprawic widocznosc komentarzy dla open issues - wiecej miejsca? - OK
+' - zrobic open issues jako element opcjonalny - NOK
+' - przygotowac sie do zmiany sekcji del conf - NOK
+' - opisac nazwa po prostu del conf - OK
+' - z tego co widze to logika osea nie jest do konca zrobiona - OK
+' - dodtkowa funkcjonalnosc lean - ktora usuwa puste zaciagniecia z quartera - OK
+' - kopiowanie danych pomiedzy 6p - OK
+' - power point nie pobiera headera - OK
+'
+' - EXTRA: change project name! - to be implemented
+' --------------------------------------------------------------------------------------
+
+
+
+' --------------------------------------------------------------------------------------
+' v 0.55
+'
+' Po pierwszym fma review 2018-03-05
+' - zle zlicza sie total - OK
+' - poprawa logiki dla pus recv, it, future - NOK
+' - stestowac sorotwanie pierwszej tabeli (order release status) - OK
+' - poprawic widocznosc komentarzy dla open issues - wiecej miejsca? - OK
+' - zrobic open issues jako element opcjonalny - NOK
+' - przygotowac sie do zmiany sekcji del conf - NOK
+' - opisac nazwa po prostu del conf - OK
+' - z tego co widze to logika osea nie jest do konca zrobiona - OK
+' - dodtkowa funkcjonalnosc lean - ktora usuwa puste zaciagniecia z quartera - OK
+' - kopiowanie danych pomiedzy 6p - OK
+' - power point nie pobiera headera - OK
+'
+' - EXTRA: change project name! - to be implemented
+' - EXTRA: remove one item from one sheet
+' - podczas proby importu danych z wizarda dziwnie sie pokazuje open issues nie wiadomo dlaczego
+' --------------------------------------------------------------------------------------
