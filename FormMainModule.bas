@@ -157,6 +157,14 @@ Public Sub adjustuj_guzik(e_main As E_MAIN_ORDER, ish As Worksheet, imainsh As W
                     .BackColor = paleta.dark_grey
                     .ForeColor = paleta.orange
                 End With
+                
+                
+                With FormMain.BtnNewDelConf
+                    .Caption = SIXP.G_BTN_TEXT_EDIT
+                    .BackColor = paleta.dark_grey
+                    .ForeColor = paleta.orange
+                End With
+                
             ElseIf e_main = e_main_last_update_on_open_issues Then
                 
                 With FormMain.BtnOpenIssues
@@ -217,6 +225,11 @@ Public Sub adjustuj_guzik(e_main As E_MAIN_ORDER, ish As Worksheet, imainsh As W
                 FormMain.BtnDelConf.Caption = SIXP.G_BTN_TEXT_ADD
                 FormMain.BtnDelConf.BackColor = paleta.yellow
                 FormMain.BtnDelConf.ForeColor = paleta.dark_grey
+                
+                
+                FormMain.BtnNewDelConf.Caption = SIXP.G_BTN_TEXT_ADD
+                FormMain.BtnNewDelConf.BackColor = paleta.yellow
+                FormMain.BtnNewDelConf.ForeColor = paleta.dark_grey
                 
             ElseIf e_main = e_main_last_update_on_open_issues Then
             

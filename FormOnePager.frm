@@ -33,7 +33,6 @@ Attribute VB_Exposed = False
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Public czy_uruchamiamy_eventy As Boolean
-Public newOnePager As Boolean
 
 Private Sub BtnReset_Click()
     
@@ -52,10 +51,10 @@ Private Sub BtnSubmit_Click()
     
     If Me.RadioExcels Then
     
-        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS, Me.newOnePager
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS, E_OLD_ONE_PAGER_LAYOUT
     ElseIf Me.RadioPowerPoint Then
     
-        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT, Me.newOnePager
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT, E_OLD_ONE_PAGER_LAYOUT
     Else
     
         MsgBox "nie ma innej mozliwosci! blad krytyczny, makro zatrzymalo sie!"
@@ -63,7 +62,7 @@ Private Sub BtnSubmit_Click()
     End If
 End Sub
 
-Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAGERS_INTO, isNewOnePager As Boolean)
+Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAGERS_INTO, Optional eOnePagerLayout As E_ONE_PAGER_LAYOUT)
 
 
     Application.ScreenUpdating = False
@@ -102,11 +101,17 @@ Private Sub skompletuj_dane_pod_generowania_kolejnych_one_pagerow(e As E_ONE_PAG
         If ans = vbYes Then
         
         
-            If isNewOnePager Then
+            If eOnePagerLayout = E_NEW_ONE_PAGER_LAYOUT Then
                 
                 ' zupelnie nowa logika
                 ' ---------------------------------------------------------------------------
                 Dim noph As NewOnePagerHandler
+                Set noph = New NewOnePagerHandler
+                
+                noph.przypisz_kolekcje_linkow kolekcja_linkow
+                noph.generuj_raporty e
+                
+                Set noph = Nothing
                 
                 ' ---------------------------------------------------------------------------
             Else
@@ -194,6 +199,22 @@ Private Function czy_ten_wiersz_jest_dopasowany_do_selekcji(r As Range) As Boole
         dopasowanie_fazy And _
         dopasowanie_cw
 End Function
+
+Private Sub BtnSubmitNew_Click()
+    Hide
+    
+    If Me.RadioExcels Then
+    
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS, E_NEW_ONE_PAGER_LAYOUT
+    ElseIf Me.RadioPowerPoint Then
+    
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT, E_NEW_ONE_PAGER_LAYOUT
+    Else
+    
+        MsgBox "nie ma innej mozliwosci! blad krytyczny, makro zatrzymalo sie!"
+        End
+    End If
+End Sub
 
 Private Sub ListBoxCWs_Change()
     inner_change_on_listboxes

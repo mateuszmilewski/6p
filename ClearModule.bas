@@ -106,6 +106,10 @@ Public Sub remove_one_item_from_one_sheet(ictrl As IRibbonControl)
 
     Dim l As T_Link
     Dim lr As Linker
+    Dim e As E_MAIN_ORDER
+    
+    Set l = New T_Link
+    
     
     
     If SIXP.GlobalFooModule.checkIfFirstFourFieldsProjektPlantCodeFazaCW(ActiveSheet) Then
@@ -114,17 +118,32 @@ Public Sub remove_one_item_from_one_sheet(ictrl As IRibbonControl)
         
             
         
-            If ActiveCell.Column > 1 And ActiveCell.Row > 4 And ActiveCell.Value <> "" Then
+            If ActiveCell.Column > 5 And ActiveCell.Row > 1 And ActiveCell.Value <> "" Then
             
-                MsgBox "not imeplemented yet"
+                
+                ' body
+                ' -------------------------------------------------------------------------------------------------------
+                l.zrob_mnie_z_range ActiveCell.Parent.Cells(ActiveCell.Row, 1)
+                
+                e = usunWierszSideowy(ActiveCell, l)  ' ActiveCell.Parent.Cells(ActiveCell.Row, 1)
+                usunWpisWMain ActiveCell, True, l, e
+                
+                ' -------------------------------------------------------------------------------------------------------
             Else
                 MsgBox "nie mozesz dla tej selekcji nic usunac!"
             End If
         Else
         
-            If ActiveCell.Column > 1 And ActiveCell.Value <> "" Then
+            If ActiveCell.Row > 1 And ActiveCell.Value <> "" Then
             
-                MsgBox "not imeplemented yet"
+                ' body
+                ' -------------------------------------------------------------------------------------------------------
+                l.zrob_mnie_z_range ActiveCell.Parent.Cells(ActiveCell.Row, 1)
+                
+                e = usunWierszSideowy(ActiveCell, l)  ' ActiveCell.Parent.Cells(ActiveCell.Row, 1)
+                usunWpisWMain ActiveCell, False, l, e
+                
+                ' -------------------------------------------------------------------------------------------------------
             Else
                 MsgBox "nie mozesz dla tej selekcji nic usunac!"
             End If
@@ -132,4 +151,132 @@ Public Sub remove_one_item_from_one_sheet(ictrl As IRibbonControl)
         End If
     End If
 End Sub
+
+
+Private Function usunWierszSideowy(r As Range, l As T_Link) As E_MAIN_ORDER
+
+    Dim side As Worksheet
     
+    If r.Parent.name <> CStr(SIXP.G_main_sh_nm) Then
+    
+        Set side = r.Parent
+        usunWierszSideowy = znajdzKolumne(CStr(side.name))
+    Else
+    
+        Set side = znajdzSidea(Int(r.Column))
+        usunWierszSideowy = Int(r.Column)
+    End If
+    
+    
+    Dim elDoUsuniecia As Range
+    Set elDoUsuniecia = l.znajdz_siebie_w_arkuszu(side)
+    
+    elDoUsuniecia.EntireRow.Delete xlShiftUp
+    
+    
+
+End Function
+
+
+Private Function znajdzSidea(ktoraKolumna As Integer) As Worksheet
+
+    Set znajdzSidea = Nothing
+    
+    Dim e As E_MAIN_ORDER
+    e = ktoraKolumna
+    
+    If e = e_main_last_update_on_order_release_status Then
+    
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_order_release_status_sh_nm)
+    
+    ElseIf e = e_main_last_update_on_recent_build_plan_changes Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_chart_contracted_pnoc Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_osea Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_totals Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_xq Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_del_conf Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_open_issues Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
+        
+    ElseIf e = e_main_last_update_on_resp Then
+    
+        Set znajdzSidea = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
+        
+    End If
+    
+End Function
+
+
+Private Function znajdzKolumne(nazwaArkuszaSideowego As String) As E_MAIN_ORDER
+
+    
+    Dim nm As String
+    nm = CStr(nazwaArkuszaSideowego)
+    
+    If nm = CStr(SIXP.G_order_release_status_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_order_release_status
+    ElseIf nm = CStr(SIXP.G_recent_build_plan_changes_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_recent_build_plan_changes
+    ElseIf nm = CStr(SIXP.G_cont_pnoc_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_chart_contracted_pnoc
+    ElseIf nm = CStr(SIXP.G_osea_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_osea
+    ElseIf nm = CStr(SIXP.G_totals_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_totals
+    ElseIf nm = CStr(SIXP.G_xq_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_xq
+    ElseIf nm = CStr(SIXP.G_del_conf_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_del_conf
+    ElseIf nm = CStr(SIXP.G_open_issues_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_open_issues
+    ElseIf nm = CStr(SIXP.G_resp_sh_nm) Then
+        znajdzKolumne = e_main_last_update_on_resp
+    End If
+End Function
+
+    
+Private Sub usunWpisWMain(r As Range, inMain As Boolean, l As T_Link, e As E_MAIN_ORDER)
+
+
+    If inMain Then
+        
+        r.Value = ""
+    Else
+    
+        Dim Sh As Worksheet
+        Set Sh = ThisWorkbook.Sheets(CStr(SIXP.G_main_sh_nm))
+        
+        Set r = r.Parent.Cells(r.Row, 1)
+        
+        Dim tmp As Range
+        Set tmp = l.znajdz_siebie_w_arkuszu(Sh)
+        
+        If Not tmp Is Nothing Then
+        
+            tmp.Parent.Cells(tmp.Row, e).Value = ""
+        Else
+            MsgBox "Arkusz MAIN nie posiada tego wpisu, zatem zostanie on usuniety tylko w tym arkuszu!"
+        End If
+    End If
+    
+End Sub

@@ -35,6 +35,8 @@ Attribute VB_Exposed = False
 Public czy_start_pochodzi_z_open_issues As Boolean
 Public wez_text_z_open_issues_form As String
 
+Public labelTextForOverseaPortion As String
+
 Private Sub BtnGetFrom6P_Click()
     
     SIXP.GlobalFooModule.gotoThisWorkbookMainA1
@@ -64,10 +66,9 @@ Private Sub BtnJustImport_Click()
 End Sub
 
 Private Sub BtnOsea_Click()
+    Hide
     Me.czy_start_pochodzi_z_open_issues = False
-    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
-
-    MsgBox "to be implemented!"
+    externalOverseaDataCatchLogic Me.ListBox1.Value, Me, Me.labelTextForOverseaPortion
 End Sub
 
 Private Sub BtnSubmit_Click()

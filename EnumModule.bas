@@ -38,6 +38,12 @@ Attribute VB_Name = "EnumModule"
 ' second page
 ' Set pcs(9) = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
 
+
+Public Enum E_ONE_PAGER_LAYOUT
+    E_NEW_ONE_PAGER_LAYOUT
+    E_OLD_ONE_PAGER_LAYOUT
+End Enum
+
 Public Enum E_OPEN_ISSUES_CRUD
     E_OI_CREATE
     E_OI_READ
@@ -57,6 +63,7 @@ Public Enum E_SPECIAL_CASE_FOR_DEL_CONF
     E_SPEC_CASE_TAKE_DEL_CONF_CONNECTED_WITH_MRD = 10
     E_SPEC_CASE_DO_NOT_TAKE_DEL_CONF_CONNECTED_WITH_MRD = 100
     E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD = 1000
+    E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD_AND_AFTER_BUILD_START = 10000
 End Enum
 
 Public Enum E_MATCH
@@ -64,7 +71,15 @@ Public Enum E_MATCH
     E_EQUAL
     E_NOT_EQUAL
     E_BEFORE_OR_AFTER_MRD
+    E_BEFORE_OR_AFTER_MRD_OR_AFTER_BUILD_START
 End Enum
+
+Public Enum E_16_BEFORE_MRD_AFTER_MRD_AFTER_BUILD_START
+    E_16_BEFORE_MRD
+    E_16_AFTER_MRD
+    E_16_AFTER_BUILD_START
+End Enum
+
 
 Public Enum E_PCS_ORDER
     e_pcs_main = 1
@@ -196,6 +211,22 @@ Public Enum E_DEL_CONF_ORDER
     e_del_conf_open
     e_del_conf_too_late
     e_del_conf_pot_itdc
+    
+    e_del_conf_yellow_open
+    e_del_conf_red_after_mrd
+    e_del_conf_red_after_smrd
+    e_del_conf_red_after_alt
+    e_del_conf_red_after_alttwomrd
+    e_del_conf_red_after_salttwomrd
+    e_del_conf_red_after_oncostmrd
+    e_del_conf_red_after_soncostmrd
+End Enum
+
+Public Enum E_NEW_DEL_CONF_ORDER
+    e_new_del_conf_type = 5
+    e_new_del_conf_green
+    e_new_del_conf_yellow
+    e_new_del_conf_red
 End Enum
 
 Public Enum E_OPEN_ISSUES_ORDER
@@ -329,7 +360,6 @@ Public Enum E_DEL_CONF_SPECIAL
     E_DCS_Staggered_ONCOST_MRD
     E_DCS_OPEN
     E_DCS_OPEN_TOO_LATE
-
 End Enum
 
 

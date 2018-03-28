@@ -31,8 +31,8 @@ Public Sub find_all_6p(ictrl As IRibbonControl)
     Set creator = New SixPCollectionCreator
     
     With creator
-        '.stworz_kolekcje SIXP.G_PATH_FOR_SEARCHING
-        .stworz_kolekcje "C:\WORKSPACE\macros\LESS\6p\"
+        .stworz_kolekcje SIXP.G_PATH_FOR_SEARCHING
+        ' .stworz_kolekcje "C:\WORKSPACE\macros\LESS\6p\"
         Set c = .getCollection()
     End With
     
