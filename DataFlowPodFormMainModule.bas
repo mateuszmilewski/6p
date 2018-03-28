@@ -107,9 +107,38 @@ Public Sub zrob_del_conf(edit_czy_add As String, txt_from_combo_box As String)
     Set dc = New DelConfStatus7XHandler
     
     With SIXP.FormDelConfStatus
+    
+        Application.EnableEvents = False
+    
         dc.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormDelConfStatus
         .Show vbModeless
+        
+        
+        
+        Application.EnableEvents = True
     End With
+End Sub
+
+Public Sub zrob_new_del_conf(edit_czy_add As String, txt_from_combo_box As String)
+
+
+    Application.EnableEvents = False
+
+    Dim dc As NewDelConfHandler
+    Set dc = New NewDelConfHandler
+    
+    With SIXP.FormDelConfStatus2
+        
+        Application.EnableEvents = False
+        
+        dc.inicjuj_wstepne_wartosci_pol_do_wypelnienia CStr(txt_from_combo_box), CStr(edit_czy_add), SIXP.FormDelConfStatus2
+        .Show vbModeless
+        
+        
+        Application.EnableEvents = True
+    End With
+    
+    Application.EnableEvents = True
 End Sub
 
 Public Sub zrob_open_issues(edit_czy_add As String, txt_from_combo_box As String)

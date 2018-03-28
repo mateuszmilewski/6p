@@ -29,6 +29,7 @@ Public Sub inner_6p_time(mm, md, mp)
     ''
     '
     
+    SIXP.LoadingFormModule.showLoadingForm
     
     
     ' aby w ogole rozpoczac liczenie musze zrozumiec podstawowe definicje jakimi rzadzi sie poprzedni Quarter i w jakim cely
@@ -49,17 +50,20 @@ Public Sub inner_6p_time(mm, md, mp)
     Set d = md ' ThisWorkbook.Sheets(WizardMain.DETAILS_SHEET_NAME)
     Set p = mp ' ThisWorkbook.Sheets(WizardMain.PICKUPS_SHEET_NAME)
     
-    Dim m_r_d As Range, r_biw_ga As Range
+    Dim m_r_d As Range, r_biw_ga As Range, build_start As Range
     Set m_r_d = d.Cells(SIXP.mrd, 2)
+    Set build_start = d.Range("build_start") ' to samo powinno byc w D1 arkusza wiz buff
     
     ' also it will be in buff on Q1
     Set r_biw_ga = d.Cells(SIXP.biw_ga, 2)
+    
+    SIXP.LoadingFormModule.incLoadingForm
     
     
     fill_wiz_buff_with_all_details_but_transpose_from_o1 d, wrksh
     
     
-
+    SIXP.LoadingFormModule.incLoadingForm
 
             
     
@@ -140,6 +144,8 @@ Public Sub inner_6p_time(mm, md, mp)
     ' --------------------------------------------------------------------
     
     
+    SIXP.LoadingFormModule.incLoadingForm
+    
     wrksh.Cells(1, 1) = "6P"
     ' total
     wrksh.Cells(2, 1) = "TOTAL FMA*"
@@ -149,6 +155,8 @@ Public Sub inner_6p_time(mm, md, mp)
         iteruj_recur("*", 0, przelicz_zasieg(m, SIXP.pn, SIXP.Responsibility), "", E_NOT_EQUAL)
     
     
+    
+    SIXP.LoadingFormModule.incLoadingForm
     
     
     Dim rng As Range
@@ -162,6 +170,9 @@ Public Sub inner_6p_time(mm, md, mp)
     wrksh.Range("H1").Value = CStr(podlicz_w_zgodzie_z_ukladem_z_arkusza_register())
     
     
+    SIXP.LoadingFormModule.showLoadingForm
+    SIXP.LoadingFormModule.incLoadingForm
+    
     
     ' PRZYGOTOWANIE FILTROWANIA
     ' ========================================
@@ -172,7 +183,7 @@ Public Sub inner_6p_time(mm, md, mp)
     
     ' ========================================
     ' ========================================
-    
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' 4
     wrksh.Cells(4, 1) = "TOTAL TOTAL"
@@ -184,8 +195,7 @@ Public Sub inner_6p_time(mm, md, mp)
     rng.Offset(-1, 0) = "PPAP STATUS"
     Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.ppap_status)
     
-    
-    
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' 10
     wrksh.Cells(10, 1) = "6P"
@@ -193,13 +203,19 @@ Public Sub inner_6p_time(mm, md, mp)
     Set rng = wrksh.Cells(12, 1)
     Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_DO_NOT_TAKE_DEL_CONF_CONNECTED_WITH_MRD)
     
+    SIXP.LoadingFormModule.incLoadingForm
+    
     '15
     Set rng = wrksh.Cells(16, 1)
     rng.Offset(-1, 0) = "BEFORE OR ON/AFTER MRD"
     rng.Offset(-1, 2) = "MRD CW: "
     rng.Offset(-1, 3) = CStr(m_r_d)
-    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD)
+    rng.Offset(-1, 4) = "BUILD START CW: "
+    rng.Offset(-1, 5) = CStr(build_start)
+    Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation, E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD_AND_AFTER_BUILD_START)
     
+    
+    SIXP.LoadingFormModule.incLoadingForm
     ' 20
     Set rng = wrksh.Cells(21, 1)
     rng.Offset(-1, 0) = "Del Conf"
@@ -209,20 +225,27 @@ Public Sub inner_6p_time(mm, md, mp)
     rng.Offset(-1, 3) = "MRD CW: "
     rng.Offset(-1, 4) = CStr(m_r_d)
     
+    rng.Offset(-1, 5) = "BUILD START CW: "
+    rng.Offset(-1, 6) = CStr(build_start)
+    
     Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.Delivery_confirmation)
+    
+    
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' 25
     Set rng = wrksh.Cells(26, 1)
     rng.Offset(-1, 0) = "Country Code"
     Set rng = zrob_recursy_dla(fltr, m, rng, SIXP.country_code)
     
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' 30
     Set rng = wrksh.Cells(31, 1)
     rng.Offset(-1, 0) = "CC Osea"
     Set rng = zrob_special_recursy_dla_cc_osea(fltr, m, rng, SIXP.country_code)
     
-    
+    SIXP.LoadingFormModule.incLoadingForm
     
     ' 35
     Set rng = wrksh.Cells(36, 1)
@@ -233,6 +256,8 @@ Public Sub inner_6p_time(mm, md, mp)
     rng.Offset(-1, 4) = Date
     ' dzielimy po today, a nie po mrd
     Set rng = zrob_pus_recur(m, p, rng, True, Date)
+    
+    SIXP.LoadingFormModule.incLoadingForm
     
     
     ' ordered - po statusach
@@ -258,10 +283,15 @@ Public Sub inner_6p_time(mm, md, mp)
     
     
     
-    MsgBox "ready!"
+    ' MsgBox "ready!" - za szybko
     '
     ''
     ' ======================================================
+    
+    SIXP.LoadingFormModule.incLoadingForm
+    
+    
+    SIXP.LoadingFormModule.hideLoadingForm
 End Sub
 
 
@@ -455,10 +485,23 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, m
     Dim d As Worksheet
     Set d = m.Parent.Sheets("DETAILS")
     
+    'If e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
+    '    Set dic = wypelnij_slownik(fltr, dic, _
+    '        przelicz_zasieg(m, SIXP.pn, m_col), _
+    '        E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD)
+    'Else
+    '    Set dic = wypelnij_slownik(fltr, dic, przelicz_zasieg(m, SIXP.pn, m_col))
+    'End If
+    
     If e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
         Set dic = wypelnij_slownik(fltr, dic, _
             przelicz_zasieg(m, SIXP.pn, m_col), _
             E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD)
+        
+    ElseIf e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD_AND_AFTER_BUILD_START Then
+        Set dic = wypelnij_slownik(fltr, dic, _
+            przelicz_zasieg(m, SIXP.pn, m_col), _
+            E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD_AND_AFTER_BUILD_START)
     Else
         Set dic = wypelnij_slownik(fltr, dic, przelicz_zasieg(m, SIXP.pn, m_col))
     End If
@@ -476,7 +519,7 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, m
                 Set rng = rng.Offset(0, 1)
             End If
         
-        ElseIf e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
+        ElseIf e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD_AND_AFTER_BUILD_START Then
             
             
                 ' tutaj sekcja ni bedzie miala *Y*CW poniewaz zostala z kluczy wykasowana w poprzedniej
@@ -490,8 +533,7 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, m
                 rng = "BEFORE " & CStr(ki)
                 rng.Offset(1, 0) = iteruj_recur(fltr, 0, _
                     przelicz_zasieg(m, SIXP.pn, m_col), _
-                    przygotuj_my_pattern("BEFORE " & CStr(ki)), _
-                    E_BEFORE_OR_AFTER_MRD, d)
+                    przygotuj_my_pattern("BEFORE " & CStr(ki)), E_BEFORE_OR_AFTER_MRD_OR_AFTER_BUILD_START, d)
                 
                 Set rng = rng.Offset(0, 1)
                 
@@ -499,7 +541,16 @@ Public Function zrob_recursy_dla(fltr As String, m As Worksheet, rng As Range, m
                 rng.Offset(1, 0) = iteruj_recur(fltr, 0, _
                     przelicz_zasieg(m, SIXP.pn, m_col), _
                     przygotuj_my_pattern("AFTER " & CStr(ki)), _
-                    E_BEFORE_OR_AFTER_MRD, d)
+                    E_BEFORE_OR_AFTER_MRD_OR_AFTER_BUILD_START, d)
+                
+                Set rng = rng.Offset(0, 1)
+                
+                
+                rng = "AFTER BUILD START " & CStr(ki)
+                rng.Offset(1, 0) = iteruj_recur(fltr, 0, _
+                    przelicz_zasieg(m, SIXP.pn, m_col), _
+                    przygotuj_my_pattern("AFTER BUILD START " & CStr(ki)), _
+                    E_BEFORE_OR_AFTER_MRD_OR_AFTER_BUILD_START, d)
                 
                 Set rng = rng.Offset(0, 1)
                 
@@ -730,35 +781,59 @@ Private Function wypelnij_slownik(fltr As String, ByRef d As Dictionary, r As Ra
         ' If (fltr = "*") Or (sprawdz_resp_teraz(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) And fltr = "") Then
         ' If CStr(fltr) Like "*" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & "*" Then
         ' Debug.Print CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility))
-        If CStr(fltr) = "*" Or CStr(fltr) Like "*;" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & ";*" Then
-            
-            If e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
-            
-                ' tutaj warunek okrjony sprawdzajacy tylko czy dany element zawiera Y*CW
-                If CStr(fst) Like "*Y*CW*" Then
-                    
-                    
-                    ' sekcja wyodrebniajaca before and after dla wybranych del confow.
-                    
-                    ' jednak to nie uwzglednia czystego {MRD}
-                    ' to jest czyste MRD
-                    If Left(CStr(fst), 1) = "Y" Then
-                        If Not d.Exists("MRD") Then
-                            d.Add "MRD", Nothing
-                        End If
-                    Else
-                        If Not d.Exists(CStr(Split(CStr(fst), " ")(0))) Then
-                            d.Add CStr(Split(CStr(fst), " ")(0)), Nothing
+        
+        If (Not Application.WorksheetFunction.IsNA(fst)) Or (Not Application.WorksheetFunction.IsError(fst)) Then
+        
+            If CStr(fltr) = "*" Or CStr(fltr) Like "*;" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & ";*" Then
+                
+                If e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD Then
+                
+                    ' tutaj warunek okrjony sprawdzajacy tylko czy dany element zawiera Y*CW
+                    If CStr(fst) Like "*Y*CW*" Then
+                        
+                        
+                        ' sekcja wyodrebniajaca before and after dla wybranych del confow.
+                        
+                        ' jednak to nie uwzglednia czystego {MRD}
+                        ' to jest czyste MRD
+                        If Left(CStr(fst), 1) = "Y" Then
+                            If Not d.Exists("MRD") Then
+                                d.Add "MRD", Nothing
+                            End If
+                        Else
+                            If Not d.Exists(CStr(Split(CStr(fst), " ")(0))) Then
+                                d.Add CStr(Split(CStr(fst), " ")(0)), Nothing
+                            End If
                         End If
                     End If
-                End If
-            Else
-    
-                If Not d.Exists(CStr(fst)) Then
-                    d.Add CStr(fst), Nothing
-                End If
-            End If
+                ElseIf e = E_SPEC_CASE_COUNT_BEFORE_AND_AFTER_MRD_AND_AFTER_BUILD_START Then
                     
+                    If CStr(fst) Like "*Y*CW*" Then
+                    
+                        ' sekcja wyodrebnia 3 mozliwosci:
+                        ' 1. przed mrd
+                        ' 2. po mrd ale przed build start
+                        ' 3. po build start
+                        
+                        If Left(CStr(fst), 1) = "Y" Then
+                            If Not d.Exists("MRD") Then
+                                d.Add "MRD", Nothing
+                            End If
+                        Else
+                            If Not d.Exists(CStr(Split(CStr(fst), " ")(0))) Then
+                                d.Add CStr(Split(CStr(fst), " ")(0)), Nothing
+                            End If
+                        End If
+                        
+                    End If
+                Else
+        
+                    If Not d.Exists(CStr(fst)) Then
+                        d.Add CStr(fst), Nothing
+                    End If
+                End If
+                        
+            End If
         End If
                     
         Set r = r.Parent.Range(r.item(2), r.item(r.Count))
@@ -774,7 +849,11 @@ Public Function przelicz_zasieg(m As Worksheet, col1, docelowa_kolumna) As Range
     If Trim(m.Cells(2, col1)) <> "" Then
     
     
-        ostatni_wiersz = m.Cells(SIXP.POLOWA_CAPACITY_ARKUSZA, docelowa_kolumna).End(xlUp).Row
+        If Int(docelowa_kolumna) = Int(Delivery_confirmation) Then
+            ostatni_wiersz = m.Cells(SIXP.POLOWA_CAPACITY_ARKUSZA, docelowa_kolumna).End(xlUp).Row + 10
+        Else
+            ostatni_wiersz = m.Cells(SIXP.POLOWA_CAPACITY_ARKUSZA, docelowa_kolumna).End(xlUp).Row
+        End If
     
         Set przelicz_zasieg = _
             m.Range(m.Cells(2, docelowa_kolumna), m.Cells(ostatni_wiersz, docelowa_kolumna))
@@ -792,6 +871,10 @@ Public Function iteruj_recur(fltr As String, start, r As Range, filter, e As E_M
     
     ' Optional d As Worksheet for DETAILS
     
+    
+    ' ????
+    ' start = 0
+    
     Dim fst As Range
     
     
@@ -799,46 +882,66 @@ Public Function iteruj_recur(fltr As String, start, r As Range, filter, e As E_M
     
         Set fst = r.item(1)
         
-        ' If CStr(fltr) Like "*" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & "*" Then
-        'If (fltr = "*") Or (sprawdz_resp_teraz(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) And fltr = "") Then
-        ' po krotce pierwszy filtr jest pod respa
-        ' drugi filtr jest pod dedykowana kolumne
-        ' Debug.Print CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility))
-        If CStr(fltr) = "*" Or CStr(fltr) Like "*;" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & ";*" Then
+        If Trim(fst.Value) <> "" Then
             
-            If e = E_LIKE Then
-                If fst Like "*" & CStr(filter) & "*" Then
-                    start = start + 1
-                End If
-            ElseIf e = E_EQUAL Then
-                If CStr(fst) = CStr(filter) Then
-                    start = start + 1
-                End If
-            ElseIf e = E_NOT_EQUAL Then
-                If CStr(fst) <> CStr(filter) Then
-                    start = start + 1
-                End If
-            ElseIf e = E_BEFORE_OR_AFTER_MRD Then
-            
-            
-                ' najwygodniej zaczac od tego co wiem napewno
-                ' wez z arkusza details wartosc mrd poniewaz na jej bazie bede decydowal jakie del confy sa cacy a jakie nie
-                date_mrd = wez_date_mrd_z_details(d, _
-                    sprawdz_czy_jest_sens_brac_date_mrd(d))
-                    
+            ' If CStr(fltr) Like "*" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & "*" Then
+            'If (fltr = "*") Or (sprawdz_resp_teraz(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) And fltr = "") Then
+            ' po krotce pierwszy filtr jest pod respa
+            ' drugi filtr jest pod dedykowana kolumne
+            ' Debug.Print CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility))
+            If CStr(fltr) = "*" Or CStr(fltr) Like "*;" & CStr(fst.Parent.Cells(fst.Row, SIXP.Responsibility)) & ";*" Then
                 
-                If porownaj_daty_zafiltruj_i_okresl_czy_dajemy_plus_one(CDate(date_mrd), _
-                    wez_date_z_del_conf_param(CStr(fst)), _
-                    filter, _
-                    fst) _
+                If e = E_LIKE Then
+                    If fst Like "*" & CStr(filter) & "*" Then
+                        start = start + 1
+                    End If
+                ElseIf e = E_EQUAL Then
+                    If CStr(fst) = CStr(filter) Then
+                        start = start + 1
+                    End If
+                ElseIf e = E_NOT_EQUAL Then
+                    If CStr(fst) <> CStr(filter) Then
+                        start = start + 1
+                    End If
+                ElseIf e = E_BEFORE_OR_AFTER_MRD Then
+                
+                
+                    ' najwygodniej zaczac od tego co wiem napewno
+                    ' wez z arkusza details wartosc mrd poniewaz na jej bazie bede decydowal jakie del confy sa cacy a jakie nie
+                    date_mrd = wez_date_mrd_z_details(d, _
+                        sprawdz_czy_jest_sens_brac_date_mrd(d))
+                        
+                    
+                    If porownaj_daty_zafiltruj_i_okresl_czy_dajemy_plus_one(CDate(date_mrd), _
+                        wez_date_z_del_conf_param(CStr(fst)), _
+                        filter, _
+                        fst) _
+                            Then
+                                start = start + 1
+                    End If
+                    
+                ElseIf e = E_BEFORE_OR_AFTER_MRD_OR_AFTER_BUILD_START Then
+                
+                    
+                    date_mrd = wez_date_mrd_z_details(d, _
+                        sprawdz_czy_jest_sens_brac_date_mrd(d))
+                        
+                    date_build_start = wez_date_build_start_z_details(d)
+                    date_bom = wez_date_bom_freeze_z_details(d)
+                    
+                    date_del_conf = wez_date_z_del_conf_param(CStr(fst))
+                    
+                    If porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one( _
+                        CDate(date_mrd), CDate(date_build_start), _
+                        CDate(date_del_conf), filter, fst) _
                         Then
                             start = start + 1
+                    End If
+
                 End If
-            
+
             End If
-            
-            
-            
+        
         End If
         
         If r.Count > 1 Then
@@ -853,6 +956,71 @@ Public Function iteruj_recur(fltr As String, start, r As Range, filter, e As E_M
     
     
 End Function
+
+Private Function porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one( _
+    mrd_date As Date, build_start_date As Date, _
+    del_conf_monday_date As Date, _
+    str_filter, _
+    r As Range) _
+        As Boolean
+        
+        
+            porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one = False
+            
+            
+            
+        
+            Dim delConfFromR As String
+        
+            If CDate(del_conf_monday_date) <> CDate("1900-01-01") Then
+
+                delConfFromR = CStr(Split(r, " ")(0))
+                
+                If delConfFromR Like "Y*CW*" Then
+                    delConfFromR = "MRD"
+                End If
+                
+                
+                stripped_str_filter = Trim(Replace( _
+                    Replace( _
+                        Replace( _
+                            CStr(str_filter), "BEFORE", "") _
+                        , "AFTER", "") _
+                    , "BUILD START", ""))
+
+                If Trim(CStr(stripped_str_filter)) = Trim(CStr(delConfFromR)) Then
+            
+                    If CStr(str_filter) Like "*BEFORE*" Then
+                        
+                        If CDate(mrd_date) >= CDate(del_conf_monday_date) Then
+                            porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one = True
+                        End If
+                    ElseIf CStr(str_filter) Like "*AFTER*" Then
+                    
+    
+                        If CStr(str_filter) Like "*AFTER*" And (Not CStr(str_filter) Like "*AFTER BUILD START*") Then
+                    
+                            If CDate(mrd_date) < CDate(del_conf_monday_date) And CDate(build_start_date) >= CDate(del_conf_monday_date) Then
+                                porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one = True
+                            End If
+                            
+                            
+                        ElseIf CStr(str_filter) Like "*AFTER BUILD START*" Then
+                            
+                            If CDate(build_start_date) < CDate(del_conf_monday_date) Then
+                                porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one = True
+                            End If
+                        End If
+                    End If
+                    
+                End If
+                
+            Else
+                porownaj_daty_mrd_i_build_start_potem_zafiltruj_i_okresl_czy_dajemy_plus_one = False
+            End If
+        
+End Function
+
 
 Private Function porownaj_daty_zafiltruj_i_okresl_czy_dajemy_plus_one(mrd_date As Date, _
     del_conf_monday_date As Date, _
@@ -926,6 +1094,17 @@ Private Function wez_date_mrd_z_details(details_sh As Worksheet, directly_date_o
     End If
     
     
+End Function
+
+Private Function wez_date_build_start_z_details(details_sh As Worksheet) As Date
+
+    wez_date_build_start_z_details = CDate(parsuj_y_cw_do_daty_poniedzialkowej(details_sh.Cells(SIXP.build_start, 2)))
+End Function
+
+
+Private Function wez_date_bom_freeze_z_details(details_sh As Worksheet) As Date
+        
+    wez_date_bom_freeze_z_details = CDate(parsuj_y_cw_do_daty_poniedzialkowej(details_sh.Cells(SIXP.BOM, 2)))
 End Function
 
 Private Function parsuj_y_cw_do_daty_poniedzialkowej(r As Range) As Date

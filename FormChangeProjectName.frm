@@ -53,10 +53,10 @@ Private Function przeszukajArkuszIUsunWystapienia(l As T_Link, shnm As String)
             ' main logic for data deletion
             ' ---------------------------------------------
             
-            Dim sh As Worksheet, r As Range
-            Set sh = ThisWorkbook.Sheets(CStr(shnm))
+            Dim Sh As Worksheet, r As Range
+            Set Sh = ThisWorkbook.Sheets(CStr(shnm))
             
-            Set r = l.znajdz_siebie_w_arkuszu(sh)
+            Set r = l.znajdz_siebie_w_arkuszu(Sh)
             
             If Not r Is Nothing Then
             
@@ -87,8 +87,8 @@ Private Sub zmienNazweRekorduZgodnieZNowymZapisem(mr As Range)
     
     r.Value = CStr(Me.TextBoxNewProj.Value)
     r.Offset(0, 1).Value = CStr(Me.TextBoxNewPltCode.Value)
-    r.Offset(0, 2).Value = CStr(Me.TextBoxCurrFaza.Value)
-    r.Offset(0, 3).Value = CStr(Me.TextBoxCurrCw.Value)
+    r.Offset(0, 2).Value = CStr(Me.TextBoxNewFaza.Value)
+    r.Offset(0, 3).Value = CStr(Me.TextBoxNewCw.Value)
 End Sub
 
 

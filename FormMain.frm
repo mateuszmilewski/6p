@@ -23,6 +23,16 @@ Private Sub BtnDelConf_Click()
     SIXP.DataFlowPodFormMainModule.zrob_del_conf CStr(Me.BtnDelConf.Caption), CStr(Me.ComboBoxProject.Value)
 End Sub
 
+Private Sub BtnNewDelConf_Click()
+
+
+    Application.EnableEvents = False
+    Hide
+    SIXP.DataFlowPodFormMainModule.zrob_new_del_conf CStr(Me.BtnDelConf.Caption), CStr(Me.ComboBoxProject.Value)
+    
+    Application.EnableEvents = True
+End Sub
+
 Private Sub BtnOpenIssues_Click()
     Hide
     SIXP.DataFlowPodFormMainModule.zrob_open_issues CStr(Me.BtnOpenIssues.Caption), CStr(Me.ComboBoxProject.Value)
@@ -89,7 +99,7 @@ Private Sub ComboBoxProject_Change()
     If Me.Visible = True Then
 
         Dim l As T_Link
-        Dim sh As Worksheet
+        Dim Sh As Worksheet
         Dim main_sh As Worksheet
         Set main_sh = ThisWorkbook.Sheets(SIXP.G_main_sh_nm)
         
@@ -104,39 +114,39 @@ Private Sub ComboBoxProject_Change()
         ' czas na texty w guzikach
         
         ' order release status
-        Set sh = ThisWorkbook.Sheets(SIXP.G_order_release_status_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_order_release_status, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_order_release_status_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_order_release_status, Sh, main_sh, l, paleta
         
         ' recent bp ch
-        Set sh = ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_recent_build_plan_changes, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_recent_build_plan_changes, Sh, main_sh, l, paleta
         
         ' chart cont pnoc
-        Set sh = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_chart_contracted_pnoc, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_chart_contracted_pnoc, Sh, main_sh, l, paleta
         
         ' sea
-        Set sh = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_osea, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_osea, Sh, main_sh, l, paleta
         
         ' totals
-        Set sh = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_totals, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_totals, Sh, main_sh, l, paleta
         
         ' xq
-        Set sh = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_xq, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_xq, Sh, main_sh, l, paleta
         
         ' del conf
-        Set sh = ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_del_conf, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_del_conf, Sh, main_sh, l, paleta
         
         ' open issues
-        Set sh = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_open_issues, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_open_issues, Sh, main_sh, l, paleta
         
         ' resp
-        Set sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_resp, sh, main_sh, l, paleta
+        Set Sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_resp, Sh, main_sh, l, paleta
     End If
 End Sub

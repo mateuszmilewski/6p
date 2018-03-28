@@ -82,14 +82,10 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .TextBoxAfterALTMRD = "0"
             .TextBoxAfterMRD = "0"
             .TextBoxAfterSMRD = "0"
-            .TextBoxAfterTMRD = "0"
-            .TextBoxAfterTSMRD = "0"
             .TextBoxEDI = "0"
             .TextBoxForALTMRD = "0"
             .TextBoxForMRD = "0"
             .TextBoxFORSMRD = "0"
-            .TextBoxFORTMRD = "0"
-            .TextBoxForTSMRD = "0"
             .TextBoxHO = "0"
             .TextBoxNA = "0"
             .TextBoxOnStock = "0"
@@ -135,10 +131,6 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_mrd - 1)))
                         .TextBoxAfterSMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_smrd - 1)))
-                        .TextBoxAfterTMRD = _
-                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_twomrd - 1)))
-                        .TextBoxAfterTSMRD = _
-                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_after_twosmrd - 1)))
                         .TextBoxEDI = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_edi - 1)))
                         .TextBoxForALTMRD = _
@@ -147,18 +139,25 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_mrd - 1)))
                         .TextBoxFORSMRD = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_smrd - 1)))
-                        .TextBoxFORTMRD = _
-                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_twomrd - 1)))
-                        .TextBoxForTSMRD = _
-                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_for_twosmrd - 1)))
                         .TextBoxHO = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_ho - 1)))
                         .TextBoxNA = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_na - 1)))
                         .TextBoxOnStock = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_on_stock - 1)))
+                            
+                        
+                        ' stary schemat duzej ilosci czerwonego nie uwzglednia!
+                        ' trzeba dopisac przynajmniej tymczasowo
+                        '.TextBoxOpen = _
+                        '    SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_open - 1)))
+                            
+                        ' dodaj reszte czerwonych pol
                         .TextBoxOPEN = _
-                            SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_open - 1)))
+                            SIXP.GlobalFooModule.global_cpz(CLng(sumujCzerwoneElementyPlusYellowOpen(r)))
+                            
+                            
+                            
                         .TextBoxPotITDC = _
                             SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_pot_itdc - 1)))
                         .TextBoxTooLate = _
@@ -201,3 +200,22 @@ End Sub
 
 
 
+Private Function sumujCzerwoneElementyPlusYellowOpen(r As Range)
+    sumujCzerwoneElementyPlusYellowOpen = 0
+    
+    
+    tmp = 0
+    
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_open - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_yellow_open - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_alt - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_alttwomrd - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_mrd - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_oncostmrd - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_salttwomrd - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_smrd - 1)))
+    tmp = tmp + SIXP.GlobalFooModule.global_cpz(CStr(r.Offset(0, SIXP.e_del_conf_red_after_soncostmrd - 1)))
+    
+    
+    sumujCzerwoneElementyPlusYellowOpen = tmp
+End Function

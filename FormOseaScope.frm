@@ -26,7 +26,7 @@ End Sub
 
 Private Sub BtnImport_Click()
     ' MsgBox "not implemented yet!"
-    Hide
+    ' Hide
     
     FormCatchWizard.ListBox1.Clear
     FormCatchWizard.ListBox1.MultiSelect = fmMultiSelectSingle
@@ -42,6 +42,8 @@ Private Sub BtnImport_Click()
     FormCatchWizard.BtnJustImport.Enabled = False
     FormCatchWizard.BtnSubmit.Enabled = False
     FormCatchWizard.BtnOsea.Enabled = True
+    
+    FormCatchWizard.labelTextForOverseaPortion = CStr(Me.LabelTitle)
     FormCatchWizard.Show vbModeless
 
 End Sub
@@ -58,6 +60,10 @@ Private Sub BtnSubmit_Click()
     inner_calc
     
     'run_FormMain Me.LabelTitle
+    
+    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+    End If
 End Sub
 
 Private Sub change_col_I_in_MAIN_worksheet(ByRef r As Range)
