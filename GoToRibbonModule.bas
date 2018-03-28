@@ -70,5 +70,5 @@ Public Sub goto_xq_sh(ictrl As IRibbonControl)
 End Sub
 
 Public Sub goto_one_pager_sh(ictrl As IRibbonControl)
-    ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Activate
+    ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Activate
 End Sub

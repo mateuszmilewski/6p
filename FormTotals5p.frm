@@ -49,6 +49,9 @@ Private Sub BtnSubmit_Click()
     inner_calc
     
     ' run_FormMain Me.LabelTitle
+    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+    End If
 End Sub
 
 Private Sub change_col_J_in_MAIN_worksheet(ByRef r As Range)
@@ -876,6 +879,10 @@ Private Sub TryWizardBtn_Click()
     End If
     
     ' --------------------------------------------------------------------
+    
+    
+    ' !
+    to_je_synchro
     
 End Sub
 

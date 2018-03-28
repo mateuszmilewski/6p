@@ -49,7 +49,7 @@ Private Sub BtnFMALeft_Click()
 End Sub
 
 Private Sub BtnSubmit_Click()
-    
+        
     
     
     SIXP.GlobalFooModule.gotoThisWorkbookMainA1
@@ -58,14 +58,23 @@ Private Sub BtnSubmit_Click()
     
     Dim rr As Range
     
+    
+    
+    
     Set rr = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("G2")
+    
+    dopiszDoRejestruBrakujaceElemenciwa rr
+    
 
+    Dim znaleziony As Boolean
+    znaleziony = False
     Do
         For x = 0 To Me.ListBoxInScope.ListCount - 1
         
     
                 If Me.ListBoxInScope.List(x) = Trim(rr) Then
                     rr.Offset(0, 1) = 1
+                    znaleziony = True
                     Exit For
                 Else
                     
@@ -75,10 +84,36 @@ Private Sub BtnSubmit_Click()
 
         Next x
         
+        
         Set rr = rr.Offset(1, 0)
     Loop Until Trim(rr) = ""
     
     SIXP.LoadingFormModule.hideLoadingForm
+    
+End Sub
+
+
+Private Sub dopiszDoRejestruBrakujaceElemenciwa(rr As Range)
+
+    
+    Dim obszarSzukania As Range
+    
+    
+    Dim tmp As Range
+    For x = 0 To Me.ListBoxInScope.ListCount - 1
+    
+        Set obszarSzukania = rr.Parent.Range(rr, rr.End(xlDown))
+    
+        Set tmp = Nothing
+        On Error Resume Next
+        Set tmp = obszarSzukania.Find(CStr(Me.ListBoxInScope.List(x)))
+        
+        
+        If tmp Is Nothing Then
+            rr.End(xlDown).Offset(1, 0) = CStr(Me.ListBoxInScope.List(x))
+            rr.End(xlDown).Offset(1, 1) = 0
+        End If
+    Next x
     
 End Sub
 

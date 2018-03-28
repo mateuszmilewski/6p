@@ -18,6 +18,10 @@ Attribute VB_Name = "GlobalModule"
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ' zmienne globalne nazw arkuszy dostepnych w danym projekcie
+
+
+Global GLOBAL_POZWALAM_NA_REAKCJE_NA_ZMIANY As Boolean
+
 Global Const G_register_sh_nm = "register"
 Global Const G_order_release_status_sh_nm = "ORDER RELEASE STATUS"
 Global Const G_cont_pnoc_sh_nm = "Contracted . PNOC"
@@ -30,7 +34,9 @@ Global Const G_config_sh_nm = "config"
 Global Const G_totals_sh_nm = "TOTALS"
 Global Const G_del_conf_sh_nm = "DELIVERY CONFIRMATION STATUS"
 Global Const G_one_pager_sh_nm = "ONE PAGER"
+
 Global Const G_NEW_ONE_PAGER_SH_NM = "NEW ONE PAGER"
+Global Const G_NEW_DEL_CONF_SH_NM = "NEW DEL CONF"
 ' ----------------------------------------------------------
 ' ----------------------------------------------------------
 Global Const G_chart1_handler_sh_nm = "CHART1_Handler"
@@ -66,7 +72,7 @@ Global Const G_BTN_TEXT_EDIT = "Edytuj"
 Global Const G_ORDER_RELEASE_STATUS_LIMIT = 8
 Global Const G_RECENT_BUILD_PLAN_CHANGES_LIMIT = 4
 Global Const G_CHART1_CONTRACTED_PNOC_LIMIT = 5
-Global Const G_OPEN_ISSUES_LIMIT = 23
+Global Const G_OPEN_ISSUES_LIMIT = 12
 
 
 

@@ -621,3 +621,111 @@ Attribute VB_Name = "VersionModule"
 ' - EXTRA: remove one item from one sheet
 ' - podczas proby importu danych z wizarda dziwnie sie pokazuje open issues nie wiadomo dlaczego
 ' --------------------------------------------------------------------------------------
+
+
+
+' --------------------------------------------------------------------------------------
+' v 0.6
+'
+' Po pierwszym fma review 2018-03-07
+' - poprawa logiki dla pus recv, it, future - NOK
+' - zrobic open issues jako element opcjonalny - NOK
+' - przygotowac sie do zmiany sekcji del conf - NOK
+
+'
+' - EXTRA: change project name! - to be implemented
+' - EXTRA: remove one item from one sheet
+' - podczas proby importu danych z wizarda dziwnie sie pokazuje open issues nie wiadomo dlaczego
+
+
+' - totalna zmiana one pager'a nowe redy
+' - RE - DESIGN DEL CONF - CRITICAL - NOK
+
+
+' 8 marca:
+' dodanie remove one item
+' dodanie szybkiej zmiany nazwy guzika z dodaj na edytuj zeby dwa razy dana sie nie pojawila
+' --------------------------------------------------------------------------------------
+
+
+' v0.61
+' --------------------------------------------------------------------------------------
+
+' dodanie funkcjonalnosci dla new del conf'a
+
+' --------------------------------------------------------------------------------------
+
+' v0.62
+' --------------------------------------------------------------------------------------
+
+' wersja przejsciowa
+' --------------------------------------------------------------------------------------
+
+
+' v0.63
+' --------------------------------------------------------------------------------------
+' - poprawa logiki dla pus recv, it, future - NOK ' ????
+' - zrobic open issues jako element opcjonalny - to be implemented
+' - przygotowac sie do zmiany sekcji del conf - form ready -to be implemented -OK
+' wizard buffer powinien dzialac juz ok - to jest mamy before after oraz after build start
+
+
+' - build start logic in del conf section - yellow and red extra fields - done?!?
+' - problem z liczeniem czystych greenow - OK
+' - remove charts - leave matrixes  OK
+' - zmiany w resp adjsuter - nie dodawalo - OK
+' - do zweryfikowania logika PNOC - patrzymy po braku DUNS? - zostawilem z wersja 0.63 stara logike
+' - open issues visible to long! = OK done.
+' - recent build plan changes check twice duplicates on one pager... - to be implemented! - or not?
+
+' --------------------------------------------------------------------------------------
+
+
+
+' v0.63
+' --------------------------------------------------------------------------------------
+' ciritcal re-build
+' issue with
+' --------------------------------------------------------------------------------------
+
+
+
+' v0.64
+' --------------------------------------------------------------------------------------
+' ciritcal re-build
+' brak respa !!! NOK - to be implemeneted
+' + braki z 0.63
+' opcja z new del conf - jest brak logiki dla obslugi del confa bez std - powinien byc:
+' red open
+' --------------------------------------------------------------------------------------
+
+
+
+' v0.65
+' --------------------------------------------------------------------------------------
+
+' find all 6p on shared X dirve ready to be implemented!
+' --------------------------------------------------------------------------------------
+
+
+
+' v0.66
+' --------------------------------------------------------------------------------------
+
+' dodatkowe Application.EnableEvents dla new del conf - wciaz pojawiaja sie problemy
+' --------------------------------------------------------------------------------------
+
+
+
+' v0.67
+' --------------------------------------------------------------------------------------
+
+' srogi fix na new del conf pod out of stack!!!
+' jest blad jeszcze
+' --------------------------------------------------------------------------------------
+
+' v0.68
+' --------------------------------------------------------------------------------------
+' fix fix na new del conf - wylaczanie eventow na dodawaniu, edytowaniu
+' i importowaniu z wizard buffer
+' --------------------------------------------------------------------------------------

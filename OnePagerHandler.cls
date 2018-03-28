@@ -104,7 +104,7 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
 
     ' SIXP.LoadingFormModule -> show zrobiony juz w poprzednim lejerze
 
-    Dim sh As Worksheet, r As Range, rf As Range, pD As Range
+    Dim Sh As Worksheet, r As Range, rf As Range, pD As Range
     
     inicjuj_power_pointa_jesli_taka_jest_konfiguracja e
 
@@ -119,8 +119,8 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
         ' cialo generowania iterowanego one pagera
         ' =============================================
         For x = LBound(pcs) To UBound(pcs)
-            Set sh = pcs(x)
-            sh.Activate
+            Set Sh = pcs(x)
+            Sh.Activate
             SIXP.LoadingFormModule.incLoadingForm
             
             ' to jest najprostsza logika dzialania jednak to nie jest tak chocby
@@ -130,7 +130,7 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
             
             
             ' patrzymy tylko w main == x == 1
-            If x = 1 Then Set r = link_raportu.znajdz_siebie_w_arkuszu(sh)
+            If x = 1 Then Set r = link_raportu.znajdz_siebie_w_arkuszu(Sh)
             
             If Not r Is Nothing Then
                 ' r.Select
@@ -141,21 +141,21 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
                 ' --------------------------------------------------------------------------
                 
                 If x = SIXP.e_pcs_order_release_status Then
-                    wypelnienie_pcs_order_release_status rf, pD, sh, link_raportu
+                    wypelnienie_pcs_order_release_status rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_pnoc Then
-                    wypelnienie_pcs_pnoc rf, pD, sh, link_raportu
+                    wypelnienie_pcs_pnoc rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_osea Then
-                    wypelnienie_pcs_osea rf, pD, sh, link_raportu
+                    wypelnienie_pcs_osea rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_recent_build_plan_changes Then
-                    wypelnienie_pcs_recent_build_plan_changes rf, pD, sh, link_raportu
+                    wypelnienie_pcs_recent_build_plan_changes rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_totals Then
-                    wypelnienie_pcs_totals rf, pD, sh, link_raportu
+                    wypelnienie_pcs_totals rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_delivery_confirmation Then
-                    wypelnienie_pcs_del_conf rf, pD, sh, link_raportu
+                    wypelnienie_pcs_del_conf rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_resp Then
-                    wypelnienie_pcs_resp rf, pD, sh, link_raportu
+                    wypelnienie_pcs_resp rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_open_issues Then
-                    wypelnienie_pcs_open_issues rf, pD, sh, link_raportu
+                    wypelnienie_pcs_open_issues rf, pD, Sh, link_raportu
                 End If
                 
                 
@@ -385,7 +385,24 @@ End Function
 
 
 Private Function assign_qty_to_open(mtl As T_Link) As Long
-    assign_qty_to_open = CLng(common_assign_del_conf_qty(mtl, e_del_conf_open))
+    ' assign_qty_to_open = CLng(common_assign_del_conf_qty(mtl, e_del_conf_open))
+    
+    
+    tmp = 0
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_alt))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_alttwomrd))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_mrd))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_oncostmrd))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_salttwomrd))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_smrd))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_soncostmrd))
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_yellow_open))
+    
+    tmp = tmp + CLng(common_assign_del_conf_qty(mtl, e_del_conf_open))
+    
+    
+    
+    assign_qty_to_open = tmp
 End Function
 
 Private Function assign_qty_to_pot_itdc(mtl As T_Link) As Long
@@ -676,7 +693,7 @@ Private Function przelicz(slideWidth, imgWidth) As Integer
     przelicz = Int((slideWidth - imgWidth) / 2)
 End Function
 
-Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' specjalne zachowanie dla order release status
     ' tworzymy tabele nie tylko dla wybranego linku ale rowniez dla innych elementow
     ' dla innych faz tego samego projektu - co nieco komplikuje sprawe - jednak nie jest
@@ -693,7 +710,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As
     
     Dim orders_coll(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     xx = 0
     Do
@@ -802,7 +819,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' te dane sa pod wykres wraz z danymi historycznymi
     ' - zatem patrzymy na ten sam projekt z perspektywy
     ' roznych CW
@@ -814,7 +831,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl A
     
     Dim fst_chart(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -916,7 +933,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -925,7 +942,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl A
     
     Dim sec_chart(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -1016,7 +1033,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     
@@ -1026,7 +1043,7 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, 
     
     Dim recent_bp_changes(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     
     ' 1.
@@ -1155,7 +1172,7 @@ Private Function isThereAnyContent(rf As Range) As Boolean
     
 End Function
 
-Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -1164,7 +1181,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl
     
     Dim third_chart(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -1277,7 +1294,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     'Dim pd As Range, sh As Worksheet
@@ -1396,7 +1413,7 @@ Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, sh As Worksheet, 
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     Dim ssh As Worksheet
@@ -1458,14 +1475,14 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     
     common_find_resp = ""
     
-    Dim sh As Worksheet, r As Range
-    Set sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
+    Dim Sh As Worksheet, r As Range
+    Set Sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
     
     
-    If sh.Range("A2") <> "" Then
-        Set r = sh.Range("A1").End(xlDown)
+    If Sh.Range("A2") <> "" Then
+        Set r = Sh.Range("A1").End(xlDown)
     Else
-        Set r = sh.Range("A2")
+        Set r = Sh.Range("A2")
     End If
     
     Do
@@ -1492,7 +1509,7 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     Loop Until r.Row = 1
 End Function
 
-Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
 
     ' ------------------------------------------------------------------------------------------------
     
@@ -1503,7 +1520,7 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Workshee
     
     Dim open_issues_arr(0 To 512) As Range
     
-    Set rf = sh.Cells(2, 1)
+    Set rf = Sh.Cells(2, 1)
     
     
     ' 1.
@@ -1527,8 +1544,11 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Workshee
                     ' dzieki temu ze wykorzystujemy zapis yyyycw
                     ' mozemy korzystac ze zwyklej arytmetyki >< :)
                     If CLng(rf.Offset(0, 3)) <= CLng(tl.cw) Then
-                        Set open_issues_arr(xx) = rf
-                        xx = xx + 1
+                    
+                        If CLng(rf.Parent.Cells(rf.Row, SIXP.e_open_issues_visible).Value) = 1 Then
+                            Set open_issues_arr(xx) = rf
+                            xx = xx + 1
+                        End If
                     End If
                 End If
             End If

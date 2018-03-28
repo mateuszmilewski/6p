@@ -19,16 +19,7 @@ Attribute VB_Name = "OnePagerModule"
 
 Public Sub generate_one_pager(ictrl As IRibbonControl)
     clear_one_pager
-    skonfiguruj_form_generowania_one_pagera (Not SIXP.G_NEW_ONE_PAGER_FLAG)
-    
-    FormOnePager.Show vbModeless
-    
-End Sub
-
-
-Public Sub generate_new_one_pager(ictrl As IRibbonControl)
-    clear_one_pager
-    skonfiguruj_form_generowania_one_pagera SIXP.G_NEW_ONE_PAGER_FLAG
+    skonfiguruj_form_generowania_one_pagera
     
     FormOnePager.Show vbModeless
     
@@ -139,7 +130,7 @@ Public Sub clear_one_pager()
     End With
 End Sub
 
-Public Sub skonfiguruj_form_generowania_one_pagera(Optional flagaDlaNowegoOnePagera As Boolean)
+Public Sub skonfiguruj_form_generowania_one_pagera()
     
     
     ' -----------------------------------------------------------------------
@@ -219,7 +210,6 @@ Public Sub skonfiguruj_form_generowania_one_pagera(Optional flagaDlaNowegoOnePag
     End With
     
     FormOnePager.czy_uruchamiamy_eventy = True
-    FormOnePager.newOnePager = flagaDlaNowegoOnePagera
     
     '
     ''

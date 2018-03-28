@@ -229,10 +229,12 @@ Public Function wypelnij_slownik_dunsami_jako_kluczami_pod_open_issues_z_mass_im
                 If dunses.Exists(r.Offset(0, SIXP.duns - 1)) Then
                 
                     Set item = dunses(r.Offset(0, SIXP.duns - 1))
-                    item.cmnt = item.cmnt & Trim(r.Offset(0, SIXP.Comments - 1)) & Chr(10) & Chr(10)
+                    item.cmnt = item.cmnt & Trim(r.Offset(0, SIXP.Comments - 1))
                     item.pns.Add CStr(r.Offset(0, SIXP.pn - 1))
                     
-                    item.part_slash_supplier = Trim(r.Offset(0, SIXP.Supplier_Name - 1))
+                    item.part_slash_supplier = Trim(r.Offset(0, SIXP.pn - 1)) & " / " & item.part_slash_supplier
+                    
+                    item.status = SIXP.GlobalCrossTriangleCircleModule.putTriangle
                     
                     
                 Else
@@ -241,19 +243,21 @@ Public Function wypelnij_slownik_dunsami_jako_kluczami_pod_open_issues_z_mass_im
                     
                     ' trzeba budowac caly obiekt
                     item.duns = Trim(r.Offset(0, SIXP.duns - 1))
-                    item.cmnt = Trim(r.Offset(0, SIXP.Comments - 1)) & Chr(10) & Chr(10)
+                    item.cmnt = Trim(r.Offset(0, SIXP.Comments - 1))
                     
                     If Len(item.cmnt) > 10 Then
                         item.name = Trim(Left(item.cmnt, 10))
+                        
                     Else
                         item.name = item.cmnt
                     End If
                     
-                    item.part_slash_supplier = Trim(r.Offset(0, SIXP.pn - 1))
+                    ' item.part_slash_supplier = Trim(r.Offset(0, SIXP.pn - 1)) & " / " & Trim(r.Offset(0, SIXP.Supplier_Name - 1))
+                    item.part_slash_supplier = Trim(r.Offset(0, SIXP.pn - 1)) & " / " & Trim(r.Offset(0, SIXP.Supplier_Name - 1))
                     Set item.pns = New Collection
                     item.pns.Add CStr(r.Offset(0, SIXP.pn - 1))
                     On Error Resume Next
-                    item.status = SIXP.GlobalCrossTriangleCircleModule.putCross
+                    item.status = SIXP.GlobalCrossTriangleCircleModule.putTriangle
                     item.widoczny = True
                     
                     
@@ -289,7 +293,7 @@ Private Function dc_is_red_or_yellow(details_sh, r As Range) As Boolean
     
     
     
-    If (Trim(r) = "") Or (Trim(r) Like "*OPEN*") Or (Trim(r) Like "*POT*ITDC*") Or (Trim(r) Like "*N/A*") Then
+    If (Trim(r) = "") Or (Trim(r) Like "*OPEN*") Or (Trim(r) Like "*POT*ITDC*") Then
         dc_is_red_or_yellow = True
     ElseIf Trim(r) Like "*Y*CW*" Then
         ' sprawdz, czy to jest opozniony

@@ -180,14 +180,14 @@ Public Sub gotoThisWorkbookMainA1()
 End Sub
 
 
-Public Function checkIfFirstFourFieldsProjektPlantCodeFazaCW(ByRef sh As Worksheet) As Boolean
+Public Function checkIfFirstFourFieldsProjektPlantCodeFazaCW(ByRef Sh As Worksheet) As Boolean
 
     checkIfFirstFourFieldsProjektPlantCodeFazaCW = False
     
-    If sh.Cells(1, 1).Value = "Projekt" Then
-        If sh.Cells(1, 2).Value = "Plant Code" Then
-            If sh.Cells(1, 3).Value = "Faza" Then
-                If sh.Cells(1, 4).Value = "CW" Then
+    If Sh.Cells(1, 1).Value = "Projekt" Then
+        If Sh.Cells(1, 2).Value = "Plant Code" Then
+            If Sh.Cells(1, 3).Value = "Faza" Then
+                If Sh.Cells(1, 4).Value = "CW" Then
                         
                         checkIfFirstFourFieldsProjektPlantCodeFazaCW = True
                             
