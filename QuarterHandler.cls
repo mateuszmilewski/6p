@@ -30,13 +30,13 @@ Private d As Dictionary
 Private tl As T_Link
 Private l As Linker
 Private r As Range
-Private sh As Worksheet
+Private Sh As Worksheet
 
 Private nazwaPliku As String
 
 
 Public Function getQuarterMainTable() As Worksheet
-    Set getQuarterMainTable = sh
+    Set getQuarterMainTable = Sh
 End Function
 
 Public Function zrobKlucz(strProj, strPlt, strFaza, strCW)
@@ -48,15 +48,15 @@ End Function
 Public Sub fillDictionaryWithTLinks(ByRef msh As Worksheet)
 
 
-    Set sh = msh
+    Set Sh = msh
 
-    Set r = sh.Cells(2, SIXP.e_qmt_project)
+    Set r = Sh.Cells(2, SIXP.e_qmt_project)
     
     If Trim(r) <> "" Then
     
     Do
         
-        klucz = zrobKlucz(r.Value, sh.Cells(r.Row, SIXP.e_qmt_Plant).Value, sh.Cells(r.Row, SIXP.e_qmt_PHASE).Value, sh.Cells(r.Row, SIXP.e_qmt_cw).Value)
+        klucz = zrobKlucz(r.Value, Sh.Cells(r.Row, SIXP.e_qmt_Plant).Value, Sh.Cells(r.Row, SIXP.e_qmt_PHASE).Value, Sh.Cells(r.Row, SIXP.e_qmt_cw).Value)
         
         If Not d.Exists(klucz) Then
             d.Add klucz, tl
@@ -200,7 +200,7 @@ Private Sub Class_Initialize()
     
     Set d = New Dictionary
     Set l = New Linker
-    Set sh = Nothing
+    Set Sh = Nothing
     
     nazwaPliku = ""
     
@@ -222,9 +222,11 @@ End Function
 Private Sub Class_Terminate()
     Set d = Nothing
     Set l = Nothing
-    Set sh = Nothing
+    Set Sh = Nothing
     
     SIXP.LoadingFormModule.increaseLoadingFormStatus 50
+    
+    MsgBox "import Quarter: ready!"
     
 End Sub
 
@@ -556,10 +558,10 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
     End If
 End Sub
 
-Private Sub cellsWithLinkProjPltPhaseCW(main_w, w, sh As Worksheet, mt As Worksheet)
+Private Sub cellsWithLinkProjPltPhaseCW(main_w, w, Sh As Worksheet, mt As Worksheet)
 
     SIXP.LoadingFormModule.incLoadingForm
-    With sh
+    With Sh
         .Cells(main_w, SIXP.e_link_project).Value = mt.Cells(w, SIXP.e_qmt_project).Value
         .Cells(main_w, SIXP.e_link_plt).Value = mt.Cells(w, SIXP.e_qmt_Plant).Value
         .Cells(main_w, SIXP.e_link_faza).Value = mt.Cells(w, SIXP.e_qmt_PHASE).Value

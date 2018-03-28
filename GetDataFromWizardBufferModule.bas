@@ -62,10 +62,10 @@ Public Function get_value(ptrn As String, r As Range) As Long
 End Function
 
 Public Function get_after_before_mrd(keyword, rl As Range, e As E_DEL_CONF_SPECIAL) As String
-    get_after_before_mrd = ""
+    get_after_before_mrd = "0"
     
     lbl_str = Trim(Replace(CStr(ThisWorkbook.Sheets(SIXP.G_DEL_CONF_SPECIAL_SH_NM).Cells(e, 1)), "{MRD}", ""))
-    lbl_str = Trim(Replace(CStr(lbl_str), "/", ""))
+    ' lbl_str = Trim(Replace(CStr(lbl_str), "/", ""))
     
     If Trim(lbl_str) = "" Then
         lbl_str = "MRD"
@@ -77,7 +77,7 @@ Public Function get_after_before_mrd(keyword, rl As Range, e As E_DEL_CONF_SPECI
     
     Do
     
-        If CStr(tmp_r) Like "*" & CStr(keyword) & "*" & CStr(lbl_str) & "*" Then
+        If CStr(tmp_r) Like "*" & CStr(keyword) & " " & CStr(lbl_str) & "" Then
         
             get_after_before_mrd = CStr(tmp_r.Offset(1, 0))
             Exit Do
@@ -102,5 +102,7 @@ Public Function get_del_conf_string_without_mrd(rl As Range, e As E_DEL_CONF_SPE
             get_del_conf_string_without_mrd = CStr(tmp_r.Offset(1, 0))
             Exit Do
         End If
-    Loop Until Trim(r) = ""
+        
+        Set tmp_r = tmp_r.Offset(0, 1)
+    Loop Until Trim(tmp_r) = ""
 End Function

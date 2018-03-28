@@ -216,20 +216,20 @@ End Sub
 Private Function checkIfYouCanMigrateData(wrk As Workbook) As Boolean
     checkIfYouCanMigrateData = False
     
-    Dim sh As Worksheet
-    Set sh = Nothing
+    Dim Sh As Worksheet
+    Set Sh = Nothing
     
     checkIfYouCanMigrateData = CBool( _
-        checkOneSheet(wrk, SIXP.G_main_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_order_release_status_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_recent_build_plan_changes_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_cont_pnoc_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_osea_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_totals_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_resp_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_del_conf_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_open_issues_sh_nm, sh) _
-        And checkOneSheet(wrk, SIXP.G_xq_sh_nm, sh) _
+        checkOneSheet(wrk, SIXP.G_main_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_order_release_status_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_recent_build_plan_changes_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_cont_pnoc_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_osea_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_totals_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_resp_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_del_conf_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_open_issues_sh_nm, Sh) _
+        And checkOneSheet(wrk, SIXP.G_xq_sh_nm, Sh) _
         )
     
 End Function
@@ -578,7 +578,7 @@ Private Sub removeDuplicatesInDest(dsh As Worksheet)
     Application.DisplayAlerts = True
 End Sub
 
-Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(sh As Worksheet, topLeft As Range, topRight As Range) As Range
+Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(Sh As Worksheet, topLeft As Range, topRight As Range) As Range
 
     Set zdefiniujKwadraciakaDoSkopiowaniaXD = Nothing
     
@@ -586,13 +586,13 @@ Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(sh As Worksheet, topLeft As
     
     Dim bottomRight As Range
     If topLeft.Offset(1, 0) <> "" Then
-        Set bottomRight = sh.Cells(topLeft.End(xlDown).Row, topRight.Column)
+        Set bottomRight = Sh.Cells(topLeft.End(xlDown).Row, topRight.Column)
     Else
-        Set bottomRight = sh.Cells(topLeft.Row, topRight.Column)
+        Set bottomRight = Sh.Cells(topLeft.Row, topRight.Column)
     End If
     
     
-    Set zdefiniujKwadraciakaDoSkopiowaniaXD = sh.Range(topLeft, bottomRight)
+    Set zdefiniujKwadraciakaDoSkopiowaniaXD = Sh.Range(topLeft, bottomRight)
     
     SIXP.LoadingFormModule.incLoadingForm
     
