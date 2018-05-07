@@ -345,6 +345,53 @@ Private Function sprawdz_czy_open_jest_zolte_czy_moze_jest_czerwone(b As Workshe
     
 End Function
 
+Private Sub UserForm_Activate()
+
+    If eh Is Nothing Then
+        
+        Set eh = New NewDelConfEventHandler
+        
+        
+        Dim tbx As Object
+        Dim ctbx As MSForms.TextBox
+        
+        i = 1
+        For Each tbx In Me.Controls
+        
+            Set xtbx = Nothing
+        
+            If tbx.name Like "*TextBox*" Then
+            
+                If tbx.name Like "TextBoxG*" Or tbx.name Like "TextBoxY*" Or tbx.name Like "TextBoxR*" Then
+                    tbx.Value = 0
+                End If
+                
+                Set ctbx = tbx
+                Set ea = eh.adapterArray.item(i)
+                Set ea.tbx = ctbx
+                
+                
+                i = i + 1
+            End If
+        Next tbx
+        
+        
+        ' take data from H1
+        TextBoxTotalFromH1.Value = CStr(ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Range("h1").Value)
+    
+    End If
+End Sub
+
+Private Sub UserForm_Deactivate()
+    Set eh = Nothing
+    Set ea = Nothing
+End Sub
+
+Private Sub UserForm_Error(ByVal Number As Integer, ByVal Description As MSForms.ReturnString, ByVal SCode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, ByVal CancelDisplay As MSForms.ReturnBoolean)
+    Set eh = Nothing
+    Set ea = Nothing
+End Sub
+
 Private Sub UserForm_Initialize()
     
     If eh Is Nothing Then

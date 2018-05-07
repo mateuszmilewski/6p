@@ -31,7 +31,7 @@ Private my_linker As Linker
 
 
 Private m As Worksheet
-Private pcs(1 To 9) As Worksheet
+Private pcs(1 To 10) As Worksheet
 
 Private one_pager_sheet As Worksheet
 
@@ -54,6 +54,8 @@ Private Sub Class_Initialize()
     
     ' procedura z moduly (public sub!)
     clear_one_pager
+    
+    clear_new_one_pager
     
     
     ' heading
@@ -79,6 +81,9 @@ Private Sub Class_Initialize()
     ' second page
     ' 9 == open issues enum
     Set pcs(9) = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
+    
+    ' 10 == xq
+    Set pcs(10) = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
     
     
     Set one_pager_sheet = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm)
@@ -143,7 +148,7 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
                 If x = SIXP.e_pcs_order_release_status Then
                     wypelnienie_pcs_order_release_status rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_pnoc Then
-                    wypelnienie_pcs_pnoc rf, pD, Sh, link_raportu
+                    ' wypelnienie_pcs_pnoc rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_osea Then
                     wypelnienie_pcs_osea rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_recent_build_plan_changes Then
@@ -156,6 +161,8 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
                     wypelnienie_pcs_resp rf, pD, Sh, link_raportu
                 ElseIf x = SIXP.e_pcs_open_issues Then
                     wypelnienie_pcs_open_issues rf, pD, Sh, link_raportu
+                ElseIf x = SIXP.e_pcs_xq Then
+                    wypelnienie_pcs_xq rf, pD, Sh, link_raportu
                 End If
                 
                 
@@ -310,6 +317,12 @@ Private Function assign_qty_to_mrd_alt_after_yellow(mtl As T_Link) As Long
     assign_qty_to_mrd_alt_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_alt))
 End Function
 
+Private Function assign_qty_to_mrd_alt_after_red(mtl As T_Link) As Long
+    assign_qty_to_mrd_alt_after_red = CLng(common_assign_del_conf_qty(mtl, e_del_conf_red_after_alt))
+End Function
+
+
+
 Private Function assign_qty_to_mrd_staggered_for_green(mtl As T_Link) As Long
     assign_qty_to_mrd_staggered_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_smrd))
 End Function
@@ -344,6 +357,9 @@ Private Function assign_qty_to_mrd_staggered_oncost_after_yellow(mtl As T_Link) 
 End Function
 
 
+
+
+
 Private Function assign_qty_to_mrd_oncost_for_green(mtl As T_Link) As Long
     assign_qty_to_mrd_oncost_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_oncostmrd))
 End Function
@@ -362,6 +378,8 @@ Private Function assign_qty_to_mrd_alt_two_after_yellow(mtl As T_Link) As Long
 End Function
 
 
+
+
 Private Function assign_qty_to_mrd_staggered_alt_two_for_green(mtl As T_Link) As Long
     assign_qty_to_mrd_staggered_alt_two_for_green = CLng(common_assign_del_conf_qty(mtl, e_del_conf_for_salttwomrd))
 End Function
@@ -369,7 +387,7 @@ End Function
 Private Function assign_qty_to_mrd_staggered_alt_two_after_yellow(mtl As T_Link) As Long
     assign_qty_to_mrd_staggered_alt_two_after_yellow = CLng(common_assign_del_conf_qty(mtl, e_del_conf_after_salttwomrd))
 End Function
-' --------------------------------------------------------------------------------------------------------------------
+
 
 
 
@@ -1153,6 +1171,91 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, 
     ' ======================================================================================================
     
     ' ------------------------------------------------------------------------------------------------
+End Sub
+
+Private Sub wypelnienie_pcs_xq(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+    ' ------------------------------------------------------------------------------------------------
+    
+
+
+    Dim flagFound As Boolean
+    flagFound = False
+    
+    Dim ppapGateDate(0 To 512) As Range
+    
+    Set rf = Sh.Cells(2, 1)
+    
+    
+    ' 1.
+    xx = 0
+    Do
+        If Trim(rf) = "" Then
+            Exit Do
+        End If
+        
+        
+        ' 1 kolumna proj
+        If Trim(rf) = Trim(tl.project) Then
+            ' 2 kolumna plt order release status
+            If Trim(rf.Offset(0, 1)) = Trim(tl.plt) Then
+            
+                ' 3 kolumna faza
+                If Trim(rf.Offset(0, 2)) = Trim(tl.faza) Then
+            
+                    If CLng(rf.Offset(0, 3)) = CLng(tl.cw) Then
+                    
+                        If Trim(rf) <> "" Then
+                            Set ppapGateDate(xx) = rf
+                            flagFound = True
+                            
+                            xx = xx + 1
+                        End If
+                    End If
+                End If
+            End If
+            
+        End If
+        
+        Set rf = rf.Offset(1, 0)
+    Loop Until Trim(rf) = ""
+    
+    
+    ' 2.
+    bubble_sort ppapGateDate, 3, E_DESCENDING
+
+    
+    Set pD = ThisWorkbook.Sheets(SIXP.G_one_pager_sh_nm).Range("G23")
+    pD.Value = "#" ' tylko w tym przypadku tak to wyglda
+    
+    'If flagFound Then pD.Value = CStr(ppapGateDate.Value)
+    'If Not flagFound Then pD.Value = "#"
+    
+    For xxx = LBound(ppapGateDate) To UBound(ppapGateDate)
+    
+    
+        Set rf = ppapGateDate(xxx)
+        
+        If Not rf Is Nothing Then
+        
+            ' Debug.Print rf.Offset(0, 3)
+        
+        
+            If pD.Value = "#" Then
+            
+                pD.Value = rf.Offset(0, SIXP.e_xq_ppap_gate - 1)
+                
+                    
+            ElseIf pD.Value <> "" Then
+                Exit For
+            End If
+    
+            
+        Else
+            Exit For
+        End If
+            
+    Next xxx
+    
 End Sub
 
 
