@@ -91,6 +91,7 @@ Public Enum E_PCS_ORDER
     e_pcs_delivery_confirmation
     e_pcs_resp
     e_pcs_open_issues
+    e_pcs_xq
 End Enum
 
 Public Enum E_LINK_ORDER

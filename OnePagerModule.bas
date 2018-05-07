@@ -130,6 +130,51 @@ Public Sub clear_one_pager()
     End With
 End Sub
 
+
+Public Sub clear_new_one_pager()
+    
+'    'With ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM)
+'
+'    '
+'    '
+'    '    ' Q ORS
+'    '    .Range("A5:H12").Value = ""
+'    '
+'    '    ' Q RBPC
+'    '    .Range("J5:N11").Value = ""
+'    '
+'    '    ' fma and osea review
+'    '    .Range("A16:F16").Value = ""
+'    '
+'    '    ' pus section
+'    '    .Range("E17:E20").Value = ""
+'    '
+'    '    ' ppap section
+'    '    .Range("E23:F23").Value = ""
+'    '
+'    '    ' ppap gate
+'    '    .Range("G23").Value = "#"
+'    '
+'    '
+'    '    ' osea section
+'    '    .Range("A26:H26").Value = ""
+'    '
+'    '    ' resp
+'    '    .Range("A29:H29").Value = ""
+'    '
+'    '
+'    '    ' del conf
+'    '    .Range("K16:M28").Value = ""
+'    '
+'    '
+'    '
+'    '
+'    End With
+    
+    
+
+End Sub
+
 Public Sub skonfiguruj_form_generowania_one_pagera()
     
     
