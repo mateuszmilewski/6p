@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormOrderReleaseStatus 
    Caption         =   "Order Release Status"
-   ClientHeight    =   6240
+   ClientHeight    =   6300
    ClientLeft      =   45
    ClientTop       =   375
-   ClientWidth     =   4545
+   ClientWidth     =   4560
    OleObjectBlob   =   "FormOrderReleaseStatus.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -32,6 +32,11 @@ Attribute VB_Exposed = False
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+
+Private Sub BtnCopy_Click()
+
+    copyOneItemFromDifferentRecord Me.name
+End Sub
 
 Private Sub BtnGoBack_Click()
     Hide

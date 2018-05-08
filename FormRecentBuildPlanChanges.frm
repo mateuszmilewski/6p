@@ -43,6 +43,12 @@ Private Sub BtnClear_Click()
     End With
 End Sub
 
+Private Sub BtnCopy_Click()
+
+    ' pubic sub from global foo module
+    copyOneItemFromDifferentRecord CStr(Me.name)
+End Sub
+
 ' DTPICKERS!
 ' ------------------------------------------------------------------------------------------------------------------
 ' ------------------------------------------------------------------------------------------------------------------

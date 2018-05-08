@@ -19,7 +19,7 @@ Private Sub Class_Initialize()
 
 
     Dim x As Integer
-    For x = 1 To 128
+    For x = 1 To 32
         Set ea = New EventAdapter
         adapterArray.Add ea
     Next x
