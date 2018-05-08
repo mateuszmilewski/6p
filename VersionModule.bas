@@ -729,3 +729,28 @@ Attribute VB_Name = "VersionModule"
 ' fix fix na new del conf - wylaczanie eventow na dodawaniu, edytowaniu
 ' i importowaniu z wizard buffer
 ' --------------------------------------------------------------------------------------
+
+
+
+' v0.70
+' --------------------------------------------------------------------------------------
+' przeskok od razu do nowej wersji z racji zupelnie nowego layoutu na one pager
+' gorne cwiartki pozostaja bez zmian! (na szczescie) - bo to by sie nigdy nie
+' skonczylo...
+'
+' wychodzi na to, ze na fma review nie jest juz potrzebny przebieg contracted vs pnoc
+' plus ograniczenie ilosci danych od osea
+' brak pola ordered w totalach
+' nowe pole PUS pending - liczymy na podstawie ilosci PUS + tego co zostalo w totalu
+' przesuniecie ramki resp - w inne miejsce jednak ilosci (osoby) pozostaja
+
+' schowanie nareszczie starego guzika del conf
+' --------------------------------------------------------------------------------------
+
+
+' v0.71
+' --------------------------------------------------------------------------------------
+' copy one item logic
+' adjustments for new del conf
+' preparation for change on red del conf params after not equal or after - to be fixed
+' --------------------------------------------------------------------------------------

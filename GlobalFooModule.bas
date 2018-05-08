@@ -180,14 +180,14 @@ Public Sub gotoThisWorkbookMainA1()
 End Sub
 
 
-Public Function checkIfFirstFourFieldsProjektPlantCodeFazaCW(ByRef Sh As Worksheet) As Boolean
+Public Function checkIfFirstFourFieldsProjektPlantCodeFazaCW(ByRef sh As Worksheet) As Boolean
 
     checkIfFirstFourFieldsProjektPlantCodeFazaCW = False
     
-    If Sh.Cells(1, 1).Value = "Projekt" Then
-        If Sh.Cells(1, 2).Value = "Plant Code" Then
-            If Sh.Cells(1, 3).Value = "Faza" Then
-                If Sh.Cells(1, 4).Value = "CW" Then
+    If sh.Cells(1, 1).Value = "Projekt" Then
+        If sh.Cells(1, 2).Value = "Plant Code" Then
+            If sh.Cells(1, 3).Value = "Faza" Then
+                If sh.Cells(1, 4).Value = "CW" Then
                         
                         checkIfFirstFourFieldsProjektPlantCodeFazaCW = True
                             
@@ -195,4 +195,87 @@ Public Function checkIfFirstFourFieldsProjektPlantCodeFazaCW(ByRef Sh As Workshe
             End If
         End If
     End If
+End Function
+
+
+
+
+
+Public Sub copyOneItemFromDifferentRecord(frmName As String)
+    
+    Dim r As Range
+    Set r = ActiveCell
+    
+    ' MsgBox r.Address
+    G_ONE_ITEM_LOGIC_WAITING_FOR_SELECTION_CHANGE = True
+    
+    FormGetOneItem.LabelClient.Caption = CStr(frmName)
+    FormGetOneItem.Show vbModeless
+End Sub
+
+
+Public Sub tryToGetDataFromSelectionToForm(r As Range, sh As Worksheet)
+
+
+    ' r - selection
+    ' sh - worksheet with data
+
+    ' a few cells in this range connected with searched dataset
+    Dim rr As Range
+    
+    Dim l As T_Link
+    Set l = New T_Link
+    l.zrob_mnie_z_range (r.Parent.Cells(r.Row, 1))
+    Set rr = l.znajdz_siebie_w_arkuszu(sh)
+
+    FormGetOneItem.LabelData.Caption = CStr(fillOneItemFromSelection(rr))
+
+End Sub
+
+Private Function fillOneItemFromSelection(r As Range) As String
+
+
+    ' arg r is on first column in dedicated worksheet
+
+    fillOneItemFromSelection = ""
+    
+    If r.Parent.name = SIXP.G_order_release_status_sh_nm Then
+    
+        With FormGetOneItem
+            .ors_mrd = r.Offset(0, SIXP.e_order_release_mrd - 1).Value
+            .ors_bom_freeze = r.Offset(0, SIXP.e_order_release_bom_freeze - 1).Value
+            .ors_build = r.Offset(0, SIXP.e_order_release_build - 1).Value
+            .ors_no_of_veh = r.Offset(0, SIXP.e_order_release_no_of_veh - 1).Value
+            .ors_orders_due = r.Offset(0, SIXP.e_order_release_orders_due - 1).Value
+            .ors_released = r.Offset(0, SIXP.e_order_release_released - 1).Value
+            .ors_weeks_delay = r.Offset(0, SIXP.e_order_release_weeks_delay - 1).Value
+            
+            
+            .clear_rbpc
+            
+            
+            fillOneItemFromSelection = "data from " & SIXP.G_order_release_status_sh_nm & " is now stored!"
+        End With
+    
+    ElseIf r.Parent.name = SIXP.G_recent_build_plan_changes_sh_nm Then
+    
+    
+        With FormGetOneItem
+        
+        
+            .rbpc_comment = r.Offset(0, SIXP.e_recent_bp_ch_comment - 1).Value
+            .rbpc_num_of_veh = r.Offset(0, SIXP.e_recent_bp_ch_no_of_veh - 1).Value
+            .rbpc_order_release_changes = r.Offset(0, SIXP.e_recent_bp_ch_order_release_ch - 1).Value
+            .rbpc_tbw = r.Offset(0, SIXP.e_recent_bp_ch_tbw - 1).Value
+            
+            
+            .clear_ors
+            
+            fillOneItemFromSelection = "data from " & SIXP.G_recent_build_plan_changes_sh_nm & " is now stored!"
+        End With
+    End If
+    
+
+    
+        
 End Function

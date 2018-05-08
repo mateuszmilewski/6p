@@ -22,9 +22,12 @@ Private Sub tbx_Change()
     ' Debug.Print "tbx changed! - " & tbx.name & ", " & tbx.Value
     If GLOBAL_POZWALAM_NA_REAKCJE_NA_ZMIANY Then
     
-        If tbx.name Like "TextBoxG*" Then recalc_sums "G"
-        If tbx.name Like "TextBoxY*" Then recalc_sums "Y"
-        If tbx.name Like "TextBoxR*" Then recalc_sums "R"
+        If Trim(tbx.Value) <> "" Then
+    
+            If tbx.name Like "TextBoxG*" Then recalc_sums "G"
+            If tbx.name Like "TextBoxY*" Then recalc_sums "Y"
+            If tbx.name Like "TextBoxR*" Then recalc_sums "R"
+        End If
     End If
 End Sub
 
