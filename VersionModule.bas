@@ -754,3 +754,105 @@ Attribute VB_Name = "VersionModule"
 ' adjustments for new del conf
 ' preparation for change on red del conf params after not equal or after - to be fixed
 ' --------------------------------------------------------------------------------------
+
+
+' v0.72
+' --------------------------------------------------------------------------------------
+' minor change on formula for pus pending
+' --------------------------------------------------------------------------------------
+
+
+' v0.73
+' --------------------------------------------------------------------------------------
+' PPAP Gate - can be YYYYCW and date as well - dynamic option
+' --------------------------------------------------------------------------------------
+
+
+' v0.74
+' --------------------------------------------------------------------------------------
+' copy all 6P - big come back
+' --------------------------------------------------------------------------------------
+
+
+' v0.75
+' --------------------------------------------------------------------------------------
+' 1. before copy from external 6p clear filter from curr worksheet
+' 2. add button when generating one pager but without generating one pager
+' instead adding data into seperate table as one
+' --------------------------------------------------------------------------------------
+
+
+' v0.76
+' --------------------------------------------------------------------------------------
+' new columns in new table + ajdustments with formatting
+' final fix on deleting empty rows from bottom - was wrong with 2^10 = 1024 issue
+' --------------------------------------------------------------------------------------
+
+
+' v0.77
+' --------------------------------------------------------------------------------------
+' next new columns in new table 2019-02-17
+' seriously now attempting to have stable rep for weekly review
+' kluczowa zmiana generowania raportu - pozbylem sie forma do generowania raportu
+' config bedzie teraz z poziomu arkusza main, poniewaz sam stary one pager form
+' rozpoczal nieoczekiwane dzialanie...
+' --------------------------------------------------------------------------------------
+
+
+' v0.78
+' --------------------------------------------------------------------------------------
+' re order kolumn + comments on new table
+' --------------------------------------------------------------------------------------
+
+
+' v0.8
+' --------------------------------------------------------------------------------------
+' big validation time for new table proposal layout
+' new classes: Validator ( main tree foo for checking )
+' and ValidatorItem ( 2 public fields: frmFld and callback as string )
+' --------------------------------------------------------------------------------------
+
+
+' v0.81
+' --------------------------------------------------------------------------------------
+' TextBoxHandler class fo new Table report
+' --------------------------------------------------------------------------------------
+
+
+' v0.82
+' --------------------------------------------------------------------------------------
+' resp section not taken if project is empty hmmm... to be solved
+' --------------------------------------------------------------------------------------
+
+
+
+' v0.83
+' --------------------------------------------------------------------------------------
+' failure on one pager run - backup save here
+' --------------------------------------------------------------------------------------
+
+
+' v0.83
+' --------------------------------------------------------------------------------------
+' RECENT BUILD PLAN CHANGES small change on new table - also flav on Table in text box
+' --------------------------------------------------------------------------------------
+
+
+' v0.84
+' --------------------------------------------------------------------------------------
+' more textbox tables for numeric data like pnoc
+' --------------------------------------------------------------------------------------
+
+
+' v0.85
+' --------------------------------------------------------------------------------------
+' ze ostatniego fma project review: FMA Project Review 12 maj 2020
+'1. status - dodatkowy status - future
+'2. ewolucja projektu
+'3. open issues - w linii z open red na del conf
+'4. # of vehs -> textbox
+'5. del conf - w textbox 3 kolory
+'6. duplikaty na open issues
+'7. svyat issue - solved
+'8. custom comments
+' --------------------------------------------------------------------------------------

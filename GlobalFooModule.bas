@@ -38,13 +38,13 @@ Public Function from_yyyy_cw_to_monday_from_this_week(yyyycw As String) As Date
         from_yyyy_cw_to_monday_from_this_week = Date
     Else
     
-        Y = Left(yyyycw, 4)
+        y = Left(yyyycw, 4)
         cw = Right(yyyycw, 2)
             
         ' -------------------- ' -------------------- ' --------------------
         
         Dim d As Date
-        d = CDate(Y & "-01-01")
+        d = CDate(y & "-01-01")
         
         Do
             d = d + 1

@@ -110,9 +110,9 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .CheckBoxVisible.Value = True
             
             .ComboBoxStatus.Clear
-            .ComboBoxStatus.AddItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCross.Value)
-            .ComboBoxStatus.AddItem CStr(SIXP.GlobalCrossTriangleCircleModule.putTriangle.Value)
-            .ComboBoxStatus.AddItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCircle.Value)
+            .ComboBoxStatus.addItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCross.Value)
+            .ComboBoxStatus.addItem CStr(SIXP.GlobalCrossTriangleCircleModule.putTriangle.Value)
+            .ComboBoxStatus.addItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCircle.Value)
             
             
             ' lista open issues
@@ -178,7 +178,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                         ' Exit Do
                         ' .ListBox1.AddItem "Open issue #" & CStr(X) & ", " & r.Address
                         
-                        .ListBox1.AddItem "Open issue #" & CStr(x) & ", " & _
+                        .ListBox1.addItem "Open issue #" & CStr(x) & ", " & _
                         CStr(Trim(r.Offset(0, SIXP.e_open_issues_part_supplier - 1))) & ", " & _
                         r.Address
                         
@@ -190,9 +190,9 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .ListBox1.Selected(0) = True
             .ComboBoxStatus.Clear
             
-            .ComboBoxStatus.AddItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCross.Value)
-            .ComboBoxStatus.AddItem CStr(SIXP.GlobalCrossTriangleCircleModule.putTriangle.Value)
-            .ComboBoxStatus.AddItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCircle.Value)
+            .ComboBoxStatus.addItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCross.Value)
+            .ComboBoxStatus.addItem CStr(SIXP.GlobalCrossTriangleCircleModule.putTriangle.Value)
+            .ComboBoxStatus.addItem CStr(SIXP.GlobalCrossTriangleCircleModule.putCircle.Value)
         End With
     End If
 End Sub

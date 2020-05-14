@@ -30,13 +30,13 @@ Private d As Dictionary
 Private tl As T_Link
 Private l As Linker
 Private r As Range
-Private Sh As Worksheet
+Private sh As Worksheet
 
 Private nazwaPliku As String
 
 
 Public Function getQuarterMainTable() As Worksheet
-    Set getQuarterMainTable = Sh
+    Set getQuarterMainTable = sh
 End Function
 
 Public Function zrobKlucz(strProj, strPlt, strFaza, strCW)
@@ -48,15 +48,15 @@ End Function
 Public Sub fillDictionaryWithTLinks(ByRef msh As Worksheet)
 
 
-    Set Sh = msh
+    Set sh = msh
 
-    Set r = Sh.Cells(2, SIXP.e_qmt_project)
+    Set r = sh.Cells(2, SIXP.e_qmt_project)
     
     If Trim(r) <> "" Then
     
     Do
         
-        klucz = zrobKlucz(r.Value, Sh.Cells(r.Row, SIXP.e_qmt_Plant).Value, Sh.Cells(r.Row, SIXP.e_qmt_PHASE).Value, Sh.Cells(r.Row, SIXP.e_qmt_cw).Value)
+        klucz = zrobKlucz(r.Value, sh.Cells(r.Row, SIXP.e_qmt_Plant).Value, sh.Cells(r.Row, SIXP.e_qmt_PHASE).Value, sh.Cells(r.Row, SIXP.e_qmt_cw).Value)
         
         If Not d.Exists(klucz) Then
             d.Add klucz, tl
@@ -133,11 +133,11 @@ Public Sub wildcardListBoxes(wc_proj, wc_plt, wc_faza, wc_cw)
                     If UCase(tl.plt) Like "*" & UCase(wc_plt) & "*" Then
                         If UCase(tl.faza) Like "*" & UCase(wc_faza) & "*" Then
                             If UCase(tl.cw) Like "*" & UCase(wc_cw) & "*" Then
-                                .ListBoxRow.AddItem wiersz
-                                .ListBoxProj.AddItem tl.project
-                                .ListBoxPLT.AddItem tl.plt
-                                .ListBoxFaza.AddItem tl.faza
-                                .ListBoxCW.AddItem tl.cw
+                                .ListBoxRow.addItem wiersz
+                                .ListBoxProj.addItem tl.project
+                                .ListBoxPLT.addItem tl.plt
+                                .ListBoxFaza.addItem tl.faza
+                                .ListBoxCW.addItem tl.cw
                             End If
                         End If
                     End If
@@ -175,11 +175,11 @@ Private Sub fillListBoxes()
             
                 Set tl = d(Key)
                 wiersz = Split(Key, "_")(0)
-                .ListBoxRow.AddItem wiersz
-                .ListBoxProj.AddItem tl.project
-                .ListBoxPLT.AddItem tl.plt
-                .ListBoxFaza.AddItem tl.faza
-                .ListBoxCW.AddItem tl.cw
+                .ListBoxRow.addItem wiersz
+                .ListBoxProj.addItem tl.project
+                .ListBoxPLT.addItem tl.plt
+                .ListBoxFaza.addItem tl.faza
+                .ListBoxCW.addItem tl.cw
                 
             
             End With
@@ -200,7 +200,7 @@ Private Sub Class_Initialize()
     
     Set d = New Dictionary
     Set l = New Linker
-    Set Sh = Nothing
+    Set sh = Nothing
     
     nazwaPliku = ""
     
@@ -222,7 +222,7 @@ End Function
 Private Sub Class_Terminate()
     Set d = Nothing
     Set l = Nothing
-    Set Sh = Nothing
+    Set sh = Nothing
     
     SIXP.LoadingFormModule.increaseLoadingFormStatus 50
     
@@ -558,10 +558,10 @@ Public Sub copyDataFromQuarter(mt As Worksheet, c As Collection)
     End If
 End Sub
 
-Private Sub cellsWithLinkProjPltPhaseCW(main_w, w, Sh As Worksheet, mt As Worksheet)
+Private Sub cellsWithLinkProjPltPhaseCW(main_w, w, sh As Worksheet, mt As Worksheet)
 
     SIXP.LoadingFormModule.incLoadingForm
-    With Sh
+    With sh
         .Cells(main_w, SIXP.e_link_project).Value = mt.Cells(w, SIXP.e_qmt_project).Value
         .Cells(main_w, SIXP.e_link_plt).Value = mt.Cells(w, SIXP.e_qmt_Plant).Value
         .Cells(main_w, SIXP.e_link_faza).Value = mt.Cells(w, SIXP.e_qmt_PHASE).Value

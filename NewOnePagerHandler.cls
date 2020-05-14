@@ -43,6 +43,23 @@ Private myCustomLayout As PowerPoint.CustomLayout
 
 
 
+
+' new table from one pagers - for rep goals
+' -----------------------------------------------
+
+Private newTableWrk As Workbook
+Private newTableSh As Worksheet
+Private newTableRefRange As Range
+Private newTableRefRangeGYR As Range
+Private newTableRefRangePUS As Range
+Private newTabelRefRangeComment As Range
+Private newTableRefRangeTot As Range
+Private newTableRefRangeDelConf As Range
+
+
+
+
+
 Public Function get_one_pager_sheet() As Worksheet
     Set get_one_pager_sheet = one_pager_sheet
 End Function
@@ -106,9 +123,10 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
 
     ' SIXP.LoadingFormModule -> show zrobiony juz w poprzednim lejerze
 
-    Dim Sh As Worksheet, r As Range, rf As Range, pD As Range
+    Dim sh As Worksheet, r As Range, rf As Range, pD As Range
     
     inicjuj_power_pointa_jesli_taka_jest_konfiguracja e
+    inicjuj_niezalezna_tabele_w_excelu_jesli_jest_taka_konfiguracja e
 
     Dim iter As Long
     iter = 1
@@ -121,8 +139,8 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
         ' cialo generowania iterowanego one pagera
         ' =============================================
         For x = LBound(pcs) To UBound(pcs)
-            Set Sh = pcs(x)
-            Sh.Activate
+            Set sh = pcs(x)
+            sh.Activate
             SIXP.LoadingFormModule.incLoadingForm
             
             ' to jest najprostsza logika dzialania jednak to nie jest tak chocby
@@ -132,7 +150,7 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
             
             
             ' patrzymy tylko w main == x == 1
-            If x = 1 Then Set r = link_raportu.znajdz_siebie_w_arkuszu(Sh)
+            If x = 1 Then Set r = link_raportu.znajdz_siebie_w_arkuszu(sh)
             
             If Not r Is Nothing Then
                 ' r.Select
@@ -145,23 +163,23 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
                 If x = SIXP.e_pcs_main Then
                     wypelnienie_statusu_z_main r, link_raportu
                 ElseIf x = SIXP.e_pcs_order_release_status Then
-                    wypelnienie_pcs_order_release_status rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_order_release_status rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_pnoc Then
-                    wypelnienie_pcs_pnoc rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_pnoc rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_osea Then
-                    wypelnienie_pcs_osea rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_osea rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_recent_build_plan_changes Then
-                    wypelnienie_pcs_recent_build_plan_changes rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_recent_build_plan_changes rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_totals Then
-                    wypelnienie_pcs_totals rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_totals rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_delivery_confirmation Then
-                    wypelnienie_pcs_del_conf rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_del_conf rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_resp Then
-                    wypelnienie_pcs_resp rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_resp rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_open_issues Then
-                    wypelnienie_pcs_open_issues rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_open_issues rf, pD, sh, link_raportu
                 ElseIf x = SIXP.e_pcs_xq Then
-                    wypelnienie_pcs_xq rf, pD, Sh, link_raportu
+                    wypelnienie_pcs_xq rf, pD, sh, link_raportu
                 End If
                 
                 
@@ -195,7 +213,73 @@ Public Sub generuj_raporty(e As E_ONE_PAGERS_INTO)
         iter = iter + 1
     Next link_raportu
     
+    
     pcs(1).Activate
+    
+    If e = E_ONE_PAGERS_INTO_NEW_TABLE Then
+        
+        
+        ' this section is about filtering grey fields
+        ' -------------------------------------------------' -------------------------------------------------
+        
+        ' newTableWrk
+        
+        ' za kazdym razem trzeba to zmienic jesli bedzie zmiana ukladu danych!
+        
+        ' labelki pionowo
+        newTableSh.Cells(1, 1).RowHeight = 120
+
+        With newTableSh.Cells(1, 1).EntireRow
+            .HorizontalAlignment = xlCenter
+            .VerticalAlignment = xlCenter
+            .Orientation = 90
+            .AddIndent = False
+            .IndentLevel = 0
+            .ShrinkToFit = False
+            .ReadingOrder = xlContext
+            .MergeCells = False
+        End With
+        
+        newTableSh.Range("A1").EntireColumn.ColumnWidth = 8
+        newTableSh.Range("B1").EntireColumn.ColumnWidth = 16
+        newTableSh.Range("C1").EntireColumn.ColumnWidth = 5
+        newTableSh.Range("D1").EntireColumn.ColumnWidth = 7
+        newTableSh.Range("E1").EntireColumn.ColumnWidth = 8
+        newTableSh.Range("F1").EntireColumn.ColumnWidth = 4
+        newTableSh.Range("G1").EntireColumn.ColumnWidth = 6
+        newTableSh.Range("H1").EntireColumn.ColumnWidth = 7
+        newTableSh.Range("I1").EntireColumn.ColumnWidth = 7
+        newTableSh.Range("J1").EntireColumn.ColumnWidth = 7
+        newTableSh.Range("K1").EntireColumn.ColumnWidth = 4
+        newTableSh.Range("L1").EntireColumn.ColumnWidth = 7
+        newTableSh.Range("M1").EntireColumn.ColumnWidth = 7
+        
+        newTableSh.Range("N1").EntireColumn.ColumnWidth = 3
+        
+        newTableSh.Range("O1:R1").EntireColumn.ColumnWidth = 4
+        
+        newTableSh.Range("S1").EntireColumn.ColumnWidth = 6
+        
+        newTableSh.Range("T1").EntireColumn.ColumnWidth = 6
+        newTableSh.Range("U1").EntireColumn.ColumnWidth = 6
+        newTableSh.Range("V1").EntireColumn.ColumnWidth = 6
+        
+        newTableSh.Range("W1").EntireColumn.ColumnWidth = 7
+        
+        ' newTableSh.Range("A1").AutoFilter Field:=2, Criteria1:=RGB(200, 200, 200), Operator:=xlFilterCellColor
+        newTableSh.Range("A1").AutoFilter
+        
+        newTableSh.Activate
+        ActiveWindow.Zoom = 110
+        
+        
+        ' -------------------------------------------------' -------------------------------------------------
+    End If
+    
+    
+    clearNewOnePagerWorksheet
+    
+    
 End Sub
 
 Private Sub szary_na_tym_raporcie(l As T_Link)
@@ -534,7 +618,198 @@ Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGER
     
     ' jestesmy w subie, ktory wyrzuca gotowe dane albo do excela niezaleznego albo do power pointa
     Dim myOwnIter As Long
-    If e = E_ONE_PAGERS_INTO_POWER_POINT Then
+    Dim source_sh As Worksheet, w As Workbook
+    Dim x As Integer
+    
+    Dim ir As Range
+    
+    
+    If e = E_ONE_PAGERS_INTO_NEW_TABLE Then
+    
+    
+        GLOBAL_POZWALAM_NA_REAKCJE_NA_ZMIANY = False
+    
+    
+        ' brand new - to create new table from all data from 6p
+        ' for sure will not make any new slides!
+        ' but still limitation because we are working on data put in one pager sheet
+        ' --------------------------------------------------------------------------
+        ' newTableWrk
+        ' newTableSh
+        
+        newTableSh.Activate
+        
+        ' my source
+        Set source_sh = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM)
+        
+        'If newTableRefRange.Row = 1 Then
+        '    ' fresh just started!
+        '    putSomeLabels newTableRefRange, source_sh
+        '    Set newTableRefRange = newTableRefRange.Offset(1, 0)
+        '    Set newTableRefRangeGYR = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR)
+        '    Set newTableRefRangePUS = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS)
+        'Else
+        '    Set newTableRefRange = newTableRefRange.Offset(8, 0)
+        '    Set newTableRefRangeGYR = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR)
+        '    Set newTableRefRangePUS = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS)
+        'End If
+        
+        If newTableRefRange.Row = 1 Then
+            putSomeLabels newTableRefRange, source_sh
+        End If
+        
+        Set newTableRefRange = newTableRefRange.Offset(1, 0)
+        Set newTableRefRangeGYR = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR)
+        Set newTableRefRangePUS = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS)
+        
+
+        
+        ' Debug.Print newTableRefRange.Address & " " & newTableRefRange.Parent.name
+        
+        
+        ' magia kopiowania gorny-lewy rog one pagera
+        ' ----------------------------------------------------------
+        Dim srcRange As Range, tmpForNewTableRefRnage As Range
+        Set srcRange = source_sh.Range("A5:H12")
+        
+        srcRange.Copy newTableRefRange
+        ' ----------------------------------------------------------
+        
+        Set tmpForNewTableRefRnage = newTableRefRange.Offset(-1, 0)
+        
+        ' checkIfGreyAndRemoveWithShiftUp usunac
+        For x = 7 To 0 Step -1
+            checkIfGreyAndRemoveWithShiftUp _
+                newTableRefRange.Parent.Cells(newTableRefRange.Row + x, newTableRefRange.Column)
+        Next x
+        
+        
+        ' poniewaz przez to usuwanie referencje sie stracily
+        ' i trzeba jeszcze raz!
+        Set newTableRefRange = tmpForNewTableRefRnage.Offset(1, 0)
+        Set newTableRefRangeGYR = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR)
+        Set newTableRefRangePUS = newTableRefRange.Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS)
+        
+        ' koniec z bez sensu petla!
+        x = 0
+        
+        tmpArr = Split(CStr(source_sh.Range("b1").Value), ", ")
+        
+        
+        
+        
+        q = LBound(tmpArr)
+        newTableRefRange.Offset(x, -5).Value = tmpArr(q)
+        newTableRefRange.Offset(x, -4).Value = tmpArr(q + 1)
+        newTableRefRange.Offset(x, -3).Value = tmpArr(q + 2)
+        newTableRefRange.Offset(x, -2).Value = tmpArr(q + 3)
+    
+            
+        newTableRefRange.Offset(x, -6).Interior.Color = newTableRefRange.Offset(x, 1).Interior.Color
+        newTableRefRange.Offset(x, -5).Interior.Color = newTableRefRange.Offset(x, 1).Interior.Color
+        newTableRefRange.Offset(x, -4).Interior.Color = newTableRefRange.Offset(x, 1).Interior.Color
+        newTableRefRange.Offset(x, -3).Interior.Color = newTableRefRange.Offset(x, 1).Interior.Color
+        newTableRefRange.Offset(x, -2).Interior.Color = newTableRefRange.Offset(x, 1).Interior.Color
+        
+        
+        
+        newTableRefRange.Offset(x, -1).Value = source_sh.Range("m1").Value
+        
+        If UCase(newTableRefRange.Offset(x, -1).Value) = "X" Then
+            newTableRefRange.Offset(x, -1).Interior.Color = RGB(255, 0, 0)
+        ElseIf UCase(newTableRefRange.Offset(x, -1).Value) = "O" Then
+            newTableRefRange.Offset(x, -1).Interior.Color = RGB(0, 255, 0)
+        Else
+            newTableRefRange.Offset(x, -1).Interior.Color = RGB(255, 255, 0)
+        End If
+        
+        
+        
+        ' only for specific (grey) line
+        If newTableRefRange.Offset(x, 1).Interior.Color = RGB(200, 200, 200) Then
+        
+        
+            ' --------------------------------------------------------------------
+            ' pus arrived
+            newTableRefRangePUS.Offset(x, 0).Value = source_sh.Range("e17").Value
+            ' PUS In transit
+            newTableRefRangePUS.Offset(x, 1).Value = source_sh.Range("e18").Value
+            ' PUS in future
+            newTableRefRangePUS.Offset(x, 2).Value = source_sh.Range("e19").Value
+            ' PUS pending
+            newTableRefRangePUS.Offset(x, 3).Value = source_sh.Range("e20").Value
+            '
+            ' --------------------------------------------------------------------
+        
+            ' RYG
+            newTableRefRangeGYR.Offset(x, 1).Value = source_sh.Range("k29").Value
+            newTableRefRangeGYR.Offset(x, 2).Value = source_sh.Range("l29").Value
+            newTableRefRangeGYR.Offset(x, 3).Value = source_sh.Range("m29").Value
+            
+            
+            ' OPEN ISSUES
+            ' --------------------------------------------------------------------
+            
+            oddelegujTextBoxPodOpenIssuesDlaX newTableRefRangeGYR.Offset(x, 3), source_sh
+            
+            ' --------------------------------------------------------------------
+            
+            
+            ' total
+            newTableRefRangeGYR.Offset(x, 0).Value = 0
+            On Error Resume Next
+            ' to jest bez pnoc
+            ' newTableRefRangeGYR.Offset(0, 0).Value = CLng(source_sh.Range("e16").Value) + CLng(source_sh.Range("f16").Value)
+            newTableRefRangeGYR.Offset(x, 0).Value = CLng(source_sh.Range("a16").Value)
+            
+            
+            ' put comments as excel comment
+            Set newTabelRefRangeComment = newTableRefRangeGYR.Offset(x, 4)
+            
+            
+            ' RECENT BUILD PLAN CHANGES!
+            ' aktualnie kolumna zaraz po GYR - dla danych z czesci 6p gdzie jest last update
+            ' ----------------------------------------------------------------------------------------
+            oddelegujTextBoxPodRecentBuildPlanChanges newTabelRefRangeComment, ir, source_sh
+            ' ----------------------------------------------------------------------------------------
+            
+            
+            Set newTableRefRangeTot = newTableRefRangeGYR
+            
+            ' TOTALS
+            ' ----------------------------------------------------------------------------------------
+            oddlegujTextBoxPodTotals newTableRefRangeTot, ir, source_sh
+            ' ----------------------------------------------------------------------------------------
+            
+            
+            Set newTableRefRangeDelConf = newTableRefRangeGYR.Offset(0, 1)
+            
+            ' DELIVERY CONFIRMATION
+            ' ----------------------------------------------------------------------------------------
+            oddelegujTextBoxPodDeliveryConfirmation newTableRefRangeDelConf, ir, source_sh
+            ' ----------------------------------------------------------------------------------------
+            
+            
+            ' resp fma
+            newTableRefRange.Offset(x, -6).Value = source_sh.Range("respfma").Value
+            
+            
+            ' NOK
+            ' makeSomeLines newTableRefRangeGYR.Parent.Range(newTableRefRangeGYR.Offset(x, 0), newTableRefRangeGYR.Offset(x, 4))
+            
+            ' all!
+            makeSomeLines _
+                newTableRefRangeGYR.Parent.Range(newTableRefRangeGYR.Parent.Cells(newTableRefRangeGYR.Row, 1), _
+                newTableRefRangeGYR.Offset(x, 6))
+        End If
+            
+        
+        GLOBAL_POZWALAM_NA_REAKCJE_NA_ZMIANY = True
+        
+        ' --------------------------------------------------------------------------
+    
+    
+    ElseIf e = E_ONE_PAGERS_INTO_POWER_POINT Then
     
         
         myOwnIter = iter * 2 - 1
@@ -543,8 +818,6 @@ Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGER
         makeSlide CLng(myOwnIter), ppApp, pp, myCustomLayout, l
 
     ElseIf e = E_ONE_PAGERS_INTO_SEPERATE_EXCELS Then
-    
-        Dim w As Workbook, source_sh As Worksheet
         
         ' nowy pliczor
         Set w = Workbooks.Add
@@ -637,6 +910,491 @@ Private Sub raport_dla_tego_projektu_gotowy_wyrzuc_go_do_swiata(e As E_ONE_PAGER
 End Sub
 
 
+Private Sub oddelegujTextBoxPodOpenIssuesDlaX(x As Range, src As Worksheet)
+
+
+
+        ' sekcja tworzenia textboxa!
+        ' //////////////////////////////////////////////////////////////
+        
+        Dim tbh As TextBoxHandler
+        Set tbh = New TextBoxHandler
+        
+        
+        '
+        ' ROW 5 is starting position
+        '
+        '' STATUS 2 kolumny
+        'ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("P" & CStr(5 + i)) = _
+        '    rf.Offset(0, SIXP.e_open_issues_status - 1)
+        '
+        '' # of pn 2 kolumny
+        'ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("R" & CStr(5 + i)) = _
+        '    rf.Offset(0, SIXP.e_open_issues_no_of_pn - 1)
+        '
+        '' part  / supplier 3 kolumny
+        'ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("T" & CStr(5 + i)) = _
+        '    rf.Offset(0, SIXP.e_open_issues_part_supplier - 1)
+        '
+        '' delivery 2 kolumny
+        'ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("W" & CStr(5 + i)) = _
+        '    rf.Offset(0, SIXP.e_open_issues_delivery - 1)
+        '
+        '' cmnt 15 kolumn
+        'ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("Y" & CStr(5 + i)) = _
+        '    rf.Offset(0, SIXP.e_open_issues_comment - 1)
+        '
+        'i = i + 2
+        
+        Dim refRow As Long, p As Range, r As Range, txt As String
+        
+        ' Dim txt As String
+        
+        Dim t As Range, w As Range, y As Range
+        txt = ""
+        refRow = 5
+        
+        
+        Dim tbInTextBox As New TableInTextBox
+        tbInTextBox.defineLables "St", "#PNs", "Part or Supplier", "Delivery", "Comments"
+        tbInTextBox.defineSizes 5, 10, 20, 10, 40
+        tbInTextBox.setCols 5
+        
+        tbInTextBox.tryToAddLineOfTheData "St", "#PNs", "Part or Supplier", "Delivery", "Comments"
+        
+        '' STATUS 2 kolumny
+        ' czyzby to samo co src
+        Set p = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("P5")
+        Set r = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("R5")
+        ' part supplier
+        Set t = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("T5")
+        ' delivery
+        Set w = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("W5")
+        ' cmnt
+        Set y = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("Y5")
+        
+        Do
+        
+            'txt = txt & _
+            '    p.Value & " " & _
+            '    r.Value & " " & _
+            '    t.Value & " " & _
+            '    w.Value & " " & _
+            '    y.Value & " " & _
+            '    chr(10)
+            
+            tbInTextBox.tryToAddLineOfTheData p.Value, r.Value, t.Value, w.Value, y.Value
+            
+            
+            
+            Set p = p.Offset(1, 0)
+            Set r = r.Offset(1, 0)
+            Set t = t.Offset(1, 0)
+            Set w = w.Offset(1, 0)
+            Set y = y.Offset(1, 0)
+        Loop Until Trim(p) = ""
+        
+        
+'        Debug.Print txt
+'        Dim test As New TableInTextBox
+'        test.defineLables "jeden", "dwa", "trzy"
+'        test.defineSizes 10, 20, 8
+'        test.setCols 3
+'        test.tryToAddLineOfTheData "jeden", "dwa", "trzy"
+'        test.tryToAddLineOfTheData "1", "to jest troche wiecej textu", "to jest troche wiecej textu"
+'        test.tryToAddLineOfTheData "1", "to jest troche wiecej textu", 3
+'        test.tryToAddLineOfTheData "jeden", "dwa", 3
+'        test.tryToAddLineOfTheData "1", "to jest troche wiecej textu", 3
+'        test.tryToAddLineOfTheData "1", 4, "to co innego"
+'        test.tryToAddLineOfTheData "ewfdweff euhfwef", 2, 3
+'
+'
+'        Dim c As Collection
+'        Set c = test.collOfDataLines
+'
+'        Dim wynik As String
+'        wynik = CStr(test.drawThisTable())
+'
+'        Debug.Print wynik
+        
+        txt = CStr(tbInTextBox.drawThisTable())
+        Debug.Print txt
+        
+        tbh.addOpenIssueTextBoxForCell x, txt
+        
+        Set tbh = Nothing
+        
+        
+        ' //////////////////////////////////////////////////////////////
+
+End Sub
+
+
+
+Private Sub oddelegujTextBoxPodRecentBuildPlanChanges(newTabelRefRangeComment As Range, ir As Range, source_sh As Worksheet)
+
+    Dim txt As String
+    txt = ""
+
+    Dim tbInTextBox As New TableInTextBox
+    tbInTextBox.defineLables "Build phase", "#ofVeh", "TBW", "OrderRel/Chge", "Comments"
+    tbInTextBox.defineSizes 16, 10, 15, 15, 30
+    tbInTextBox.setCols 5
+    
+    tbInTextBox.tryToAddLineOfTheData "Build phase", "#ofVeh", "TBW", "OrderRel/Chge", "Comments"
+
+    With newTabelRefRangeComment
+    
+
+
+        
+        Set ir = source_sh.Range("J4")
+        
+        Do
+            If Trim(ir.Value) <> "" Then
+            
+'                If ir.Row = 4 Then
+'                    txt = txt & ir.Value & "   " & _
+'                        ir.Offset(0, 1).Value & "     " & _
+'                        ir.Offset(0, 2).Value & "       " & _
+'                        ir.Offset(0, 3).Value & "       " & _
+'                        ir.Offset(0, 4).Value & chr(10)
+'
+'                    '.Value = "" & .Value & "  " & _
+'                    '   ir.Value & " " & _
+'                    '   ir.Offset(0, 1).Value & "   " & _
+'                    '   ir.Offset(0, 2).Value & "        " & _
+'                    '   ir.Offset(0, 3).Value & "   " & _
+'                    '   ir.Offset(0, 4).Value & chr(10)
+'
+'                Else
+'
+'                    txt = txt & ir.Value & "                " & _
+'                        ir.Offset(0, 1).Value & "               " & _
+'                        ir.Offset(0, 2).Value & "                " & _
+'                        ir.Offset(0, 3).Value & "           " & _
+'                        ir.Offset(0, 4).Value & chr(10)
+'
+'
+'
+'                    '.Value = "" & .Value & " " & _
+'                    '   ir.Value & "                     " & _
+'                    '   ir.Offset(0, 1).Value & "           " & _
+'                    '   ir.Offset(0, 2).Value & "           " & _
+'                    '   ir.Offset(0, 3).Value & "                     " & _
+'                    '   ir.Offset(0, 4).Value & chr(10)
+'                End If
+'
+'
+'
+
+                If ir.Row = 4 Then
+                    ' no operation
+                    ' =====================
+                Else
+                
+                    tbInTextBox.tryToAddLineOfTheData _
+                        ir.Value, ir.Offset(0, 1).Value, ir.Offset(0, 2).Value, _
+                        ir.Offset(0, 3).Value, ir.Offset(0, 4).Value
+                End If
+
+            End If
+
+            
+        
+            Set ir = ir.Offset(1, 0)
+        Loop Until Trim(ir) = ""
+        
+        .Value = "X"
+        .Font.Size = 12
+        .WrapText = True
+        
+        
+        
+        'Range("W2").Comment.Text Text:= _
+        '    "Build phase # of Veh. TBW Order release / change Comments" & chr(10) & "VRS1 6  201947 Advanceemnt from VRS2 to VRS1" & chr(10) & ""
+        'Selection.ShapeRange.IncrementLeft -352.5
+        'Selection.ShapeRange.IncrementTop 54.75
+        
+        
+        
+        ' sekcja tworzenia standardowego komentarza
+        ' =====================================================================
+        ' =====================================================================
+        ' =====================================================================
+        'If .Comment Is Nothing Then
+        '
+        '    .Comment.Shape.TextFrame.Characters.Font.Size = 7
+        '    .AddComment txt
+        '    .Comment.Shape.TextFrame.Characters.Font.Size = 7
+        '    .Comment.Shape.TextFrame.AutoSize = True
+        '    .Comment.Shape.TextFrame.Characters.Font.Size = 7
+        '    '.Comment.Shape.IncrementLeft -200
+        '    '.Comment.Shape.IncrementTop 40 ' NOK
+        '
+        '    ' super custom!
+        '    ' =========================================================
+        '    ' superCustomChangeCommentPosition newTabelRefRangeComment ' NOK!
+        '    ' =========================================================
+        '
+        '    ' .Comment.Shape.Left = .Comment.Shape.Left - 200
+        'Else
+        '    .Comment.Text CStr(txt)
+        '    .Comment.Shape.TextFrame.Characters.Font.Size = 7
+        '    .Comment.Shape.TextFrame.AutoSize = True
+        '    .Comment.Shape.TextFrame.Characters.Font.Size = 7
+        '    '.Comment.Shape.IncrementLeft -200
+        '    '.Comment.Shape.IncrementTop 40 ' NOK
+        'End If
+        ' =====================================================================
+        ' =====================================================================
+        ' =====================================================================
+        
+        
+        
+        
+        ' sekcja tworzenia textboxa!
+        ' //////////////////////////////////////////////////////////////
+        
+        ' !
+        txt = CStr(tbInTextBox.drawThisTable())
+        ' !
+        
+        Dim tbh As TextBoxHandler
+        Set tbh = New TextBoxHandler
+        
+        tbh.addBasicTextBoxForCell newTabelRefRangeComment, txt
+        
+        
+        Set tbh = Nothing
+        
+        
+        ' //////////////////////////////////////////////////////////////
+        
+        
+    End With
+    
+    
+End Sub
+
+
+
+Private Sub oddlegujTextBoxPodTotals(newTabelRefRangeComment As Range, ir As Range, source_sh As Worksheet)
+
+    Dim txt As String
+    txt = ""
+
+    Dim tbInTextBox As New TableInTextBox
+    tbInTextBox.defineLables CStr(source_sh.Range("A15").Value), _
+        CStr(source_sh.Range("A16").Value)
+    tbInTextBox.defineSizes 12, 12
+    tbInTextBox.setCols 2
+    
+    ' tbInTextBox.tryToAddLineOfTheData
+
+    With newTabelRefRangeComment
+        
+        ' tot
+        Set ir = source_sh.Range("A16")
+        tbInTextBox.tryToAddLineOfTheData ir.Offset(-1, 0), ir
+        
+        
+        ' NA
+        Set ir = source_sh.Range("B16")
+        tbInTextBox.tryToAddLineOfTheData ir.Offset(-1, 0), ir
+        
+        ' ITDC
+        Set ir = source_sh.Range("C16")
+        tbInTextBox.tryToAddLineOfTheData ir.Offset(-1, 0), ir
+        
+        ' PNOC
+        Set ir = source_sh.Range("D16")
+        tbInTextBox.tryToAddLineOfTheData ir.Offset(-1, 0), ir
+        
+        
+        ' OSEA
+        Set ir = source_sh.Range("E16")
+        tbInTextBox.tryToAddLineOfTheData ir.Offset(-1, 0), ir
+        
+        ' EUR
+        Set ir = source_sh.Range("F16")
+        tbInTextBox.tryToAddLineOfTheData ir.Offset(-1, 0), ir
+        
+        
+        
+        
+        
+        
+        ' sekcja tworzenia textboxa!
+        ' //////////////////////////////////////////////////////////////
+        
+        ' !
+        txt = CStr(tbInTextBox.drawThisTable())
+        ' !
+        
+        Dim tbh As TextBoxHandler
+        Set tbh = New TextBoxHandler
+        
+        tbh.addBasicTextBoxForCell newTabelRefRangeComment, txt
+        
+        
+        Set tbh = Nothing
+        
+        
+        ' //////////////////////////////////////////////////////////////
+        
+        
+    End With
+    
+    
+End Sub
+
+
+Private Sub oddelegujTextBoxPodDeliveryConfirmation(newTabelRefRangeComment As Range, ir As Range, source_sh As Worksheet)
+
+
+
+    Dim txt As String, x As Variant
+    txt = ""
+
+    Dim tbInTextBox As New TableInTextBox
+    tbInTextBox.defineLables "DC", _
+        CStr(source_sh.Range("K15").Value), _
+        CStr(source_sh.Range("L15").Value), _
+        CStr(source_sh.Range("M15").Value)
+        
+    tbInTextBox.defineSizes 20, 8, 8, 8
+    tbInTextBox.setCols 4
+    
+    tbInTextBox.tryToAddLineOfTheData "DC", _
+        CStr(source_sh.Range("K15").Value), _
+        CStr(source_sh.Range("L15").Value), _
+        CStr(source_sh.Range("M15").Value)
+
+    With newTabelRefRangeComment
+    
+        For x = 16 To 28
+            Set ir = source_sh.Range("J" & CStr(x))
+            
+            If Len("" & Trim(ir.Offset(0, 1).Value) & Trim(ir.Offset(0, 2).Value) & Trim(ir.Offset(0, 3).Value)) > 0 Then
+                tbInTextBox.tryToAddLineOfTheData CStr(ir.Value), _
+                    CStr(ir.Offset(0, 1).Value), _
+                    CStr(ir.Offset(0, 2).Value), _
+                    CStr(ir.Offset(0, 3).Value)
+            End If
+                
+        Next x
+        
+        
+        
+        
+        ' sekcja tworzenia textboxa!
+        ' //////////////////////////////////////////////////////////////
+        
+        ' !
+        txt = CStr(tbInTextBox.drawThisTable())
+        ' !
+        
+        Dim tbh As TextBoxHandler
+        Set tbh = New TextBoxHandler
+        
+        tbh.addBasicTextBoxForCell newTabelRefRangeComment, txt
+        
+        
+        Set tbh = Nothing
+        
+        
+        ' //////////////////////////////////////////////////////////////
+        
+        
+    End With
+
+End Sub
+
+
+
+Private Sub makeSomeLines(rfr As Range)
+
+
+    rfr.Borders(xlDiagonalDown).LineStyle = xlNone
+    rfr.Borders(xlDiagonalUp).LineStyle = xlNone
+    With rfr.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With rfr.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With rfr.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With rfr.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With rfr.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With rfr.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+
+End Sub
+
+
+Private Sub putSomeLabels(rfr As Range, opsh As Worksheet)
+    
+    With rfr
+    
+        .Offset(0, -6).Value = "RLOG / PPL"
+        .Offset(0, -5).Value = "PROJECT"
+        .Offset(0, -4).Value = "PLT"
+        .Offset(0, -3).Value = "FAZA"
+        .Offset(0, -2).Value = "UPDATED ON"
+        .Offset(0, -1).Value = "STATUS"
+        
+        For col = 1 To 8
+            .Offset(0, col - 1).Value = opsh.Cells(4, col).Value
+        Next col
+        
+        
+        ' -----------------------------------------------------
+        
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS).Value = "PUS arrived / on stock"
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS + 1).Value = "PUS In transit"
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS + 2).Value = "PUS in future"
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RPUS + 3).Value = "PUS pending"
+
+        
+        ' -----------------------------------------------------
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR).Value = "PNs"
+        opsh.Range("K15:M15").Copy .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR + 1)
+        .Offset(0, G_KOLUMNA_NEW_TABLE_RGYR + 4).Value = "COMMENTS"
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR + 5).Value = "Extra COMMENTS 1"
+        .Offset(0, SIXP.G_KOLUMNA_NEW_TABLE_RGYR + 6).Value = "Extra COMMENTS 2"
+        ' -----------------------------------------------------
+        
+    End With
+End Sub
+
+
+
 Private Sub makeSlide(ktorySlide As Long, ppApp As PowerPoint.Application, _
     pp As PowerPoint.Presentation, myCustomLayout As PowerPoint.CustomLayout, _
     Optional l As T_Link)
@@ -673,6 +1431,8 @@ Private Sub copyPasteDataFromOnePager(page As Integer, _
     ppSlide.Shapes.Paste
     
     Dim myShape As PowerPoint.Shape
+    Dim heightDiff As Long
+    Dim widthDiff As Long
     Set myShape = ppSlide.Shapes(1)
     
     
@@ -684,20 +1444,83 @@ Private Sub copyPasteDataFromOnePager(page As Integer, _
             
             If .Height > (pp.PageSetup.SlideHeight) Then
                 .Height = pp.PageSetup.SlideHeight
+                Exit Do
             ElseIf .Width > pp.PageSetup.slideWidth Then
                 .Width = pp.PageSetup.slideWidth
+                Exit Do
             End If
             
             
         End With
         
         If Not ((myShape.Height > pp.PageSetup.SlideHeight) Or (myShape.Width > pp.PageSetup.slideWidth)) Then
+            ' Exit Do
+            
+            heightDiff = pp.PageSetup.SlideHeight - myShape.Height
+            widthDiff = pp.PageSetup.slideWidth - myShape.Width
+            
+            
+            If widthDiff < heightDiff Then
+                myShape.Width = 0.95 * pp.PageSetup.slideWidth
+            Else
+                myShape.Height = 0.95 * pp.PageSetup.SlideHeight
+            End If
+            
+            myShape.Top = 10
+            myShape.Left = 10
+            
+            
             Exit Do
         End If
     Loop While True
     
     
 
+End Sub
+
+
+
+' new in 2020 :o
+Private Sub inicjuj_niezalezna_tabele_w_excelu_jesli_jest_taka_konfiguracja(e As E_ONE_PAGERS_INTO)
+
+
+    If e = E_ONE_PAGERS_INTO_NEW_TABLE Then
+        
+        
+        ' rezygnuje z pomyslu tabeli w nowym arkuszu, poniewaz traci mi sie molizwosc eventu dbl click
+        'Set newTableWrk = Workbooks.Add
+        '
+        'Do
+        '    DoEvents
+        'Loop While newTableWrk Is Nothing
+        
+        
+        ' aby zachowac konwencje nazewnicza
+        Set newTableWrk = ThisWorkbook
+        
+        
+        ' also NOK
+        'Application.DisplayAlerts = False
+        '
+        ' ------------------------------------------------------------
+        'On Error Resume Next
+        'ThisWorkbook.Sheets("newTable").Delete
+        ' ------------------------------------------------------------
+        '
+        'Application.DisplayAlerts = True
+        
+        Set newTableSh = newTableWrk.Sheets("newTable")
+        Set newTableForWithEvents = newTableSh
+        ' newTableSh.name = "newTable"
+        
+        ' in clear module as public sub
+        clearNewTableSheet
+        
+        
+        ' zmiana z 3 na 6 poniewaz rozbilem string z project, plt, faza i updated
+        Set newTableRefRange = newTableSh.Cells(1, G_GDZIE_ZACZYNA_SIE_1TB_DLA_NEW_TABLE)
+        Set newTableRefRangeGYR = newTableRefRange.Offset(0, 8)
+    End If
 End Sub
 
 
@@ -733,7 +1556,7 @@ Private Sub wypelnienie_statusu_z_main(r As Range, tl As T_Link)
     End With
 End Sub
 
-Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' specjalne zachowanie dla order release status
     ' tworzymy tabele nie tylko dla wybranego linku ale rowniez dla innych elementow
     ' dla innych faz tego samego projektu - co nieco komplikuje sprawe - jednak nie jest
@@ -750,7 +1573,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, Sh As
     
     Dim orders_coll(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     xx = 0
     Do
@@ -859,7 +1682,7 @@ Private Sub wypelnienie_pcs_order_release_status(rf As Range, pD As Range, Sh As
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' te dane sa pod wykres wraz z danymi historycznymi
     ' - zatem patrzymy na ten sam projekt z perspektywy
     ' roznych CW
@@ -871,7 +1694,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, Sh As Worksheet, tl A
     
     Dim fst_chart(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -973,7 +1796,7 @@ Private Sub wypelnienie_pcs_pnoc(rf As Range, pD As Range, Sh As Worksheet, tl A
     ' ------------------------------------------------------------------------------------------------
 End Sub
 
-Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -982,7 +1805,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, Sh As Worksheet, tl A
     
     Dim sec_chart(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -1074,7 +1897,7 @@ Private Sub wypelnienie_pcs_osea(rf As Range, pD As Range, Sh As Worksheet, tl A
 End Sub
 
 
-Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     
@@ -1084,7 +1907,7 @@ Private Sub wypelnienie_pcs_recent_build_plan_changes(rf As Range, pD As Range, 
     
     Dim recent_bp_changes(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     
     ' 1.
@@ -1267,7 +2090,7 @@ Private Function innerCheckForRBPCH_LINE(line, rf As Range, a As Range)
     
 End Function
 
-Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     ' 1. skompletuj dane,
@@ -1276,7 +2099,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, Sh As Worksheet, tl
     
     Dim third_chart(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     ' 1.
     xx = 0
@@ -1390,7 +2213,7 @@ Private Sub wypelnienie_pcs_totals(rf As Range, pD As Range, Sh As Worksheet, tl
 End Sub
 
 
-Private Sub wypelnienie_pcs_xq(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_xq(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
 
@@ -1400,7 +2223,7 @@ Private Sub wypelnienie_pcs_xq(rf As Range, pD As Range, Sh As Worksheet, tl As 
     
     Dim ppapGateDate(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     
     ' 1.
@@ -1477,7 +2300,7 @@ End Sub
 
 
 
-Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     'Dim pd As Range, sh As Worksheet
@@ -1607,7 +2430,7 @@ Private Sub wypelnienie_pcs_del_conf(rf As Range, pD As Range, Sh As Worksheet, 
     Next ir
 End Sub
 
-Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_resp(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
     ' ------------------------------------------------------------------------------------------------
     
     Dim ssh As Worksheet
@@ -1669,14 +2492,14 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     
     common_find_resp = ""
     
-    Dim Sh As Worksheet, r As Range
-    Set Sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
+    Dim sh As Worksheet, r As Range
+    Set sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
     
     
-    If Sh.Range("A2") <> "" Then
-        Set r = Sh.Range("A1").End(xlDown)
+    If sh.Range("A2") <> "" Then
+        Set r = sh.Range("A1").End(xlDown)
     Else
-        Set r = Sh.Range("A2")
+        Set r = sh.Range("A2")
     End If
     
     Do
@@ -1703,7 +2526,7 @@ Private Function common_find_resp(resp As E_RESP_ORDER, mtl As T_Link) As String
     Loop Until r.Row = 1
 End Function
 
-Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, Sh As Worksheet, tl As T_Link)
+Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, sh As Worksheet, tl As T_Link)
 
     ' ------------------------------------------------------------------------------------------------
     
@@ -1714,7 +2537,7 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, Sh As Workshee
     
     Dim open_issues_arr(0 To 512) As Range
     
-    Set rf = Sh.Cells(2, 1)
+    Set rf = sh.Cells(2, 1)
     
     
     ' 1.
@@ -1768,7 +2591,7 @@ Private Sub wypelnienie_pcs_open_issues(rf As Range, pD As Range, Sh As Workshee
     ' poczatek danych order release na one pagerze
     ' Dim pd As Range
     
-    ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("P5:Y27").Value = ""
+    ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("P5:Y419").Value = ""
     
     Set pD = ThisWorkbook.Sheets(SIXP.G_NEW_ONE_PAGER_SH_NM).Range("P5")
     ' recent_bp_changes()

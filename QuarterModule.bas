@@ -17,7 +17,7 @@ Attribute VB_Name = "QuarterModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Public Sub uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera(Sh As Worksheet, wrknm As String)
+Public Sub uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera(sh As Worksheet, wrknm As String)
 
 
     Application.ScreenUpdating = False
@@ -28,7 +28,7 @@ Public Sub uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera(Sh As Wor
     Dim qh As QuarterHandler
     Set qh = New QuarterHandler
     qh.setWrkNm wrknm
-    qh.fillDictionaryWithTLinks Sh
+    qh.fillDictionaryWithTLinks sh
     qh.openFormWithDataFromQuarter
     Set qh = Nothing
     
@@ -47,7 +47,7 @@ Public Sub import_from_quarter(ictrl As IRibbonControl)
     Dim w As Workbook
     FormCatchQuarter.ListBoxFiles.Clear
     For Each w In Workbooks
-        FormCatchQuarter.ListBoxFiles.AddItem w.name
+        FormCatchQuarter.ListBoxFiles.addItem w.name
     Next w
     
     FormCatchQuarter.Show vbModeless

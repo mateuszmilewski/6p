@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} LoadingForm 
    Caption         =   "Loading Form..."
-   ClientHeight    =   3000
+   ClientHeight    =   3315
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   4875

@@ -7,7 +7,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
-
 Private Sub Workbook_Open()
     GLOBAL_POZWALAM_NA_REAKCJE_NA_ZMIANY = True
 End Sub
@@ -45,3 +44,5 @@ Private Sub Workbook_SheetSelectionChange(ByVal sh As Object, ByVal Target As Ra
     End If
     End If
 End Sub
+
+

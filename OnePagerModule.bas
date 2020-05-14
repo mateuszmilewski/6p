@@ -19,9 +19,10 @@ Attribute VB_Name = "OnePagerModule"
 
 Public Sub generate_one_pager(ictrl As IRibbonControl)
     clear_one_pager
-    skonfiguruj_form_generowania_one_pagera
+    ' skonfiguruj_form_generowania_one_pagera ' to jest logika tylko dla starego formu
     
-    FormOnePager.Show vbModeless
+    FormOnePagerNEW.RadioPowerPoint.Value = True
+    FormOnePagerNEW.Show vbModeless
     
 End Sub
 
@@ -225,22 +226,26 @@ Public Sub skonfiguruj_form_generowania_one_pagera()
     
     FormOnePager.ListBoxProjects.Clear
     For Each k In proj_dic.Keys
-        FormOnePager.ListBoxProjects.AddItem k
+        FormOnePager.ListBoxProjects.addItem k
     Next
     
     FormOnePager.ListBoxPlants.Clear
     For Each k In plt_dic.Keys
-        FormOnePager.ListBoxPlants.AddItem k
+        FormOnePager.ListBoxPlants.addItem k
     Next
     
     FormOnePager.ListBoxPhases.Clear
     For Each k In faza_dic.Keys
-        FormOnePager.ListBoxPhases.AddItem k
+        FormOnePager.ListBoxPhases.addItem k
     Next
     
     FormOnePager.ListBoxCWs.Clear
+    
+    
+    putCwInOrder cw_dic, 0
+    
     For Each k In cw_dic.Keys
-        FormOnePager.ListBoxCWs.AddItem k
+        FormOnePager.ListBoxCWs.addItem k
     Next
     
     
@@ -261,4 +266,58 @@ Public Sub skonfiguruj_form_generowania_one_pagera()
     ' -----------------------------------------------------------------------
     ' -----------------------------------------------------------------------
     
+End Sub
+
+Public Sub putCwInOrder(ByRef d As Dictionary, Optional startingValue As Long)
+
+    ' ----------------------------------------------------------------------------------
+    
+    Dim x As Long, q As Long
+    Dim refKey
+    
+    
+    Dim mySortRange As Range
+    Set mySortRange = ThisWorkbook.Sheets("register").Range("z1:aa1")
+    
+    mySortRange.EntireColumn.Delete
+    Set mySortRange = ThisWorkbook.Sheets("register").Range("z1")
+    Dim rRef As Range
+    Set rRef = mySortRange.Offset(1, 0)
+    For Each k In d.Keys
+        
+        rRef.Value = k
+        rRef.Offset(0, 1).Value = startingValue
+        Set rRef = rRef.Offset(1, 0)
+    Next
+    
+    ' get entire range of yyyycw
+    
+    
+    If ThisWorkbook.Sheets("register").Range("z1").Offset(2, 0) <> "" Then
+        Set rRef = ThisWorkbook.Sheets("register").Range("z1").End(xlDown).End(xlDown)
+    Else
+        Set rRef = ThisWorkbook.Sheets("register").Range("z1").End(xlDown)
+    End If
+    
+    
+    Set mySortRange = ThisWorkbook.Sheets("register").Range(mySortRange, rRef.Offset(0, 1))
+    mySortRange.Sort mySortRange, xlDescending
+    
+    
+    Set d = Nothing
+    Set d = New Dictionary
+    Dim ir As Range
+    For x = 1 To mySortRange.Count Step 2
+    
+        Set ir = mySortRange(x)
+        ' Debug.Print ir.Row ' OK
+        If ir <> "" Then
+            d.Add ir, ir.Offset(0, 1)
+        End If
+
+            
+    Next x
+    
+    
+    ' ----------------------------------------------------------------------------------
 End Sub

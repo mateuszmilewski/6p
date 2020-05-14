@@ -42,7 +42,7 @@ Public Sub import_from_another_6p(ictrl As IRibbonControl)
     For Each w In Workbooks
         With FormCatchWizard.ListBox1
             If CStr(w.name) <> CStr(ThisWorkbook.name) Then
-                .AddItem CStr(w.name)
+                .addItem CStr(w.name)
             End If
         End With
     Next w
@@ -73,21 +73,58 @@ Public Sub innerRunLogicFor6P2(filename As String)
     
 
     Set wrk = Nothing
-    Set wrk = Workbooks(CStr(filename))
-    wrkCollection.Add wrk
+    
+    
+    Set wrk = Application.Workbooks.Open(CStr(filename), True, True)
+    
+    Do
+        DoEvents
+    Loop While wrk Is Nothing
+    
+    ' Set wrk = Workbooks(CStr(filename))
+    ' wrkCollection.Add wrk
     SIXP.LoadingFormModule.incLoadingForm
 
-    
-    For Each wrk In wrkCollection
+'
+'    For Each wrk In wrkCollection
+'
+'        'Debug.Print wrk.name
+'        'Debug.Print wrkCollection.Count
+'
+'        SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+'        If checkIfYouCanMigrateData(wrk) Then
+'            migrateDataBetween wrk, ThisWorkbook ' private subs from leanData already in...
+'        Else
+'            'MsgBox "wybrany plik: " & CStr(wrk.FullName) & " nie spelnia standardow!", vbCritical
+'            'End
+'        End If
+'    Next wrk
+
+    Debug.Print wrk.name
+
+    SIXP.LoadingFormModule.increaseLoadingFormStatus 100
+    If checkIfYouCanMigrateData(wrk) Then
+        migrateDataBetween wrk, ThisWorkbook ' private subs from leanData already in...
+    Else
+        'MsgBox "wybrany plik: " & CStr(wrk.FullName) & " nie spelnia standardow!", vbCritical
+        'End
         
-        SIXP.LoadingFormModule.increaseLoadingFormStatus 100
-        If checkIfYouCanMigrateData(wrk) Then
-            migrateDataBetween wrk, ThisWorkbook ' private subs from leanData already in...
-        Else
-            'MsgBox "wybrany plik: " & CStr(wrk.FullName) & " nie spelnia standardow!", vbCritical
-            'End
-        End If
-    Next wrk
+        Debug.Print "wybrany plik: " & CStr(wrk.FullName) & " nie spelnia standardow!"
+    End If
+    
+    
+    ' after data migration just close without saving
+    ' -------------------------------------------------
+    'For Each wrk In wrkCollection
+    '    wrk.Close False
+    'Next wrk
+    
+    wrk.Close False
+    
+    
+    ' -------------------------------------------------
+    
+    
     
     
     Application.ScreenUpdating = True
@@ -216,20 +253,20 @@ End Sub
 Private Function checkIfYouCanMigrateData(wrk As Workbook) As Boolean
     checkIfYouCanMigrateData = False
     
-    Dim Sh As Worksheet
-    Set Sh = Nothing
+    Dim sh As Worksheet
+    Set sh = Nothing
     
     checkIfYouCanMigrateData = CBool( _
-        checkOneSheet(wrk, SIXP.G_main_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_order_release_status_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_recent_build_plan_changes_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_cont_pnoc_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_osea_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_totals_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_resp_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_del_conf_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_open_issues_sh_nm, Sh) _
-        And checkOneSheet(wrk, SIXP.G_xq_sh_nm, Sh) _
+        checkOneSheet(wrk, SIXP.G_main_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_order_release_status_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_recent_build_plan_changes_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_cont_pnoc_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_osea_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_totals_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_resp_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_del_conf_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_open_issues_sh_nm, sh) _
+        And checkOneSheet(wrk, SIXP.G_xq_sh_nm, sh) _
         )
     
 End Function
@@ -330,6 +367,12 @@ Private Sub skopiujDane(shName As String, sWrk As Workbook, dWrk As Workbook)
     
     
     
+    ' tylko jedna linijka kodu byla potrzebna!
+    On Error Resume Next
+    sourceSh.ShowAllData
+    
+    
+    
     ' logika przesuwajaca destRange do pierwszej pustej kolumny
     Set destRange = destSh.Range("A1")
     If Trim(destRange.Offset(1, 0)) <> "" Then
@@ -337,6 +380,8 @@ Private Sub skopiujDane(shName As String, sWrk As Workbook, dWrk As Workbook)
     Else
         Set destRange = destSh.Range("A2")
     End If
+    
+    Debug.Print destRange.Address
     
     
     ' source range zawsze od drugiej komorki lecimy po calosci
@@ -383,7 +428,7 @@ Private Sub removeEmptyBetween(dsh As Worksheet)
 
     Dim r As Range
     
-    Set r = dsh.Cells(2 ^ 10, 1)
+    Set r = dsh.Cells(2 ^ 19, 1)
     Set r = r.End(xlUp)
     
     
@@ -394,7 +439,7 @@ Private Sub removeEmptyBetween(dsh As Worksheet)
                 r.EntireRow.Delete xlShiftUp
                 
                 
-                Set r = dsh.Cells(2 ^ 10, 1)
+                Set r = dsh.Cells(2 ^ 19, 1)
                 Set r = r.End(xlUp).Offset(1, 0)
             End If
         
@@ -524,7 +569,14 @@ Private Sub entireRowsRemovalIfEmpty(dsh As Worksheet)
     If r.Offset(1, 0) <> "" Then
         
         Set r = r.End(xlDown).Offset(1, 0)
-        Set r = dsh.Range(r, dsh.Cells(2 ^ 10, 1))
+        ' tutaj byl powazny blad ktory uniemozliwial zrobienie wiecej niz 1024 komorek :D
+        ' !!! ---------------------------------------------------------------------------------
+        
+         ' myslalem ze 2 ^ 10 to duzo a w symie wychodzilo ledwie ponad tysiac to troche za malo
+         ' 2 ^ 20 to ponad milion i  w sumie wszystkie komorki excela
+         ' w ramach buforu wyrzucilem tysiac wstecz
+        Set r = dsh.Range(r, dsh.Cells(2 ^ 20 - 1000, 1))
+        ' !!! ---------------------------------------------------------------------------------
         
         r.EntireRow.Delete xlShiftUp
     Else
@@ -566,7 +618,7 @@ Private Sub removeDuplicatesInDest(dsh As Worksheet)
         Index = Index + 1
     Loop
     
-    obszar.RemoveDuplicates Columns:=(varArr), Header:=xlYes
+    obszar.RemoveDuplicates Columns:=(varArr), header:=xlYes
     
     dsh.Activate
     dsh.Cells(1, 1).Select
@@ -578,7 +630,7 @@ Private Sub removeDuplicatesInDest(dsh As Worksheet)
     Application.DisplayAlerts = True
 End Sub
 
-Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(Sh As Worksheet, topLeft As Range, topRight As Range) As Range
+Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(sh As Worksheet, topLeft As Range, topRight As Range) As Range
 
     Set zdefiniujKwadraciakaDoSkopiowaniaXD = Nothing
     
@@ -586,13 +638,16 @@ Private Function zdefiniujKwadraciakaDoSkopiowaniaXD(Sh As Worksheet, topLeft As
     
     Dim bottomRight As Range
     If topLeft.Offset(1, 0) <> "" Then
-        Set bottomRight = Sh.Cells(topLeft.End(xlDown).Row, topRight.Column)
+        Set bottomRight = sh.Cells(topLeft.End(xlDown).Row, topRight.Column)
     Else
-        Set bottomRight = Sh.Cells(topLeft.Row, topRight.Column)
+        Set bottomRight = sh.Cells(topLeft.Row, topRight.Column)
     End If
     
     
-    Set zdefiniujKwadraciakaDoSkopiowaniaXD = Sh.Range(topLeft, bottomRight)
+    Debug.Print "zdefiniony kwadraciak to: " & sh.Range(topLeft, bottomRight).Address
+    
+    
+    Set zdefiniujKwadraciakaDoSkopiowaniaXD = sh.Range(topLeft, bottomRight)
     
     SIXP.LoadingFormModule.incLoadingForm
     

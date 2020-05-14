@@ -50,7 +50,20 @@ Public Sub catch(ByRef w As Workbook)
     
     
     
+    Dim r As Range
+    Set r = master.Range("A1")
+    Set r = master.Range(r, r.End(xlDown).Offset(0, 50))
     
+    ' Debug.Print r.Address
+    
+    Dim f As Range
+    Set f = r.Find("*#*")
+    
+    If Not f Is Nothing Then
+        MsgBox "W arkuszu master znjaduja sie hashe, makro przestaje dzialac, a Ty wez popraw dane!"
+        End
+    End If
+
     
     ' ------------------------------------------------------------------------------
 End Sub

@@ -20,6 +20,21 @@ Attribute VB_Name = "GlobalModule"
 ' zmienne globalne nazw arkuszy dostepnych w danym projekcie
 
 
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+Global Const G_KOLUMNA_NEW_TABLE_RGYR = 12
+'
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+Global Const G_KOLUMNA_NEW_TABLE_RPUS = 8
+'
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
 Global GLOBAL_POZWALAM_NA_REAKCJE_NA_ZMIANY As Boolean
 
 Global Const G_register_sh_nm = "register"
@@ -34,6 +49,9 @@ Global Const G_config_sh_nm = "config"
 Global Const G_totals_sh_nm = "TOTALS"
 Global Const G_del_conf_sh_nm = "DELIVERY CONFIRMATION STATUS"
 Global Const G_one_pager_sh_nm = "ONE PAGER"
+
+
+Global Const G_NEW_TABLE_SH_NM = "newTable"
 
 Global Const G_NEW_ONE_PAGER_SH_NM = "NEW ONE PAGER"
 Global Const G_NEW_DEL_CONF_SH_NM = "NEW DEL CONF"
@@ -56,6 +74,7 @@ Global Const G_xq_sh_nm = "XQ HANDLER"
 
 Global Const G_PHASE_LIST_SH_NM = "PHASE_LIST"
 Global Const G_WIZARD_BUFF_SH_NM = "WIZARD_BUFF"
+Global Const G_SECHEL_BUFF_SH_NM = "SECHEL_BUFF"
 Global Const G_DEL_CONF_SPECIAL_SH_NM = "delivery_confirmation_special"
 
 Global Const G_CC_SH_NM = "CountryCodes"
@@ -72,7 +91,7 @@ Global Const G_BTN_TEXT_EDIT = "Edytuj"
 Global Const G_ORDER_RELEASE_STATUS_LIMIT = 8
 Global Const G_RECENT_BUILD_PLAN_CHANGES_LIMIT = 4
 Global Const G_CHART1_CONTRACTED_PNOC_LIMIT = 5
-Global Const G_OPEN_ISSUES_LIMIT = 12
+Global Const G_OPEN_ISSUES_LIMIT = 240
 
 
 
@@ -84,7 +103,7 @@ Global Const G_MAIN_TB_FROM_Q = "main_table"
 
 Global Const G_EXCEL_REPORT_PREFIX = "Project_Report_"
 
-Global Const G_PATH_FOR_SEARCHING = "X:\PLGLI-3-Exchange\SoE\FMA\"
+Global Const G_PATH_FOR_SEARCHING = "X:\PLGLI-3-Exchange\SoE\FMA\PROJECT REVIEW\"
 Global Const G_6P_POSTFIX = "6P.xlsm"
 
 
@@ -96,3 +115,9 @@ Global Const G_NEW_ONE_PAGER_FLAG = True
 
 
 Global G_ONE_ITEM_LOGIC_WAITING_FOR_SELECTION_CHANGE As Boolean
+
+
+
+
+' 6 to 7 becuase added as first column RLOG / PPL
+Global Const G_GDZIE_ZACZYNA_SIE_1TB_DLA_NEW_TABLE = 7

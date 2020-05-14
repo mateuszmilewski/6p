@@ -1,22 +1,22 @@
 Attribute VB_Name = "LoadingFormModule"
 Option Explicit
 
-Private Declare Function FindWindow Lib "User32" _
+Private Declare Function FindWindow Lib "user32" _
 Alias "FindWindowA" ( _
 ByVal lpClassName As String, _
 ByVal lpWindowName As String) As Long
 
-Private Declare Function GetWindowLong Lib "User32" _
+Private Declare Function GetWindowLong Lib "user32" _
 Alias "GetWindowLongA" ( _
 ByVal hwnd As Long, _
 ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "User32" _
+Private Declare Function SetWindowLong Lib "user32" _
 Alias "SetWindowLongA" (ByVal hwnd As Long, _
 ByVal nIndex As Long, _
 ByVal dwNewLong As Long) As Long
 
-Private Declare Function DrawMenuBar Lib "User32" ( _
+Private Declare Function DrawMenuBar Lib "user32" ( _
 ByVal hwnd As Long) As Long
 
 Private Sub RemoveTitleBar(frm As Object)

@@ -85,7 +85,7 @@ Private Sub prepare_comboboxes_and_dt_picker()
         
         For x = 2 To 4
         
-            .ComboBoxStatus.AddItem CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
+            .ComboBoxStatus.addItem CStr(ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Cells(x, 1))
             
             If x = 2 Then
                 .ComboBoxStatus.Value = _
@@ -100,7 +100,7 @@ Private Sub prepare_comboboxes_and_dt_picker()
         Set r = ThisWorkbook.Sheets(SIXP.G_PHASE_LIST_SH_NM).Range("B2")
         Do
             ' ----------------------------------
-            .ComboBoxFAZA.AddItem CStr(r)
+            .ComboBoxFAZA.addItem CStr(r)
             ' ----------------------------------
             Set r = r.Offset(1, 0)
         Loop Until r = ""
@@ -109,7 +109,7 @@ Private Sub prepare_comboboxes_and_dt_picker()
         Set r = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("D2")
         Do
             ' ----------------------------------
-            .ComboBoxPLT.AddItem CStr(r)
+            .ComboBoxPLT.addItem CStr(r)
             ' ----------------------------------
             Set r = r.Offset(1, 0)
         Loop Until r = ""

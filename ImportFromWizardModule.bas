@@ -35,7 +35,7 @@ Public Sub import_wizard_content(ictrl As IRibbonControl)
         
     For Each w In Workbooks
         With FormCatchWizard.ListBox1
-            .AddItem w.name
+            .addItem w.name
         End With
     Next w
     

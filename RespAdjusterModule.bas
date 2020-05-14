@@ -73,9 +73,9 @@ Private Sub go_to_register_and_prepare_form(ByRef dd As Dictionary, rf As Range)
         Do
             
             If Trim(rf.Offset(0, 1)) = "1" Then
-                .ListBoxInScope.AddItem Trim(rf)
+                .ListBoxInScope.addItem Trim(rf)
             Else
-                .ListBoxOutOfScope.AddItem Trim(rf)
+                .ListBoxOutOfScope.addItem Trim(rf)
             End If
             Set rf = rf.Offset(1, 0)
         Loop Until Trim(rf) = ""
@@ -91,11 +91,11 @@ End Sub
 
 
 Private Function verify_with_wizard_buff()
-    Dim Sh As Worksheet
-    Set Sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
+    Dim sh As Worksheet
+    Set sh = ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM)
     
     Dim r As Range
-    Set r = Sh.Range("B2")
+    Set r = sh.Range("B2")
     
     
     Dim d As Dictionary
@@ -137,11 +137,11 @@ Private Function complete_data_from_register(dd As Dictionary, rr As Range) As D
     ' dd to slownik z juz czesciowo skomplemtowanymi danymi z wizard buff
     ' rr poczatek zasiegu skomplemtowanych danych w rejestrze
     
-    Dim Sh As Worksheet
-    Set Sh = ThisWorkbook.Sheets(SIXP.G_register_sh_nm)
+    Dim sh As Worksheet
+    Set sh = ThisWorkbook.Sheets(SIXP.G_register_sh_nm)
     
     Dim r As Range
-    Set r = Sh.Range("G2")
+    Set r = sh.Range("G2")
     
     
     Dim d As Dictionary

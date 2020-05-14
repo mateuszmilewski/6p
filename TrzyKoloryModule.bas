@@ -83,7 +83,7 @@ Private Sub fill_combobox()
         l.zrob_mnie_z_range r
         txt = CStr(lr.return_full_concated_r_string_comma_seperated(l))
         
-        Form3Kolory.ComboBoxLink.AddItem txt
+        Form3Kolory.ComboBoxLink.addItem txt
         
         Set r = r.Offset(1, 0)
     Loop Until Trim(r) = ""

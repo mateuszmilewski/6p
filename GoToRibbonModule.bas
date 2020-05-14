@@ -17,6 +17,20 @@ Attribute VB_Name = "GoToRibbonModule"
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+' new for 0.84
+' ----------------------------------------------------------
+' ----------------------------------------------------------
+Public Sub goto_new_table_sh(ictrl As IRibbonControl)
+    ThisWorkbook.Sheets(SIXP.G_NEW_TABLE_SH_NM).Activate
+End Sub
+
+Public Sub goto_sechel_buff_sh(ictrl As IRibbonControl)
+    ThisWorkbook.Sheets(SIXP.G_SECHEL_BUFF_SH_NM).Activate
+End Sub
+' ----------------------------------------------------------
+' ----------------------------------------------------------
+
+
 Public Sub goto_wiz_buff_sh(ictrl As IRibbonControl)
     ThisWorkbook.Sheets(SIXP.G_WIZARD_BUFF_SH_NM).Activate
 End Sub

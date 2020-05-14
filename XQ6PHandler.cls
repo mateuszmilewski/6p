@@ -73,7 +73,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             
             .TextBoxCmnt = "your comment... "
             .DTPickerPPAPGate = Date
-            .TextBoxPPAPGate = CStr(parse_from_date_to_yyyycw(Date))
+            .TextBoxPPAPGate = Date ' CStr(parse_from_date_to_yyyycw(Date))
             
             
             add_combobox_for_project_type o
@@ -87,7 +87,7 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
             .LabelTitle.Caption = CStr(proj)
             .BtnSubmit.Caption = CStr(eca)
             
-            Set r = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm).Cells(1, 1)
+            Set r = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm).Cells(1, 1)
             Do
                 If CStr(.LabelTitle.Caption) = _
                     CStr(Trim(r) & ", " & Trim(r.Offset(0, 1)) & ", " & Trim(r.Offset(0, 2)) & ", " & Trim(r.Offset(0, 3))) Then
@@ -95,7 +95,9 @@ Public Sub inicjuj_wstepne_wartosci_pol_do_wypelnienia(proj As String, eca As St
                 
                         .TextBoxCmnt = CStr(r.Offset(0, SIXP.e_xq_comment - 1))
                         .TextBoxPPAPGate = CStr(r.Offset(0, SIXP.e_xq_ppap_gate - 1))
-                        .DTPickerPPAPGate = SIXP.GlobalFooModule.from_yyyy_cw_to_monday_from_this_week(CStr(r.Offset(0, SIXP.e_xq_ppap_gate - 1)))
+                        ' .DTPickerPPAPGate = SIXP.GlobalFooModule.from_yyyy_cw_to_monday_from_this_week(CStr(r.Offset(0, SIXP.e_xq_ppap_gate - 1)))
+                        On Error Resume Next
+                        .DTPickerPPAPGate = CDate(CStr(r.Offset(0, SIXP.e_xq_ppap_gate - 1)))
                         
                         
                         add_combobox_for_project_type o
@@ -125,7 +127,7 @@ Private Sub add_combobox_for_project_type(o As FormX6P)
         Set pt = ThisWorkbook.Sheets(SIXP.G_register_sh_nm).Range("F2")
         
         Do
-            o.ComboBoxXqProjectType.AddItem CStr(pt)
+            o.ComboBoxXqProjectType.addItem CStr(pt)
             Set pt = pt.Offset(1, 0)
         Loop Until Trim(pt) = ""
         
