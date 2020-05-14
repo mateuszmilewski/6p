@@ -38,7 +38,7 @@ Private tmp_link As T_Link
 
 Private main_sh As Worksheet
 
-Private Sh As Worksheet
+Private sh As Worksheet
 
 Private r As Range
 
@@ -93,40 +93,40 @@ Private Sub adjust_na_guzikach(ByRef l As T_Link)
     With FormMain
         
         ' order release status
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_order_release_status_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_order_release_status, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_order_release_status_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_order_release_status, sh, main_sh, l, paleta
         
         ' recent bp ch
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_recent_build_plan_changes, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_recent_build_plan_changes_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_recent_build_plan_changes, sh, main_sh, l, paleta
         
         ' chart cont pnoc
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_chart_contracted_pnoc, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_cont_pnoc_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_chart_contracted_pnoc, sh, main_sh, l, paleta
         
         ' sea
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_osea, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_osea_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_osea, sh, main_sh, l, paleta
         
         ' totals
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_totals, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_totals_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_totals, sh, main_sh, l, paleta
         
         ' xq
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_xq, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_xq_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_xq, sh, main_sh, l, paleta
         
         ' del conf
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_del_conf, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_del_conf_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_del_conf, sh, main_sh, l, paleta
         
         ' open issues
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_open_issues, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_open_issues, sh, main_sh, l, paleta
         
         ' resp
-        Set Sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
-        adjustuj_guzik SIXP.e_main_last_update_on_resp, Sh, main_sh, l, paleta
+        Set sh = ThisWorkbook.Sheets(SIXP.G_resp_sh_nm)
+        adjustuj_guzik SIXP.e_main_last_update_on_resp, sh, main_sh, l, paleta
     End With
     
 End Sub
@@ -160,7 +160,7 @@ Private Sub dodaj_najpierw_zrodla()
     
         With FormMain
             
-            .ComboBoxProject.AddItem links(klucz).project & ", " & links(klucz).plt & ", " & links(klucz).faza & ", " & CStr(links(klucz).cw)
+            .ComboBoxProject.addItem links(klucz).project & ", " & links(klucz).plt & ", " & links(klucz).faza & ", " & CStr(links(klucz).cw)
         End With
     Next
 End Sub

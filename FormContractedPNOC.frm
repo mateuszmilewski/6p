@@ -31,6 +31,10 @@ Attribute VB_Exposed = False
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
+Private walidator As Validator
+
+
 Private Sub BtnGoBack_Click()
     Hide
     run_FormMain Me.LabelTitle
@@ -108,19 +112,38 @@ End Sub
 
 Private Sub BtnSubmit_Click()
 
-    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    Set walidator = New Validator
+    With walidator
+        .dodajDoKolekcji Me.TextBox1, .pStr_checkIfNumber ' to jest suma - narazie bede to sprawdzal
+        .dodajDoKolekcji Me.TextBoxActionableFMA, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxContracted, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxOpenBP, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxPNOC, .pStr_checkIfNumber
+        
+        .run
+    End With
 
-    ' text na guziki
-    ' Global Const G_BTN_TEXT_ADD = "Dodaj"
-    ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    'Hide
-    inner_calc
+
+    If walidator.pass Then
+
+
+        SIXP.GlobalFooModule.gotoThisWorkbookMainA1
     
-    ' run_FormMain Me.LabelTitle
-    
-    
-    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
-        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        ' text na guziki
+        ' Global Const G_BTN_TEXT_ADD = "Dodaj"
+        ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
+        'Hide
+        inner_calc
+        
+        ' run_FormMain Me.LabelTitle
+        
+        
+        If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+            Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        End If
+        
+    Else
+        MsgBox "Validation failed!"
     End If
 End Sub
 
@@ -442,7 +465,7 @@ Private Sub PnocMore_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     jaka_kolwiek_zmiana_nastapila
 End Sub
 
-Private Sub TextBox1_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Single, ByVal Y As Single)
+Private Sub TextBox1_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Single, ByVal y As Single)
     jaka_kolwiek_zmiana_nastapila
 End Sub
 

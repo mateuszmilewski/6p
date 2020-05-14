@@ -17,7 +17,7 @@ Attribute VB_Name = "ExportThisProjectMod"
 ' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-Global Const REPO_PATH = "C:\WORKSPACE\macros\LESS\6p\repo\"
+Global Const REPO_PATH = "C:\WORKSPACE\LESS\6p\repo\"
 
 Private Sub export_this_project()
     
@@ -45,6 +45,12 @@ Private Sub export_this_project()
             txt = VBComp.name & ".frm"
             VBComp.Export CStr(REPO_PATH) & txt
             Debug.Print txt
+            
+        ElseIf VBComp.Type = vbext_ct_Document Then
+        
+            txt = VBComp.name & ".cls"
+            VBComp.Export CStr(REPO_PATH) & txt
+            Debug.Print
             
         End If
          

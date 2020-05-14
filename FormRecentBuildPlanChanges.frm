@@ -31,6 +31,7 @@ Attribute VB_Exposed = False
 ' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+Private walidator As Validator
 
 
 Private Sub BtnClear_Click()
@@ -60,26 +61,42 @@ End Sub
 '    Me.TextBoxCW = SIXP.GlobalFooModule.parse_from_date_to_yyyycw(CDate(Me.DTPicker1.Value))
 'End Sub
 
+
 Private Sub BtnGoBack_Click()
     Hide
     run_FormMain Me.LabelTitle
 End Sub
 
 Private Sub BtnSubmit_Click()
+
+    Set walidator = New Validator
+    With walidator
+        .dodajDoKolekcji Me.TextBoxNoOfVeh, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxTBW, .pStr_checkIfYYYYCW
+        .dodajDoKolekcji Me.TextBoxReleased, .pStr_checkIfYYYYCW
+        
+        .run
+    End With
+    
+    
+    If walidator.pass Then
     
         
-    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
-    
-    ' text na guziki
-    ' Global Const G_BTN_TEXT_ADD = "Dodaj"
-    ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    'Hide
-    inner_calc
-    
-    ' run_FormMain Me.LabelTitle
-    
-    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
-        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+        
+        ' text na guziki
+        ' Global Const G_BTN_TEXT_ADD = "Dodaj"
+        ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
+        'Hide
+        inner_calc
+        
+        ' run_FormMain Me.LabelTitle
+        
+        If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+            Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        End If
+    Else
+        MsgBox "Validation failed!"
     End If
 End Sub
 

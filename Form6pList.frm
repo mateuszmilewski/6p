@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Form6pList
    ClientHeight    =   5265
    ClientLeft      =   45
    ClientTop       =   375
-   ClientWidth     =   9390
+   ClientWidth     =   16200
    OleObjectBlob   =   "Form6pList.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -57,7 +57,7 @@ Private Sub ListBoxIn_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
 
     For x = 0 To Me.ListBoxIn.ListCount - 1
         If Me.ListBoxIn.Selected(x) Then
-            Me.ListBoxOut.AddItem Me.ListBoxIn.List(x)
+            Me.ListBoxOut.addItem Me.ListBoxIn.List(x)
             Me.ListBoxIn.RemoveItem x
         End If
     Next x
@@ -69,7 +69,7 @@ Private Sub ListBoxOut_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
 
     For x = 0 To Me.ListBoxOut.ListCount - 1
         If Me.ListBoxOut.Selected(x) Then
-            Me.ListBoxIn.AddItem Me.ListBoxOut.List(x)
+            Me.ListBoxIn.addItem Me.ListBoxOut.List(x)
             Me.ListBoxOut.RemoveItem x
         End If
     Next x

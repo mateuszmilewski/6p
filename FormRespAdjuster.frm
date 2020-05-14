@@ -37,10 +37,10 @@ Private Sub BtnFMALeft_Click()
     Do
         If CStr(rr) Like "*FMA*" Then
             ' rr.Offset(0, 1) = 1
-            Me.ListBoxInScope.AddItem CStr(rr)
+            Me.ListBoxInScope.addItem CStr(rr)
         Else
             ' rr.Offset(0, 1) = 0
-            Me.ListBoxOutOfScope.AddItem CStr(rr)
+            Me.ListBoxOutOfScope.addItem CStr(rr)
         End If
         Set rr = rr.Offset(1, 0)
     Loop Until Trim(rr) = ""
@@ -141,10 +141,10 @@ Private Sub ListBoxInScope_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     Me.ListBoxInScope.Clear
     
     For Each i In c1
-        Me.ListBoxInScope.AddItem CStr(i)
+        Me.ListBoxInScope.addItem CStr(i)
     Next i
     
-    Me.ListBoxOutOfScope.AddItem CStr(item)
+    Me.ListBoxOutOfScope.addItem CStr(item)
 
 End Sub
 
@@ -172,9 +172,9 @@ Private Sub ListBoxOutOfScope_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     Me.ListBoxOutOfScope.Clear
     
     For Each i In c1
-        Me.ListBoxOutOfScope.AddItem CStr(i)
+        Me.ListBoxOutOfScope.addItem CStr(i)
     Next i
     
-    Me.ListBoxInScope.AddItem CStr(item)
+    Me.ListBoxInScope.addItem CStr(item)
 End Sub
 

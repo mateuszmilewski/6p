@@ -33,6 +33,11 @@ Attribute VB_Exposed = False
 
 
 
+
+Private walidator As Validator
+
+
+
 Private Sub BtnCopy_Click()
 
     copyOneItemFromDifferentRecord Me.name
@@ -46,18 +51,40 @@ End Sub
 Private Sub BtnSubmit_Click()
 
 
-    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    Set walidator = New Validator
+    With walidator
+        .dodajDoKolekcji Me.TextBoxMRD, .pStr_checkIfYYYYCW
+        .dodajDoKolekcji Me.TextBoxBuild, .pStr_checkIfYYYYCW
+        .dodajDoKolekcji Me.TextBoxBOMFreeze, .pStr_checkIfYYYYCW
+        
+        .dodajDoKolekcji Me.TextBoxNoOfVeh, .pStr_checkIfNumber
+        
+        .dodajDoKolekcji Me.TextBoxOrdersDue, .pStr_checkIfYYYYCW
+        .dodajDoKolekcji Me.TextBoxReleased, .pStr_checkIfYYYYCW
+        
+        .dodajDoKolekcji Me.TextBoxWeeksDelay, .pStr_checkIfNumber
+        
+        .run
+    End With
+    
 
-    ' text na guziki
-    ' Global Const G_BTN_TEXT_ADD = "Dodaj"
-    ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    'Hide
-    inner_calc
+    If walidator.pass Then
+
+        SIXP.GlobalFooModule.gotoThisWorkbookMainA1
     
-    'run_FormMain Me.LabelTitle
-    
-    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
-        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        ' text na guziki
+        ' Global Const G_BTN_TEXT_ADD = "Dodaj"
+        ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
+        'Hide
+        inner_calc
+        
+        'run_FormMain Me.LabelTitle
+        
+        If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+            Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        End If
+    Else
+        MsgBox "Walidation failed!"
     End If
 End Sub
 

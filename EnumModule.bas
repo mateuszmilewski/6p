@@ -39,6 +39,35 @@ Attribute VB_Name = "EnumModule"
 ' Set pcs(9) = ThisWorkbook.Sheets(SIXP.G_open_issues_sh_nm)
 
 
+
+Public Enum E_SECHEL_EXTRACT
+    E_SECHEL__GAc_Nom_NOA = 1
+    E_SECHEL__Article
+    E_SECHEL__Designation
+    E_SECHEL__Fourn
+    E_SECHEL__Nom_fournisseur
+    E_SECHEL__RU
+    E_SECHEL__Affaire
+    E_SECHEL__Date_echeance
+    E_SECHEL__Qte_echeancee
+    E_SECHEL__Qte_livree
+    E_SECHEL__Mag
+    E_SECHEL__Sousprojet
+    E_SECHEL__Doc_achat
+    E_SECHEL__EI_MO
+    E_SECHEL__Faux_manquant
+    E_SECHEL__Livr_Pt_Dur
+    E_SECHEL__Livr_Confirme
+    E_SECHEL__Commentaires
+    E_SECHEL__Date_Liv
+    E_SECHEL__Date_EnvEch
+    E_SECHEL__Mot_Cle
+    E_SECHEL__Date_Ajout
+    E_SECHEL__Situation
+    E_SECHEL__NewRef
+End Enum
+
+
 Public Enum E_ONE_PAGER_LAYOUT
     E_NEW_ONE_PAGER_LAYOUT
     E_OLD_ONE_PAGER_LAYOUT
@@ -338,6 +367,7 @@ End Enum
 Public Enum E_ONE_PAGERS_INTO
     E_ONE_PAGERS_INTO_POWER_POINT
     E_ONE_PAGERS_INTO_SEPERATE_EXCELS
+    E_ONE_PAGERS_INTO_NEW_TABLE
 End Enum
 
 Public Enum E_SORT_TYPE

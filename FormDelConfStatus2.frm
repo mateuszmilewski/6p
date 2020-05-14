@@ -13,8 +13,30 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+' FORREST SOFTWARE
+' Copyright (c) 2018 Mateusz Forrest Milewski
+'
+' Permission is hereby granted, free of charge,
+' to any person obtaining a copy of this software and associated documentation files (the "Software"),
+' to deal in the Software without restriction, including without limitation the rights to
+' use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+' and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+'
+' The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+'
+' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+' WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 Private eh As NewDelConfEventHandler
 Private ea As EventAdapter
+
+
+Private walidator As Validator
 
 
 
@@ -25,13 +47,46 @@ End Sub
 
 Private Sub BtnSubmit_Click()
     
-    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    Dim c As Control
+    Set walidator = New Validator
+    With walidator
+        
+        For Each c In Me.Controls
 
-
-    new_inner_calc
-
-    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
-        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+            ' not really like this solution...
+            ' top 3 textbox have name with prefix Special!
+            If c.name Like "TextBox*" Then
+                
+                ' we have inside tb real textbox object!
+                ' -------------------------------------------
+                Debug.Print c.name & " ready for validation!"
+                
+                .dodajDoKolekcji c, .pStr_checkIfNumber
+                
+                ' -------------------------------------------
+            End If
+            
+            
+        Next c
+        
+        
+        
+        .run
+    End With
+    
+    
+    If walidator.pass Then
+    
+        SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    
+    
+        new_inner_calc
+    
+        If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+            Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        End If
+    Else
+        MsgBox "Validation failed!"
     End If
 End Sub
 
@@ -336,7 +391,10 @@ Private Function sprawdz_czy_open_jest_zolte_czy_moze_jest_czerwone(b As Workshe
     yyyycwBOM = Replace(Replace(CStr(b.Range("F1").Value), "CW", ""), "Y", "")
     
     Dim BOMDate As Date
-    BOMDate = SIXP.GlobalFooModule.from_yyyy_cw_to_monday_from_this_week(yyyycwBOM)
+    BOMDate = SIXP.GlobalFooModule.from_yyyy_cw_to_monday_from_this_week(yyyycwBOM) ' to jest sroga restryckja => musimy to przenisc na koniec tygodnia
+    
+    ' proste przeliczenie do soboty :)
+    BOMDate = BOMDate + 6
     
     If CDate(Date) <= CDate(BOMDate) Then
         sprawdz_czy_open_jest_zolte_czy_moze_jest_czerwone = "YELLOW"

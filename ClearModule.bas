@@ -263,13 +263,13 @@ Private Sub usunWpisWMain(r As Range, inMain As Boolean, l As T_Link, e As E_MAI
         r.Value = ""
     Else
     
-        Dim Sh As Worksheet
-        Set Sh = ThisWorkbook.Sheets(CStr(SIXP.G_main_sh_nm))
+        Dim sh As Worksheet
+        Set sh = ThisWorkbook.Sheets(CStr(SIXP.G_main_sh_nm))
         
         Set r = r.Parent.Cells(r.Row, 1)
         
         Dim tmp As Range
-        Set tmp = l.znajdz_siebie_w_arkuszu(Sh)
+        Set tmp = l.znajdz_siebie_w_arkuszu(sh)
         
         If Not tmp Is Nothing Then
         
@@ -279,4 +279,44 @@ Private Sub usunWpisWMain(r As Range, inMain As Boolean, l As T_Link, e As E_MAI
         End If
     End If
     
+End Sub
+
+
+
+
+Public Sub clearNewTableSheet()
+    
+    Dim newTableSh As Worksheet
+    Set newTbaleSh = ThisWorkbook.Sheets("newTable")
+    
+    Dim r As Range
+    Set r = newTbaleSh.Range("A1:A548576")
+
+    'Selection.Delete Shift:=xlUp
+    r.EntireRow.Delete xlShiftUp
+
+End Sub
+
+Public Sub checkIfGreyAndRemoveWithShiftUp(r As Range)
+
+    Dim newTableSh As Worksheet
+    Set newTbaleSh = ThisWorkbook.Sheets("newTable")
+    
+
+    If r.Interior.Color <> RGB(200, 200, 200) Then
+        r.EntireRow.Delete xlShiftUp
+    End If
+End Sub
+
+
+Public Sub clearNewOnePagerWorksheet()
+
+
+    Dim noprsh As Worksheet
+    Set noprsh = ThisWorkbook.Sheets("NEW ONE PAGER")
+    
+    Dim r As Range
+    Set r = noprsh.Range("A500:A548576")
+    r.EntireRow.Delete xlShiftUp
+
 End Sub

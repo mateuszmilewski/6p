@@ -162,7 +162,7 @@ Private Sub BtnImport_Click()
         
         For Each w In Workbooks
             With FormCatchWizard.ListBox1
-                .AddItem w.name
+                .addItem w.name
             End With
         Next w
         FormCatchWizard.czy_start_pochodzi_z_open_issues = True
@@ -218,7 +218,7 @@ Private Sub inner_submit(e As E_OPEN_ISSUES_CRUD)
 
         
                 ' Exit Do
-                Me.ListBox1.AddItem "Open issue #" & CStr(x) & ", " & _
+                Me.ListBox1.addItem "Open issue #" & CStr(x) & ", " & _
                     CStr(Trim(r.Offset(0, SIXP.e_open_issues_part_supplier - 1))) & ", " & _
                     r.Address
                 x = x + 1

@@ -34,7 +34,7 @@ Private Sub BtnImport_Click()
     Dim w As Workbook
     For Each w In Workbooks
         With FormCatchWizard.ListBox1
-            .AddItem w.name
+            .addItem w.name
         End With
     Next w
     FormCatchWizard.czy_start_pochodzi_z_open_issues = False

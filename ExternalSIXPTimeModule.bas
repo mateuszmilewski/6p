@@ -91,35 +91,35 @@ Public Sub inner_6p_time(mm, md, mp)
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 3)
             .Value = CStr(d.Cells(SIXP.mrd, 2))
             If .Comment Is Nothing Then
-                .addComment "MRD"
+                .AddComment "MRD"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 4)
             .Value = CStr(d.Cells(SIXP.build_start, 2))
             If .Comment Is Nothing Then
-                .addComment "BUILD START"
+                .AddComment "BUILD START"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 5)
             .Value = CStr(d.Cells(SIXP.build_end, 2))
             If .Comment Is Nothing Then
-                .addComment "BUILD END"
+                .AddComment "BUILD END"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 6)
             .Value = CStr(d.Cells(SIXP.BOM, 2))
             If .Comment Is Nothing Then
-                .addComment "BOM"
+                .AddComment "BOM"
             End If
         End With
         
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 7)
             .Value = CStr(d.Cells(SIXP.ppap_gate, 2))
             If .Comment Is Nothing Then
-                .addComment "PPAP GATE"
+                .AddComment "PPAP GATE"
             End If
         End With
         
@@ -127,7 +127,7 @@ Public Sub inner_6p_time(mm, md, mp)
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 9)
             .Value = CStr(Date)
             If .Comment Is Nothing Then
-                .addComment "Today"
+                .AddComment "Today"
             End If
         End With
         
@@ -136,7 +136,7 @@ Public Sub inner_6p_time(mm, md, mp)
         With .Cells(pierwszy_wiersz_pod_dane_ogolne, 10)
             .Value = CStr(d.Cells(SIXP.koordynator, 2))
             If .Comment Is Nothing Then
-                .addComment "FMA COORD"
+                .AddComment "FMA COORD"
             End If
         End With
         
@@ -1112,8 +1112,8 @@ Private Function parsuj_y_cw_do_daty_poniedzialkowej(r As Range) As Date
     
     If CStr(r) Like "Y*CW*" Then
         
-        Y = Mid(CStr(r), 2, 4)
-        d_str = Y & "-01-01"
+        y = Mid(CStr(r), 2, 4)
+        d_str = y & "-01-01"
         Dim d As Date
         d = CDate(d_str)
         
@@ -1125,7 +1125,7 @@ Private Function parsuj_y_cw_do_daty_poniedzialkowej(r As Range) As Date
                 Exit Do
             End If
             d = d + 1
-        Loop While CLng(Year(CDate(d_str))) = CLng(Y)
+        Loop While CLng(Year(CDate(d_str))) = CLng(y)
     Else
         MsgBox "parametr MRD jest zle zdefiniowany"
         End
@@ -1137,8 +1137,8 @@ Private Function parsuj_y_cw_do_daty_poniedzialkowej_arg_as_str(r As String) As 
     
     If CStr(r) Like "Y*CW*" Then
         
-        Y = Mid(CStr(r), 2, 4)
-        d_str = Y & "-01-01"
+        y = Mid(CStr(r), 2, 4)
+        d_str = y & "-01-01"
         Dim d As Date
         d = CDate(d_str)
         
@@ -1150,7 +1150,7 @@ Private Function parsuj_y_cw_do_daty_poniedzialkowej_arg_as_str(r As String) As 
                 Exit Do
             End If
             d = d + 1
-        Loop While CLng(Year(CDate(d_str))) = CLng(Y)
+        Loop While CLng(Year(CDate(d_str))) = CLng(y)
     Else
         MsgBox "parametr MRD jest zle zdefiniowany"
         End

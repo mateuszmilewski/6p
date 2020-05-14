@@ -53,10 +53,10 @@ Private Function przeszukajArkuszIUsunWystapienia(l As T_Link, shnm As String)
             ' main logic for data deletion
             ' ---------------------------------------------
             
-            Dim Sh As Worksheet, r As Range
-            Set Sh = ThisWorkbook.Sheets(CStr(shnm))
+            Dim sh As Worksheet, r As Range
+            Set sh = ThisWorkbook.Sheets(CStr(shnm))
             
-            Set r = l.znajdz_siebie_w_arkuszu(Sh)
+            Set r = l.znajdz_siebie_w_arkuszu(sh)
             
             If Not r Is Nothing Then
             

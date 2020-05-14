@@ -32,6 +32,8 @@ Attribute VB_Exposed = False
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+Private walidator As Validator
+
 Private Sub BtnGoBack_Click()
     Hide
     run_FormMain Me.LabelTitle
@@ -40,17 +42,42 @@ End Sub
 Private Sub BtnSubmit_Click()
 
 
-    SIXP.GlobalFooModule.gotoThisWorkbookMainA1
-
-    ' text na guziki
-    ' Global Const G_BTN_TEXT_ADD = "Dodaj"
-    ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
-    'Hide
-    inner_calc
+    Set walidator = New Validator
+    With walidator
+        .dodajDoKolekcji Me.TextBoxArrived, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxFMAEUR, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxFmaOsea, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxFuture, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxH1, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxInTransit, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxITDC, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxNA, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxNoPPAP, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxOrdered, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxPNOC, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxPPAP, .pStr_checkIfNumber
+        .dodajDoKolekcji Me.TextBoxTotal, .pStr_checkIfNumber
     
-    ' run_FormMain Me.LabelTitle
-    If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
-        Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        .run
+    End With
+
+
+    If walidator.pass Then
+
+        SIXP.GlobalFooModule.gotoThisWorkbookMainA1
+    
+        ' text na guziki
+        ' Global Const G_BTN_TEXT_ADD = "Dodaj"
+        ' Global Const G_BTN_TEXT_EDIT = "Edytuj"
+        'Hide
+        inner_calc
+        
+        ' run_FormMain Me.LabelTitle
+        If Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_ADD Then
+            Me.BtnSubmit.Caption = SIXP.G_BTN_TEXT_EDIT
+        End If
+    Else
+        MsgBox "Validation failed!"
     End If
 End Sub
 

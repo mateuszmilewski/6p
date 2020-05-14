@@ -48,7 +48,7 @@ Public Sub find_all_6p(ictrl As IRibbonControl)
         .ListBoxOut.Clear
         
         For Each el In c
-            .ListBoxIn.AddItem CStr(el)
+            .ListBoxIn.addItem CStr(el)
         Next el
         
         .Show vbModeless

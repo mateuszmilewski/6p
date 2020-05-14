@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormOnePager 
    Caption         =   "One Pagers Generator"
-   ClientHeight    =   5610
+   ClientHeight    =   6345
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   11235
@@ -33,6 +33,31 @@ Attribute VB_Exposed = False
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Public czy_uruchamiamy_eventy As Boolean
+
+
+
+Private Sub BtnNewSubmit1_Click()
+    Hide
+    
+    If Me.RadioExcels Then
+    
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS, E_NEW_ONE_PAGER_LAYOUT
+    ElseIf Me.RadioPowerPoint Then
+    
+        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT, E_NEW_ONE_PAGER_LAYOUT
+    Else
+    
+        MsgBox "nie ma innej mozliwosci! blad krytyczny, makro zatrzymalo sie!"
+        End
+    End If
+End Sub
+
+Private Sub BtnNewTable_Click()
+
+    Hide
+    skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_NEW_TABLE, E_NEW_ONE_PAGER_LAYOUT
+
+End Sub
 
 Private Sub BtnReset_Click()
     
@@ -200,21 +225,9 @@ Private Function czy_ten_wiersz_jest_dopasowany_do_selekcji(r As Range) As Boole
         dopasowanie_cw
 End Function
 
-Private Sub BtnSubmitNew_Click()
-    Hide
-    
-    If Me.RadioExcels Then
-    
-        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_SEPERATE_EXCELS, E_NEW_ONE_PAGER_LAYOUT
-    ElseIf Me.RadioPowerPoint Then
-    
-        skompletuj_dane_pod_generowania_kolejnych_one_pagerow E_ONE_PAGERS_INTO_POWER_POINT, E_NEW_ONE_PAGER_LAYOUT
-    Else
-    
-        MsgBox "nie ma innej mozliwosci! blad krytyczny, makro zatrzymalo sie!"
-        End
-    End If
-End Sub
+
+
+
 
 Private Sub ListBoxCWs_Change()
     inner_change_on_listboxes
@@ -256,8 +269,13 @@ Private Sub inner_change_on_listboxes()
     
     
         pobierz_wszystkie_selekcje proj_dic, plt_dic, faza_dic, cw_dic
+        
+        
+        ' Debug.Print "proj: " & proj_dic.Count & " plt: " & plt_dic.Count & " faza: " & faza_dic.Count & " cw_dic: " & cw_dic.Count
+        
         przejrzyj_na_podstawie_selekcji_jeszcze_raz_zbior_danych proj_dic, plt_dic, faza_dic, cw_dic
         przeorganizuj_listboxy proj_dic, plt_dic, faza_dic, cw_dic
+        
         
         Set proj_dic = Nothing
         Set plt_dic = Nothing
@@ -275,6 +293,8 @@ Private Sub przeorganizuj_listboxy( _
     ByRef cw_dic As Dictionary)
     
     
+    
+    
     With Me
     
         .ListBoxProjects.Clear
@@ -289,7 +309,7 @@ Private Sub przeorganizuj_listboxy( _
     For Each Key In proj_dic.Keys
         
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_project) Then
-            Me.ListBoxProjects.AddItem CStr(Key)
+            Me.ListBoxProjects.addItem CStr(Key)
             
             If proj_dic(Key) = 1 Then
                 czy_uruchamiamy_eventy = False
@@ -304,7 +324,7 @@ Private Sub przeorganizuj_listboxy( _
     For Each Key In plt_dic.Keys
         
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_plt) Then
-            Me.ListBoxPlants.AddItem CStr(Key)
+            Me.ListBoxPlants.addItem CStr(Key)
         
             If plt_dic(Key) = 1 Then
                 Application.EnableEvents = False
@@ -320,7 +340,7 @@ Private Sub przeorganizuj_listboxy( _
     x = 0
     For Each Key In faza_dic.Keys
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_faza) Then
-            Me.ListBoxPhases.AddItem CStr(Key)
+            Me.ListBoxPhases.addItem CStr(Key)
             
             If faza_dic(Key) = 1 Then
                 czy_uruchamiamy_eventy = False
@@ -335,7 +355,7 @@ Private Sub przeorganizuj_listboxy( _
     For Each Key In cw_dic.Keys
         
         If czy_key_nie_byl_jeszcze_wsadzony(CStr(Key), SIXP.e_link_cw) Then
-            Me.ListBoxCWs.AddItem CStr(Key)
+            Me.ListBoxCWs.addItem CStr(Key)
             
             If cw_dic(Key) = 1 Then
                 czy_uruchamiamy_eventy = False
@@ -345,6 +365,17 @@ Private Sub przeorganizuj_listboxy( _
             x = x + 1
         End If
     Next
+    
+    'czy_uruchamiamy_eventy = False
+    'If Me.ListBoxCWs.ListCount > 1 Then
+    '
+    '     putCwInOrder cw_dic
+    'Else
+    '    Exit Sub
+    'End If
+    'czy_uruchamiamy_eventy = True
+    
+    
 
 End Sub
 
@@ -431,10 +462,22 @@ Private Sub pobierz_wszystkie_selekcje( _
         End If
     Next x
     
+    
+    'ThisWorkbook.Sheets("register").Range("Z1").EntireColumn.Delete
+    'ThisWorkbook.Sheets("register").Range("AA1").EntireColumn.Delete
+    
     For x = 0 To Me.ListBoxCWs.ListCount - 1
+    
+    
+        'ThisWorkbook.Sheets("register").Range("Z" & CLng(x + 2)).Value = Me.ListBoxCWs.List(x)
+    
         If Me.ListBoxCWs.Selected(x) Then
+        
+            ' ThisWorkbook.Sheets("register").Range("AA" & CLng(x + 2)).Value = 1
+        
             If Not cw_dic.Exists(Me.ListBoxCWs.List(x)) Then
                 cw_dic.Add CStr(Me.ListBoxCWs.List(x)), 1
+                
             End If
         End If
     Next x

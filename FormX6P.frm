@@ -157,7 +157,8 @@ End Sub
 
 Private Sub give_data_to_ranges(ByRef r As Range)
     r.Parent.Cells(r.Row, SIXP.e_xq_comment) = CStr(Me.TextBoxCmnt)
-    r.Parent.Cells(r.Row, SIXP.e_xq_ppap_gate) = CStr(Me.TextBoxPPAPGate)
+    ' r.Parent.Cells(r.Row, SIXP.e_xq_ppap_gate) = CStr(Me.TextBoxPPAPGate)
+    r.Parent.Cells(r.Row, SIXP.e_xq_ppap_gate) = CDate(Format(CDate(Me.DTPickerPPAPGate.Value), "yyyy-mm-dd"))
     r.Parent.Cells(r.Row, SIXP.e_xq_project_type) = CStr(Me.ComboBoxXqProjectType)
 End Sub
 
@@ -167,5 +168,6 @@ End Sub
 Private Sub DTPickerPPAPGate_Change()
 
     ' Me.TextBoxReleased = CStr(SIXP.GlobalFooModule.parse_from_date_to_yyyycw(CDate(Me.DTPickerOrdersDue)))
-    Me.TextBoxPPAPGate = CStr(SIXP.GlobalFooModule.parse_from_date_to_yyyycw(CDate(Me.DTPickerPPAPGate)))
+    ' Me.TextBoxPPAPGate = CStr(SIXP.GlobalFooModule.parse_from_date_to_yyyycw(CDate(Me.DTPickerPPAPGate)))
+    Me.TextBoxPPAPGate = CDate(Format(CDate(Me.DTPickerPPAPGate.Value), "yyyy-mm-dd"))
 End Sub

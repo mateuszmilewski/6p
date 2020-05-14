@@ -22,27 +22,27 @@ Private Sub ListBoxFiles_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
     Hide
     
     Dim w As Workbook
-    Dim Sh As Worksheet
-    Set Sh = Nothing
+    Dim sh As Worksheet
+    Set sh = Nothing
     
     
     For Each w In Workbooks
         
         If w.name = Me.ListBoxFiles.Value Then
             On Error Resume Next
-            Set Sh = w.Sheets(SIXP.G_MAIN_TB_FROM_Q)
+            Set sh = w.Sheets(SIXP.G_MAIN_TB_FROM_Q)
             Exit For
         End If
     Next w
     
     
-    If Not Sh Is Nothing Then
+    If Not sh Is Nothing Then
     
     
-        If checkFields(Sh) Then
+        If checkFields(sh) Then
 
             ' sub znajduje sie w modle Quarter
-            uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera Sh, w.name
+            uruchomLogikePrzechwytywaniaDanychZStaregoWybranegoQuartera sh, w.name
         Else
             MsgBox "arkusz: " & SIXP.G_MAIN_TB_FROM_Q & " nie posiada prawidlowo ustawionych kolumn!"
             End
@@ -58,7 +58,7 @@ Private Sub ListBoxFiles_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
 End Sub
 
 
-Private Function checkFields(ByRef Sh As Worksheet) As Boolean
+Private Function checkFields(ByRef sh As Worksheet) As Boolean
 
     checkFields = False
     
@@ -68,12 +68,12 @@ Private Function checkFields(ByRef Sh As Worksheet) As Boolean
     ' czynienia z plikiem typu quarter - gdyby omylkowo ktos wybral inny plik prawdopodobienstwo, ze akurat wybierze
     ' plik inny ktory ma taki sam uklad danych jest raczej male
     
-    If Sh.Cells(1, 1).Value = "Project" Then
-        If Sh.Cells(1, 2).Value = "Plant" Then
-            If Sh.Cells(1, 3).Value = "PHASE" Then
-                If Sh.Cells(1, 4).Value = "CW" Then
-                    If Sh.Cells(1, 5).Value = "STATUS" Then
-                        If Sh.Cells(1, 6).Value = "MRD" Then
+    If sh.Cells(1, 1).Value = "Project" Then
+        If sh.Cells(1, 2).Value = "Plant" Then
+            If sh.Cells(1, 3).Value = "PHASE" Then
+                If sh.Cells(1, 4).Value = "CW" Then
+                    If sh.Cells(1, 5).Value = "STATUS" Then
+                        If sh.Cells(1, 6).Value = "MRD" Then
                         
                             checkFields = True
                             
